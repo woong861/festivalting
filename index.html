@@ -298,6 +298,81 @@ body::before {
   height: 18px;
 }
 
+.radio-group.vertical {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hint {
+  font-family: 'Gaegu', cursive;
+  font-size: 13px;
+  color: #b07700;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.payment-info {
+  background: #fff;
+  border: 2px dashed #ffb3d9;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin: 16px 0 14px;
+  font-family: 'Gaegu', cursive;
+  color: #444;
+  line-height: 1.55;
+}
+
+.payment-info h3 {
+  font-family: 'Jua', sans-serif;
+  font-size: 17px;
+  color: #ff5d9e;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.payment-info .block {
+  margin: 10px 0;
+  padding: 8px 0;
+  border-top: 1px dashed #ffd1e8;
+}
+
+.payment-info .block:first-of-type { border-top: none; padding-top: 0; }
+
+.payment-info .block-title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.payment-info .row {
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.payment-info .row strong { color: #ff5d9e; }
+
+.payment-info .account {
+  background: #fff5fa;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.payment-info .account-num {
+  font-family: 'Jua', sans-serif;
+  font-size: 16px;
+  color: #444;
+  letter-spacing: 0.5px;
+}
+
+.payment-info .notice {
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+  margin-top: 10px;
+}
+
 .submit-btn {
   width: 100%;
   padding: 14px;
@@ -382,6 +457,18 @@ body::before {
         <input type="text" name="name" required placeholder="이름을 적어줘">
       </div>
       <div class="field">
+        <label>재학중인 학교</label>
+        <input type="text" name="school" placeholder="예: 한국대학교">
+      </div>
+      <div class="field">
+        <label>소개팅 / 미팅</label>
+        <div class="radio-group vertical">
+          <label><input type="radio" name="event_type" value="소개팅" required> 소개팅 (1:1)</label>
+          <label><input type="radio" name="event_type" value="미팅 (2대2)" required> 미팅 (2대2)</label>
+          <label><input type="radio" name="event_type" value="미팅 (3대3)" required> 미팅 (3대3)</label>
+        </div>
+      </div>
+      <div class="field">
         <label>학과 / 학년</label>
         <input type="text" name="major" required placeholder="예: 컴퓨터공학과 2학년">
       </div>
@@ -395,6 +482,7 @@ body::before {
       <div class="field">
         <label>인스타 ID</label>
         <input type="text" name="instagram" required placeholder="@를 빼고 적어줘">
+        <p class="hint">* 비공개 계정이면 운영진 팔로우 요청 수락해줘 ♡</p>
       </div>
       <div class="field">
         <label>MBTI</label>
@@ -402,12 +490,41 @@ body::before {
       </div>
       <div class="field">
         <label>한 줄 자기소개</label>
-        <textarea name="intro" required placeholder="너를 알려줘!"></textarea>
+        <textarea name="intro" placeholder="너를 알려줘! (선택)"></textarea>
       </div>
       <div class="field">
         <label>이상형 한 줄</label>
         <textarea name="ideal" required placeholder="어떤 사람을 만나고 싶어?"></textarea>
       </div>
+
+      <div class="payment-info">
+        <h3>💘 비용 입금 안내 💘</h3>
+        <div class="block">
+          <p class="block-title">축제팅 (1:1 소개팅)</p>
+          <p class="row"><span>남학우</span><strong>15,000원</strong></p>
+          <p class="row"><span>여학우</span><strong>3,000원</strong></p>
+        </div>
+        <div class="block">
+          <p class="block-title">💚 미팅 (2대2 / 3대3)</p>
+          <p class="row"><span>남성</span><strong>1인 9,000원</strong></p>
+          <p class="row"><span>여성</span><strong>1인 3,000원</strong></p>
+        </div>
+        <div class="account">
+          <p class="block-title">📩 입금 계좌</p>
+          <p class="account-num">카카오뱅크 3333-24-1809842</p>
+          <p>예금주: 박*일</p>
+        </div>
+        <p class="notice">입금 확인 후 매칭이 진행돼요 ♡</p>
+      </div>
+      <div class="field">
+        <label>입금자명 / 시간 / 금액</label>
+        <input type="text" name="payment" required placeholder="예: 홍길동 / 5월20일 14:30 / 3000">
+      </div>
+      <div class="field">
+        <label>환불받을 은행 / 계좌번호</label>
+        <input type="text" name="refund" required placeholder="예: 카카오뱅크 3333-12-3456789">
+      </div>
+
       <button type="submit" class="submit-btn">쪽지 보내기 💌</button>
     </form>
   </div>
@@ -435,12 +552,16 @@ body::before {
 const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeyvrrxfZ-lhl0IlMqyvFfc2NXgVsp4tjEuBzQYh3ZX43S19A/formResponse';
 const FIELD_IDS = {
   name: 'entry.553539159',
+  school: 'entry.270231493',
+  event_type: 'entry.664976439',
   major: 'entry.2115899897',
   gender: 'entry.1385767725',
   instagram: 'entry.182511457',
   mbti: 'entry.833869921',
   intro: 'entry.922392339',
-  ideal: 'entry.502467816'
+  ideal: 'entry.502467816',
+  payment: 'entry.278115013',
+  refund: 'entry.1944630219'
 };
 // =============================
 
