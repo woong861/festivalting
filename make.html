@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>축제팅 — 매칭 URL 생성기 (운영진용)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #f5f3f0;
+  color: #222;
+  min-height: 100vh;
+  padding: 24px 16px 60px;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-family: 'Jua', sans-serif;
+  font-size: 30px;
+  color: #ff5d9e;
+  letter-spacing: -0.5px;
+}
+
+.header .sub {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.warn {
+  background: #fff3cd;
+  border: 1px solid #ffe69c;
+  color: #664d03;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 540px) {
+  .pair { grid-template-columns: 1fr; }
+}
+
+.person {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.person h2 {
+  font-family: 'Jua', sans-serif;
+  font-size: 18px;
+  color: #ff5d9e;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px dashed #ffd1e8;
+}
+
+.field {
+  margin-bottom: 10px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.field input, .field textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #222;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.field input:focus, .field textarea:focus {
+  border-color: #ff5d9e;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 50px;
+}
+
+.field .hint {
+  font-size: 11px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px;
+  background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Jua', sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.btn:hover { box-shadow: 0 4px 12px rgba(255, 93, 158, 0.35); }
+.btn:active { transform: translateY(1px); }
+
+.btn.secondary {
+  background: white;
+  color: #555;
+  border: 1px solid #ccc;
+}
+
+.btn.secondary:hover { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); }
+
+.result {
+  background: white;
+  border: 2px solid #ff5d9e;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.result.hidden { display: none; }
+
+.result h3 {
+  font-family: 'Jua', sans-serif;
+  font-size: 15px;
+  color: #ff5d9e;
+  margin-bottom: 6px;
+}
+
+.result .for-who {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.url-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.url-row input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 12px;
+  background: #f9f9f9;
+}
+
+.url-row .copy-btn {
+  padding: 0 14px;
+  background: #ff5d9e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Jua', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.url-row .copy-btn.copied { background: #6dcc7a; }
+
+.dm-template {
+  background: #f9f5ff;
+  border: 1px solid #e8d5ff;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.dm-template .label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #8134af;
+  margin-bottom: 4px;
+}
+
+.dm-template .text {
+  white-space: pre-line;
+}
+
+.dm-copy-btn {
+  margin-top: 6px;
+  background: #8134af;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.dm-copy-btn.copied { background: #6dcc7a; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>매칭 URL 생성기</h1>
+    <p class="sub">두 사람을 매칭하면 각자 받을 reveal URL 2개가 생성돼요</p>
+  </div>
+
+  <div class="warn">
+    ⚠️ 이 페이지는 운영진 전용이에요. 신청자에게 절대 공유하지 마세요.<br>
+    링크 자체에 상대방 정보가 들어있어서 누구든 보면 인연이 까져요.
+  </div>
+
+  <div class="pair">
+    <div class="person">
+      <h2>🌸 사람 A</h2>
+      <div class="field">
+        <label>이름 *</label>
+        <input type="text" id="a_name" placeholder="예: 김OO">
+      </div>
+      <div class="field">
+        <label>인스타 ID</label>
+        <input type="text" id="a_insta" placeholder="@ 빼고 (선택)">
+      </div>
+      <div class="field">
+        <label>카톡 ID</label>
+        <input type="text" id="a_kakao" placeholder="(선택)">
+      </div>
+      <div class="field">
+        <label>MBTI</label>
+        <input type="text" id="a_mbti" placeholder="(선택)" maxlength="4">
+      </div>
+      <div class="field">
+        <label>한 줄 소개</label>
+        <textarea id="a_intro" placeholder="(선택)"></textarea>
+      </div>
+    </div>
+
+    <div class="person">
+      <h2>💚 사람 B</h2>
+      <div class="field">
+        <label>이름 *</label>
+        <input type="text" id="b_name" placeholder="예: 박OO">
+      </div>
+      <div class="field">
+        <label>인스타 ID</label>
+        <input type="text" id="b_insta" placeholder="@ 빼고 (선택)">
+      </div>
+      <div class="field">
+        <label>카톡 ID</label>
+        <input type="text" id="b_kakao" placeholder="(선택)">
+      </div>
+      <div class="field">
+        <label>MBTI</label>
+        <input type="text" id="b_mbti" placeholder="(선택)" maxlength="4">
+      </div>
+      <div class="field">
+        <label>한 줄 소개</label>
+        <textarea id="b_intro" placeholder="(선택)"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="generate()">URL 2개 생성</button>
+    <button class="btn secondary" onclick="clearAll()">전부 지우기</button>
+  </div>
+
+  <div class="result hidden" id="resultA">
+    <h3>📩 사람 A에게 보낼 URL</h3>
+    <div class="for-who">→ A가 클릭하면 B의 정보가 나옴</div>
+    <div class="url-row">
+      <input type="text" id="urlA" readonly>
+      <button class="copy-btn" onclick="copyUrl('urlA', this)">복사</button>
+    </div>
+    <div class="dm-template">
+      <div class="label">DM 템플릿 (그대로 복사해서 인스타 DM 발송)</div>
+      <div class="text" id="dmA"></div>
+      <button class="dm-copy-btn" onclick="copyDm('dmA', this)">📋 DM 복사</button>
+    </div>
+  </div>
+
+  <div class="result hidden" id="resultB">
+    <h3>📩 사람 B에게 보낼 URL</h3>
+    <div class="for-who">→ B가 클릭하면 A의 정보가 나옴</div>
+    <div class="url-row">
+      <input type="text" id="urlB" readonly>
+      <button class="copy-btn" onclick="copyUrl('urlB', this)">복사</button>
+    </div>
+    <div class="dm-template">
+      <div class="label">DM 템플릿</div>
+      <div class="text" id="dmB"></div>
+      <button class="dm-copy-btn" onclick="copyDm('dmB', this)">📋 DM 복사</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const BASE = location.origin + location.pathname.replace(/make\.html$/, '') + 'match.html';
+
+function encode(obj) {
+  const clean = {};
+  if (obj.n) clean.n = obj.n;
+  if (obj.i) clean.i = obj.i;
+  if (obj.k) clean.k = obj.k;
+  if (obj.m) clean.m = obj.m;
+  if (obj.b) clean.b = obj.b;
+  const json = JSON.stringify(clean);
+  const bytes = new TextEncoder().encode(json);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  const b64 = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  return b64;
+}
+
+function val(id) {
+  return (document.getElementById(id).value || '').trim();
+}
+
+function getPerson(prefix) {
+  return {
+    n: val(prefix + '_name'),
+    i: val(prefix + '_insta').replace(/^@/, ''),
+    k: val(prefix + '_kakao'),
+    m: val(prefix + '_mbti').toUpperCase(),
+    b: val(prefix + '_intro')
+  };
+}
+
+function buildDm(myName, partnerName, url) {
+  return `${myName ? myName + '님, ' : ''}축제팅 매칭 결과가 나왔어요! 💌
+
+아래 쪽지를 펼치면 너의 인연이 나타나요 ♡
+
+👇 너의 쪽지
+${url}
+
+좋은 인연 만나길 응원할게요 🌸
+— 축제팅 운영진`;
+}
+
+function generate() {
+  const a = getPerson('a');
+  const b = getPerson('b');
+
+  if (!a.n || !b.n) {
+    alert('두 사람 이름은 꼭 입력해주세요.');
+    return;
+  }
+  if (!a.i && !a.k && !b.i && !b.k) {
+    if (!confirm('인스타나 카톡 ID가 하나도 없어요. 그래도 만들까요?')) return;
+  }
+
+  // A receives B's info
+  const urlForA = BASE + '?p=' + encode(b);
+  // B receives A's info
+  const urlForB = BASE + '?p=' + encode(a);
+
+  document.getElementById('urlA').value = urlForA;
+  document.getElementById('urlB').value = urlForB;
+
+  document.getElementById('dmA').textContent = buildDm(a.n, b.n, urlForA);
+  document.getElementById('dmB').textContent = buildDm(b.n, a.n, urlForB);
+
+  document.getElementById('resultA').classList.remove('hidden');
+  document.getElementById('resultB').classList.remove('hidden');
+
+  document.getElementById('resultA').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyUrl(inputId, btn) {
+  const input = document.getElementById(inputId);
+  input.select();
+  navigator.clipboard.writeText(input.value).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '복사됨 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+
+function copyDm(textId, btn) {
+  const text = document.getElementById(textId).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '복사됨 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+
+function clearAll() {
+  if (!confirm('모든 입력을 지울까요?')) return;
+  document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+  document.getElementById('resultA').classList.add('hidden');
+  document.getElementById('resultB').classList.add('hidden');
+}
+</script>
+
+</body>
+</html>
