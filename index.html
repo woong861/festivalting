@@ -352,6 +352,18 @@ body::before {
   margin-top: 6px;
   line-height: 1.4;
 }
+.hint-bonus {
+  color: #c43d8a;
+}
+.hint-bonus strong { color: #ff4dd2; }
+.referrer-field {
+  background: rgba(255, 230, 245, 0.5);
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px dashed #ffb3d9;
+  margin-bottom: 16px;
+}
+.referrer-field label { color: #c43d8a !important; }
 
 .payment-info {
   background: #fff;
@@ -496,6 +508,46 @@ body::before {
 @keyframes ddayPulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(255, 77, 210, 0.5); }
   50%      { box-shadow: 0 0 0 10px rgba(255, 77, 210, 0); }
+}
+
+/* ========== Benefit banner ========== */
+.benefit-banner {
+  margin: 14px auto 0;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(255, 93, 158, 0.15), rgba(129, 52, 175, 0.15));
+  border: 1.5px dashed rgba(255, 179, 217, 0.6);
+  border-radius: 14px;
+  backdrop-filter: blur(6px);
+}
+.benefit-row {
+  font-family: 'Gaegu', cursive;
+  font-size: 15px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+.benefit-row .b-ico { font-size: 18px; flex-shrink: 0; }
+.benefit-row strong {
+  font-family: 'Jua', sans-serif;
+  color: #ffb3d9;
+  letter-spacing: 0.3px;
+}
+.benefit-row.featured strong {
+  color: #ffe9b1;
+  font-size: 17px;
+}
+.benefit-row.featured {
+  animation: featuredPulse 1.8s ease-in-out infinite;
+}
+@keyframes featuredPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.03); }
 }
 
 /* ========== Falling hearts background ========== */
@@ -691,6 +743,36 @@ body::before {
   transition: transform 0.1s;
 }
 .follow-cta:active { transform: translateY(2px); }
+
+.free-offer {
+  margin-top: 14px;
+  background: linear-gradient(135deg, #fff5cc 0%, #ffd1e8 100%);
+  border: 2px dashed #ff4dd2;
+  border-radius: 14px;
+  padding: 14px 16px;
+  position: relative;
+}
+.free-offer-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 17px;
+  color: #c43d8a;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.free-offer-title strong {
+  color: #ff4dd2;
+  font-size: 20px;
+}
+.free-steps {
+  margin: 0;
+  padding: 0 0 0 22px;
+  font-family: 'Gaegu', cursive;
+  font-size: 14px;
+  color: #5a3d6b;
+  line-height: 1.6;
+}
+.free-steps li { margin-bottom: 3px; }
+.free-steps b { color: #c43d8a; font-weight: 700; }
 .share-actions {
   display: flex;
   gap: 8px;
@@ -739,6 +821,16 @@ body::before {
       <span class="dd-icon">⏰</span>
       <span>신청 마감까지</span>
       <span class="dd-count" id="ddayCount">D-?</span>
+    </div>
+    <div class="benefit-banner">
+      <div class="benefit-row">
+        <span class="b-ico">🎁</span>
+        <span>친구 추천 시 <strong>1,000원 할인</strong></span>
+      </div>
+      <div class="benefit-row featured">
+        <span class="b-ico">📷</span>
+        <span>스토리 공유 시 <strong>무료!</strong></span>
+      </div>
     </div>
     <div class="prompt">📌 마음에 드는 쪽지를 골라봐!</div>
   </div>
@@ -837,6 +929,11 @@ body::before {
         <input type="text" name="instagram" required placeholder="@를 빼고 적어줘">
         <p class="hint">* 비공개 계정이면 운영진 팔로우 요청 수락해줘 ♡</p>
       </div>
+      <div class="field referrer-field">
+        <label>🎁 추천인 이름 / 인스타 ID (선택)</label>
+        <input type="text" name="referrer" placeholder="추천인 이름 또는 인스타 ID">
+        <p class="hint hint-bonus">친구 추천받았다면 적어줘! 둘 다 <strong>1,000원 할인</strong> ♡</p>
+      </div>
       <div class="field">
         <label>MBTI</label>
         <input type="text" name="mbti" required placeholder="예: INFP" maxlength="4">
@@ -897,14 +994,21 @@ body::before {
       <div class="url-stamp">postitt.cloud</div>
       <div class="follow-stamp">📷 @post_it_ting</div>
     </div>
-    <a href="https://instagram.com/post_it_ting" target="_blank" rel="noopener" class="follow-cta">
-      📷 @post_it_ting 팔로우하고 매칭 알림 받기 ♡
-    </a>
+    <div class="free-offer">
+      <div class="free-offer-title">🔥 지금 스토리 공유하면 <strong>무료!</strong></div>
+      <ol class="free-steps">
+        <li>아래 <b>"이미지 저장"</b>으로 카드 저장</li>
+        <li>인스타 스토리에 올리고 <b>@post_it_ting</b> 태그</li>
+        <li>스크린샷을 <b>@post_it_ting</b> DM으로 보내면 환불 ♡</li>
+      </ol>
+    </div>
     <div class="share-actions">
       <button class="save-btn" onclick="saveShareCard()">📸 이미지 저장</button>
       <button class="close-share-btn" onclick="closeSuccess()">닫기</button>
     </div>
-    <p class="save-hint">저장해서 인스타 스토리에 올려봐 ♡</p>
+    <a href="https://instagram.com/post_it_ting" target="_blank" rel="noopener" class="follow-cta">
+      📷 @post_it_ting 팔로우하고 매칭 알림 받기
+    </a>
   </div>
 </div>
 
@@ -924,6 +1028,7 @@ const FIELD_IDS = {
   major: 'entry.2115899897',
   gender: 'entry.1385767725',
   instagram: 'entry.182511457',
+  referrer: 'entry.1718973660',
   mbti: 'entry.833869921',
   intro: 'entry.922392339',
   ideal: 'entry.502467816',
