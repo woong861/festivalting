@@ -98,56 +98,98 @@ body::before {
 .postit-wall {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
+  gap: 16px;
   padding: 10px 4px;
 }
 
+@media (min-width: 600px) {
+  .postit-wall { grid-template-columns: repeat(3, 1fr); }
+}
+
+.postit-slot {
+  animation: floatY 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%     { transform: translateY(-10px); }
+}
+
+/* Different floating rhythms for each post-it (cycles every 8) */
+.postit-slot:nth-child(8n+1) { animation-duration: 5.5s; animation-delay: 0s; }
+.postit-slot:nth-child(8n+2) { animation-duration: 6.5s; animation-delay: 0.7s; }
+.postit-slot:nth-child(8n+3) { animation-duration: 5s;   animation-delay: 1.4s; }
+.postit-slot:nth-child(8n+4) { animation-duration: 7s;   animation-delay: 0.3s; }
+.postit-slot:nth-child(8n+5) { animation-duration: 4.8s; animation-delay: 1.1s; }
+.postit-slot:nth-child(8n+6) { animation-duration: 6.2s; animation-delay: 0.5s; }
+.postit-slot:nth-child(8n+7) { animation-duration: 5.8s; animation-delay: 0.9s; }
+.postit-slot:nth-child(8n)   { animation-duration: 6.8s; animation-delay: 0.2s; }
+
 .postit {
+  --rotate: 0deg;
   font-family: 'Gaegu', cursive;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 16px;
+  padding: 14px;
   border-radius: 3px;
   box-shadow:
     0 6px 14px rgba(0, 0, 0, 0.35),
     inset 0 -8px 12px rgba(0, 0, 0, 0.04);
   cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: box-shadow 0.25s ease, transform 0.2s ease;
   color: #3a3a3a;
-  font-size: 20px;
+  font-size: clamp(15px, 4.2vw, 19px);
   font-weight: 700;
   position: relative;
   user-select: none;
   line-height: 1.3;
+  transform: rotate(var(--rotate));
 }
 
 .postit::before {
   content: '';
   position: absolute;
-  top: -9px;
+  top: -8px;
   left: 50%;
-  width: 54px;
-  height: 17px;
+  width: 48px;
+  height: 15px;
   background: rgba(255, 255, 255, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.25);
   transform: translateX(-50%) rotate(-2deg);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.postit:hover, .postit:active {
-  transform: translateY(-6px) rotate(0deg) scale(1.03) !important;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+.postit:hover {
+  transform: rotate(0) scale(1.06) !important;
+  z-index: 5;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
 }
 
-.postit:nth-child(1) { background: #fff9b1; transform: rotate(-3deg); }
-.postit:nth-child(2) { background: #ffd1e8; transform: rotate(2deg); }
-.postit:nth-child(3) { background: #c8e7ff; transform: rotate(-2deg); }
-.postit:nth-child(4) { background: #d4f1c5; transform: rotate(3deg); }
-.postit:nth-child(5) { background: #e8d3ff; transform: rotate(-1deg); }
-.postit:nth-child(6) { background: #ffd9b3; transform: rotate(2deg); }
+.postit.picking {
+  animation: pickup 0.45s ease-out;
+  z-index: 10;
+}
+
+@keyframes pickup {
+  0%   { transform: rotate(var(--rotate)) scale(1)    translateY(0); }
+  35%  { transform: rotate(calc(var(--rotate) - 14deg)) scale(1.18) translateY(-18px); }
+  70%  { transform: rotate(calc(var(--rotate) + 6deg))  scale(1.08) translateY(-6px); }
+  100% { transform: rotate(var(--rotate)) scale(1)    translateY(0); }
+}
+
+/* Colors + initial rotations (cycle every 8) */
+.postit-slot:nth-child(8n+1) .postit { background: #fff9b1; --rotate: -3deg; }
+.postit-slot:nth-child(8n+2) .postit { background: #ffd1e8; --rotate:  2deg; }
+.postit-slot:nth-child(8n+3) .postit { background: #c8e7ff; --rotate: -2deg; }
+.postit-slot:nth-child(8n+4) .postit { background: #d4f1c5; --rotate:  3deg; }
+.postit-slot:nth-child(8n+5) .postit { background: #e8d3ff; --rotate: -1deg; }
+.postit-slot:nth-child(8n+6) .postit { background: #ffd9b3; --rotate:  2deg; }
+.postit-slot:nth-child(8n+7) .postit { background: #ffe9b1; --rotate: -2deg; }
+.postit-slot:nth-child(8n)   .postit { background: #f9c8e0; --rotate:  3deg; }
 
 .footer-note {
   text-align: center;
@@ -434,12 +476,22 @@ body::before {
   </div>
 
   <div class="postit-wall">
-    <div class="postit" onclick="openForm()">연대<br>박보영</div>
-    <div class="postit" onclick="openForm()">건대 미대<br>지젤</div>
-    <div class="postit" onclick="openForm()">세종대<br>전지현</div>
-    <div class="postit" onclick="openForm()">예술디자인<br>대학</div>
-    <div class="postit" onclick="openForm()">홍대<br>카리나</div>
-    <div class="postit" onclick="openForm()">한양대<br>안유진</div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">연대<br>박보영</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">건대 미대<br>지젤</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">세종대<br>전지현</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">예술디자인<br>대학</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">홍대<br>카리나</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">한양대<br>안유진</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">고대<br>윤아</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">이대<br>수지</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">서강대<br>아이유</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">중대<br>장원영</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">성대<br>한소희</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">숙대 미대<br>김혜윤</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">인하대<br>정호연</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">경희대<br>민지</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">동대<br>김유정</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">외대<br>정채연</div></div>
   </div>
 
   <p class="footer-note">아무 쪽지나 골라도 같은 신청서로 연결돼요 ♡</p>
@@ -565,7 +617,11 @@ const FIELD_IDS = {
 };
 // =============================
 
-function openForm() {
+function openForm(el) {
+  if (el && el.classList) {
+    el.classList.add('picking');
+    setTimeout(() => el.classList.remove('picking'), 450);
+  }
   document.getElementById('modal').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
