@@ -1446,7 +1446,7 @@ document.getElementById('successModal').addEventListener('click', function(e) {
 
 // ====== D-day countdown ======
 // 신청 마감일 — 바꾸려면 아래 날짜만 수정
-const APPLICATION_DEADLINE = new Date('2026-05-28T23:59:59+09:00');
+const APPLICATION_DEADLINE = new Date('2026-05-24T23:59:59+09:00');
 // 마감일 지나도 활성화 유지하고 싶으면 true로
 const FORCE_OPEN = false;
 
@@ -1455,8 +1455,12 @@ function updateDday() {
   const el = document.getElementById('ddayCount');
   const closedOverlay = document.getElementById('closedOverlay');
   const now = new Date();
-  const diffMs = APPLICATION_DEADLINE - now;
-  const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  // 날짜 단위 계산 (시간 무시) — 한국식 D-day 표기에 자연스러움
+  const todayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const deadlineDate = new Date(APPLICATION_DEADLINE.getFullYear(), APPLICATION_DEADLINE.getMonth(), APPLICATION_DEADLINE.getDate());
+  const days = Math.round((deadlineDate - todayDate) / (1000 * 60 * 60 * 24));
+  // 단, 실제 시간상 마감이 지나면 closed 모드
+  const isExpired = now > APPLICATION_DEADLINE;
 
   banner.classList.remove('urgent', 'closed');
 
@@ -1478,7 +1482,7 @@ function updateDday() {
 
   // 마감 후 closed overlay (FORCE_OPEN으로 무시 가능)
   if (closedOverlay) {
-    if (days < 0 && !FORCE_OPEN) {
+    if (isExpired && !FORCE_OPEN) {
       closedOverlay.classList.add('active');
       document.body.style.overflow = 'hidden';
     } else {
