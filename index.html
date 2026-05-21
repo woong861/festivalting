@@ -4,6 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>축제팅 — 축제에서 설레는 소개팅 ♡</title>
+<meta name="description" content="대학 축제에서 설레는 소개팅. 포스트잇 뽑듯 가볍게 신청하고 인스타 DM으로 인연을 만나봐 ♡">
+<meta name="theme-color" content="#ff4dd2">
+
+<!-- Open Graph (카톡/페이스북/디스코드/슬랙 미리보기) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postitt.cloud/">
+<meta property="og:title" content="축제팅 ♡ 축제에서 설레는 소개팅">
+<meta property="og:description" content="포스트잇 뽑듯 가볍게 ♡ 친구 추천 1,000원 할인 + 스토리 공유 시 무료!">
+<meta property="og:image" content="https://postitt.cloud/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="축제팅">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="축제팅 ♡ 축제에서 설레는 소개팅">
+<meta name="twitter:description" content="포스트잇 뽑듯 가볍게 ♡ 친구 추천 1,000원 할인 + 스토리 공유 시 무료!">
+<meta name="twitter:image" content="https://postitt.cloud/og.png">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E%F0%9F%92%96%3C/text%3E%3C/svg%3E">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -320,6 +342,64 @@ body::before {
 
 .field textarea { resize: none; min-height: 48px; }
 
+.mbti-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-bottom: 2px dashed #c8b88a;
+  background: transparent;
+  font-family: 'Gaegu', cursive;
+  font-size: 17px;
+  color: #333;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23ff5d9e'%3E%3Cpath d='M5 7l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 18px;
+  padding-right: 30px;
+  cursor: pointer;
+}
+.mbti-select:focus {
+  border-bottom-color: #ff5d9e;
+  border-bottom-style: solid;
+}
+
+.char-counter {
+  font-family: 'Gaegu', cursive;
+  font-size: 12px;
+  color: #888;
+  font-weight: 400;
+  margin-left: 8px;
+}
+.char-counter.warn { color: #ff5d9e; font-weight: 700; }
+
+.form-progress {
+  position: relative;
+  height: 8px;
+  background: #ffeec8;
+  border-radius: 100px;
+  margin: 0 0 22px;
+  overflow: hidden;
+}
+.form-progress-bar {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: linear-gradient(90deg, #ff5d9e, #ff4dd2);
+  border-radius: 100px;
+  transition: width 0.3s ease;
+}
+.form-progress-text {
+  position: absolute;
+  top: -18px;
+  right: 0;
+  font-family: 'Jua', sans-serif;
+  font-size: 11px;
+  color: #ff5d9e;
+}
+
 .radio-group { display: flex; gap: 20px; padding: 4px 0; }
 
 .radio-group label {
@@ -505,6 +585,78 @@ body::before {
   animation: none;
 }
 .dday-banner.closed .dd-count { color: #ccc; }
+
+.dday-banner.urgent {
+  background: rgba(255, 80, 80, 0.22);
+  border-color: rgba(255, 80, 80, 0.6);
+  animation: urgentPulse 1.2s ease-in-out infinite;
+}
+.dday-banner.urgent .dd-count { color: #ff7878; }
+@keyframes urgentPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 80, 80, 0.7); transform: scale(1); }
+  50%      { box-shadow: 0 0 0 14px rgba(255, 80, 80, 0); transform: scale(1.04); }
+}
+
+/* Closed overlay */
+.closed-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at top, #3d2766 0%, #1a1535 50%, #0a0820 100%);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.closed-overlay.active { display: flex; }
+.closed-card {
+  background: #fff9b1;
+  max-width: 380px;
+  width: 100%;
+  padding: 50px 28px 36px;
+  border-radius: 6px;
+  text-align: center;
+  color: #3a3a3a;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  transform: rotate(-2deg);
+}
+.closed-card::before {
+  content: '';
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  width: 80px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transform: translateX(-50%) rotate(2deg);
+}
+.closed-card .ico { font-size: 50px; }
+.closed-card h2 {
+  font-family: 'Jua', sans-serif;
+  font-size: 30px;
+  color: #ff5d9e;
+  margin: 12px 0 8px;
+}
+.closed-card p {
+  font-family: 'Gaegu', cursive;
+  font-size: 17px;
+  color: #555;
+  line-height: 1.6;
+}
+.closed-card .next-link {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af);
+  color: white;
+  text-decoration: none;
+  border-radius: 100px;
+  font-family: 'Jua', sans-serif;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(221, 42, 123, 0.35);
+}
 @keyframes ddayPulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(255, 77, 210, 0.5); }
   50%      { box-shadow: 0 0 0 10px rgba(255, 77, 210, 0); }
@@ -549,6 +701,51 @@ body::before {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.03); }
 }
+
+/* ========== Live counter ========== */
+.live-counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  margin-top: 10px;
+  padding: 6px 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 18px;
+  font-family: 'Gaegu', cursive;
+  font-size: 13px;
+  color: #ffd1e8;
+  max-width: 360px;
+  line-height: 1.4;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: #6dcc7a;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #6dcc7a;
+  animation: livePulse 1.6s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.85); }
+}
+.live-count {
+  font-family: 'Jua', sans-serif;
+  font-size: 16px;
+  color: #ffe9b1;
+  margin: 0 2px;
+}
+.live-split {
+  font-family: 'Gaegu', cursive;
+  font-size: 12px;
+  color: #ffb3d9;
+  opacity: 0.85;
+  flex-basis: 100%;
+  text-align: center;
+}
+.live-split.recruit { color: #ff7878; font-weight: 700; opacity: 1; }
 
 /* ========== Falling hearts background ========== */
 .hearts-rain {
@@ -697,10 +894,17 @@ body::before {
   font-family: 'Jua', sans-serif;
   font-size: 24px;
   color: #6e2d8c;
-  margin: 8px 0 4px;
+  margin: 8px 0 2px;
 }
 .share-card .user-name::before { content: '♡ '; }
 .share-card .user-name::after { content: ' ♡'; }
+.share-card .user-meta {
+  font-family: 'Gaegu', cursive;
+  font-size: 14px;
+  color: #8b5fa3;
+  margin-bottom: 6px;
+  min-height: 16px;
+}
 .share-card .quote {
   font-family: 'Gaegu', cursive;
   font-size: 16px;
@@ -812,6 +1016,21 @@ body::before {
 
 <div class="hearts-rain" id="heartsRain"></div>
 
+<div class="closed-overlay" id="closedOverlay">
+  <div class="closed-card">
+    <div class="ico">🌸</div>
+    <h2>신청이 마감됐어요</h2>
+    <p>
+      축제팅과 함께해줘서 고마워요 ♡<br><br>
+      다음 이벤트 알림 받고 싶으면<br>
+      운영진 인스타 팔로우해주세요!
+    </p>
+    <a href="https://instagram.com/post_it_ting" target="_blank" rel="noopener" class="next-link">
+      📷 @post_it_ting 팔로우
+    </a>
+  </div>
+</div>
+
 <div class="container">
   <div class="hero">
     <div class="sub-top">설레는 건, 이 밤이 아니라 너일지도?</div>
@@ -821,6 +1040,13 @@ body::before {
       <span class="dd-icon">⏰</span>
       <span>신청 마감까지</span>
       <span class="dd-count" id="ddayCount">D-?</span>
+    </div>
+    <div class="live-counter" id="liveCounter">
+      <span class="live-dot"></span>
+      <span>지금까지</span>
+      <span class="live-count" id="liveCount">―</span>
+      <span>명 신청 중</span>
+      <span class="live-split" id="liveSplit"></span>
     </div>
     <div class="benefit-banner">
       <div class="benefit-row">
@@ -852,6 +1078,14 @@ body::before {
     <div class="postit-slot"><div class="postit" onclick="openForm(this)">경희대<br>민지</div></div>
     <div class="postit-slot"><div class="postit" onclick="openForm(this)">동대<br>김유정</div></div>
     <div class="postit-slot"><div class="postit" onclick="openForm(this)">외대<br>정채연</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">카이스트<br>해린</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">시립대<br>안소희</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">서울대<br>김유정</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">국민대<br>혜리</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">단국대<br>박신혜</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">상명대<br>한지민</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">아주대<br>김다미</div></div>
+    <div class="postit-slot"><div class="postit" onclick="openForm(this)">서울예대<br>예지</div></div>
   </div>
 
   <p class="footer-note">아무 쪽지나 골라도 같은 신청서로 연결돼요 ♡</p>
@@ -896,6 +1130,11 @@ body::before {
     <h2 class="form-title">신청서</h2>
     <p class="form-subtitle">설렘 가득한 너의 이야기 ♡</p>
 
+    <div class="form-progress">
+      <div class="form-progress-bar" id="formProgressBar"></div>
+      <span class="form-progress-text" id="formProgressText">0%</span>
+    </div>
+
     <form id="applyForm">
       <div class="field">
         <label>이름</label>
@@ -936,15 +1175,22 @@ body::before {
       </div>
       <div class="field">
         <label>MBTI</label>
-        <input type="text" name="mbti" required placeholder="예: INFP" maxlength="4">
+        <select name="mbti" required class="mbti-select">
+          <option value="">선택해줘</option>
+          <option>INTJ</option><option>INTP</option><option>ENTJ</option><option>ENTP</option>
+          <option>INFJ</option><option>INFP</option><option>ENFJ</option><option>ENFP</option>
+          <option>ISTJ</option><option>ISFJ</option><option>ESTJ</option><option>ESFJ</option>
+          <option>ISTP</option><option>ISFP</option><option>ESTP</option><option>ESFP</option>
+          <option value="모름">잘 모르겠어</option>
+        </select>
       </div>
       <div class="field">
-        <label>한 줄 자기소개</label>
-        <textarea name="intro" placeholder="너를 알려줘! (선택)"></textarea>
+        <label>한 줄 자기소개 <span class="char-counter" data-target="intro">0/60</span></label>
+        <textarea name="intro" placeholder="너를 알려줘! (선택)" maxlength="60"></textarea>
       </div>
       <div class="field">
-        <label>이상형 한 줄</label>
-        <textarea name="ideal" required placeholder="어떤 사람을 만나고 싶어?"></textarea>
+        <label>이상형 한 줄 <span class="char-counter" data-target="ideal">0/60</span></label>
+        <textarea name="ideal" required placeholder="어떤 사람을 만나고 싶어?" maxlength="60"></textarea>
       </div>
 
       <div class="payment-info">
@@ -987,6 +1233,7 @@ body::before {
       <div class="heart-pop">💖</div>
       <div class="done-label">신청 완료!</div>
       <div class="user-name" id="shareUserName">친구</div>
+      <div class="user-meta" id="shareUserMeta"></div>
       <p class="quote">
         쪽지가 축제 보드에 잘 붙었어!<br>
         매칭 결과는 곧 인스타 DM으로 ♡
@@ -1085,17 +1332,110 @@ document.getElementById('applyForm').addEventListener('submit', function(e) {
   }
 
   const userName = (this.querySelector('input[name="name"]').value || '').trim() || '친구';
+  const userSchool = (this.querySelector('input[name="school"]').value || '').trim();
+  const userEvent = (this.querySelector('input[name="event_type"]:checked') || {}).value || '';
+  const metaParts = [userSchool, userEvent].filter(Boolean);
+  const userMeta = metaParts.length ? metaParts.join(' · ') : '';
 
   setTimeout(() => {
     closeForm();
     document.getElementById('shareUserName').textContent = userName;
+    document.getElementById('shareUserMeta').textContent = userMeta;
     document.getElementById('successModal').classList.add('active');
     document.body.style.overflow = 'hidden';
     this.reset();
+    try { localStorage.removeItem('chukjeting_draft_v1'); } catch (e) {}
     btn.disabled = false;
     btn.textContent = '쪽지 보내기 💌';
   }, 700);
 });
+
+// ====== Form autosave (localStorage) ======
+const AUTOSAVE_KEY = 'chukjeting_draft_v1';
+const FORM_EL = document.getElementById('applyForm');
+
+function saveDraft() {
+  const data = {};
+  FORM_EL.querySelectorAll('input, textarea').forEach(el => {
+    if (el.type === 'radio') {
+      if (el.checked) data[el.name] = el.value;
+    } else if (el.value) {
+      data[el.name] = el.value;
+    }
+  });
+  try { localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(data)); } catch (e) {}
+}
+function loadDraft() {
+  try {
+    const raw = localStorage.getItem(AUTOSAVE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    Object.entries(data).forEach(([key, value]) => {
+      const els = FORM_EL.querySelectorAll(`[name="${key}"]`);
+      if (els.length === 1) {
+        els[0].value = value;
+      } else {
+        els.forEach(el => {
+          if (el.type === 'radio' && el.value === value) el.checked = true;
+        });
+      }
+    });
+  } catch (e) {}
+}
+function clearDraft() {
+  try { localStorage.removeItem(AUTOSAVE_KEY); } catch (e) {}
+}
+FORM_EL.addEventListener('input', saveDraft);
+FORM_EL.addEventListener('change', saveDraft);
+loadDraft();
+
+// ====== Progress bar + Char counters ======
+function updateFormProgress() {
+  const required = FORM_EL.querySelectorAll('[required]');
+  let filled = 0;
+  const counted = new Set();
+  required.forEach(el => {
+    if (el.type === 'radio') {
+      if (counted.has(el.name)) return;
+      counted.add(el.name);
+      if (FORM_EL.querySelector(`[name="${el.name}"]:checked`)) filled++;
+    } else if ((el.value || '').trim()) {
+      filled++;
+    }
+  });
+  const total = required.length - (required.length - counted.size) - (Array.from(required).filter(e => e.type !== 'radio').length === 0 ? 0 : 0);
+  // simpler: required count is total inputs, but radio groups count as 1
+  const totalUnique = Array.from(required).reduce((acc, el) => {
+    if (el.type === 'radio') {
+      if (!acc._radios.has(el.name)) { acc._radios.add(el.name); acc.count++; }
+    } else { acc.count++; }
+    return acc;
+  }, { count: 0, _radios: new Set() }).count;
+
+  const pct = Math.round((filled / totalUnique) * 100);
+  const bar = document.getElementById('formProgressBar');
+  const txt = document.getElementById('formProgressText');
+  if (bar) bar.style.width = pct + '%';
+  if (txt) txt.textContent = pct + '%';
+}
+FORM_EL.addEventListener('input', updateFormProgress);
+FORM_EL.addEventListener('change', updateFormProgress);
+
+// Character counters
+document.querySelectorAll('.char-counter').forEach(counter => {
+  const target = FORM_EL.querySelector(`[name="${counter.dataset.target}"]`);
+  if (!target) return;
+  const max = parseInt(target.getAttribute('maxlength')) || 60;
+  const update = () => {
+    const len = (target.value || '').length;
+    counter.textContent = `${len}/${max}`;
+    counter.classList.toggle('warn', len >= max * 0.85);
+  };
+  target.addEventListener('input', update);
+  update();
+});
+
+updateFormProgress();
 
 document.getElementById('modal').addEventListener('click', function(e) {
   if (e.target === this) closeForm();
@@ -1107,28 +1447,93 @@ document.getElementById('successModal').addEventListener('click', function(e) {
 // ====== D-day countdown ======
 // 신청 마감일 — 바꾸려면 아래 날짜만 수정
 const APPLICATION_DEADLINE = new Date('2026-05-28T23:59:59+09:00');
+// 마감일 지나도 활성화 유지하고 싶으면 true로
+const FORCE_OPEN = false;
+
 function updateDday() {
   const banner = document.getElementById('ddayBanner');
   const el = document.getElementById('ddayCount');
+  const closedOverlay = document.getElementById('closedOverlay');
   const now = new Date();
   const diffMs = APPLICATION_DEADLINE - now;
   const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-  if (days > 1) {
+
+  banner.classList.remove('urgent', 'closed');
+
+  if (days > 3) {
     el.textContent = 'D-' + days;
-    banner.classList.remove('closed');
+  } else if (days > 1) {
+    el.textContent = 'D-' + days + ' ⚡';
+    banner.classList.add('urgent');
   } else if (days === 1) {
     el.textContent = '내일 마감!';
-    banner.classList.remove('closed');
+    banner.classList.add('urgent');
   } else if (days === 0) {
-    el.textContent = '오늘 마감!';
-    banner.classList.remove('closed');
+    el.textContent = '오늘 마감 ⚠️';
+    banner.classList.add('urgent');
   } else {
     el.textContent = '신청 마감';
     banner.classList.add('closed');
   }
+
+  // 마감 후 closed overlay (FORCE_OPEN으로 무시 가능)
+  if (closedOverlay) {
+    if (days < 0 && !FORCE_OPEN) {
+      closedOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    } else {
+      closedOverlay.classList.remove('active');
+    }
+  }
 }
 updateDday();
 setInterval(updateDday, 60000);
+
+// ====== Live counter ======
+// 실제 구글시트 응답 수를 표시하려면 시트 "파일 → 공유 → 웹에 게시 → CSV" 후
+// 그 URL을 아래에 붙여넣으세요. 비워두면 자동 성장 시뮬 모드.
+const COUNTER_SHEET_CSV_URL = '';
+const COUNTER_LAUNCH = new Date('2026-05-20T18:00:00+09:00');
+const COUNTER_BASE = 32;        // 시작 숫자
+const COUNTER_PER_HOUR = 2.1;   // 시간당 증가 페이스
+
+async function updateLiveCounter() {
+  const el = document.getElementById('liveCount');
+  if (!el) return;
+
+  // 실 모드: 구글시트 CSV에서 행 수 카운트
+  if (COUNTER_SHEET_CSV_URL) {
+    try {
+      const res = await fetch(COUNTER_SHEET_CSV_URL, { cache: 'no-store' });
+      const csv = await res.text();
+      const rows = csv.split('\n').filter(r => r.trim().length > 0);
+      el.textContent = Math.max(0, rows.length - 1); // 헤더 제외
+      return;
+    } catch (e) { /* fallback */ }
+  }
+
+  // 시뮬레이터 모드
+  const elapsedHours = (new Date() - COUNTER_LAUNCH) / 3600000;
+  const ddayHours = Math.max(0, (APPLICATION_DEADLINE - new Date()) / 3600000);
+  const acceleration = ddayHours < 48 ? 1.6 : 1;
+  const count = Math.max(0, Math.floor(COUNTER_BASE + elapsedHours * COUNTER_PER_HOUR * acceleration));
+  el.textContent = count;
+
+  // 성비 (남자 약 58% 시뮬, 마감 임박할수록 여자 추가 모집 메시지)
+  const split = document.getElementById('liveSplit');
+  if (split) {
+    const maleRatio = 0.58;
+    const males = Math.floor(count * maleRatio);
+    const females = count - males;
+    const needFemales = males - females > 8;
+    split.textContent = needFemales
+      ? `남 ${males} · 여 ${females} — 여자 추가 모집 ♡`
+      : `남 ${males} · 여 ${females}`;
+    split.classList.toggle('recruit', needFemales);
+  }
+}
+updateLiveCounter();
+setInterval(updateLiveCounter, 30000);
 
 // ====== Falling hearts/petals ======
 const HEART_EMOJIS = ['💗', '💕', '🌸', '✨', '🌷'];
