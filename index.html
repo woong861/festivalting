@@ -445,6 +445,63 @@ body::before {
 }
 .referrer-field label { color: #c43d8a !important; }
 
+.hint-info {
+  color: #555;
+  background: rgba(255, 255, 255, 0.45);
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.hint-warn {
+  color: #c43d8a;
+  background: rgba(255, 200, 220, 0.55);
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 13px;
+  border-left: 3px solid #ff5d9e;
+}
+.hint-warn strong { color: #ff4dd2; }
+
+.friends-section {
+  background: rgba(212, 241, 197, 0.35);
+  border: 2px dashed #a8d99a;
+  border-radius: 12px;
+  padding: 14px 14px 4px;
+  margin-bottom: 16px;
+}
+.friends-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 16px;
+  color: #5a8045;
+  margin-bottom: 4px;
+}
+.friends-sub {
+  font-family: 'Gaegu', cursive;
+  font-size: 13px;
+  color: #6b8c5a;
+  margin-bottom: 12px;
+}
+.friend-card {
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 10px;
+  padding: 12px 14px 4px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.friend-card .friend-badge {
+  display: inline-block;
+  background: #6dcc7a;
+  color: white;
+  font-family: 'Jua', sans-serif;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 8px;
+}
+
 .payment-info {
   background: #fff;
   border: 2px dashed #ffb3d9;
@@ -1054,8 +1111,8 @@ body::before {
         <span>친구 추천 시 <strong>1,000원 할인</strong></span>
       </div>
       <div class="benefit-row featured">
-        <span class="b-ico">📷</span>
-        <span>스토리 공유 시 <strong>무료!</strong></span>
+        <span class="b-ico">💕</span>
+        <span>여성분 친구와 함께 신청 시 <strong>무료!</strong></span>
       </div>
     </div>
     <div class="prompt">📌 마음에 드는 쪽지를 골라봐!</div>
@@ -1151,6 +1208,7 @@ body::before {
           <label><input type="radio" name="event_type" value="미팅 (2대2)" required> 미팅 (2대2)</label>
           <label><input type="radio" name="event_type" value="미팅 (3대3)" required> 미팅 (3대3)</label>
         </div>
+        <p class="hint hint-warn">⚠️ 미팅은 <strong>1인 신청 불가</strong> — 친구와 함께 신청해주세요. 친구 정보는 신청 후 운영진 DM으로 안내드려요.</p>
       </div>
       <div class="field">
         <label>학과 / 학년</label>
@@ -1164,6 +1222,10 @@ body::before {
         </div>
       </div>
       <div class="field">
+        <label>나이</label>
+        <input type="text" name="age" required placeholder="예: 22" inputmode="numeric" maxlength="3">
+      </div>
+      <div class="field">
         <label>인스타 ID</label>
         <input type="text" name="instagram" required placeholder="@를 빼고 적어줘">
         <p class="hint">* 비공개 계정이면 운영진 팔로우 요청 수락해줘 ♡</p>
@@ -1172,6 +1234,14 @@ body::before {
         <label>🎁 추천인 이름 / 인스타 ID (선택)</label>
         <input type="text" name="referrer" placeholder="추천인 이름 또는 인스타 ID">
         <p class="hint hint-bonus">친구 추천받았다면 적어줘! 둘 다 <strong>1,000원 할인</strong> ♡</p>
+      </div>
+      <div class="field">
+        <label>전화번호</label>
+        <input type="tel" name="phone" required placeholder="010-0000-0000" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label>카톡 ID</label>
+        <input type="text" name="kakao" required placeholder="카카오톡 아이디">
       </div>
       <div class="field">
         <label>MBTI</label>
@@ -1241,14 +1311,6 @@ body::before {
       <div class="url-stamp">postitt.cloud</div>
       <div class="follow-stamp">📷 @post_it_ting</div>
     </div>
-    <div class="free-offer">
-      <div class="free-offer-title">🔥 지금 스토리 공유하면 <strong>무료!</strong></div>
-      <ol class="free-steps">
-        <li>아래 <b>"이미지 저장"</b>으로 카드 저장</li>
-        <li>인스타 스토리에 올리고 <b>@post_it_ting</b> 태그</li>
-        <li>스크린샷을 <b>@post_it_ting</b> DM으로 보내면 환불 ♡</li>
-      </ol>
-    </div>
     <div class="share-actions">
       <button class="save-btn" onclick="saveShareCard()">📸 이미지 저장</button>
       <button class="close-share-btn" onclick="closeSuccess()">닫기</button>
@@ -1274,6 +1336,9 @@ const FIELD_IDS = {
   event_type: 'entry.664976439',
   major: 'entry.2115899897',
   gender: 'entry.1385767725',
+  age: 'entry.213374843',
+  phone: 'entry.1423910806',
+  kakao: 'entry.2032933019',
   instagram: 'entry.182511457',
   referrer: 'entry.1718973660',
   mbti: 'entry.833869921',
