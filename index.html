@@ -1339,7 +1339,7 @@ body::before {
           <label><input type="radio" name="event_type" value="미팅 (2대2)" required> 미팅 (2대2)</label>
           <label><input type="radio" name="event_type" value="미팅 (3대3)" required> 미팅 (3대3)</label>
         </div>
-        <p class="hint hint-warn">⚠️ 미팅은 <strong>1인 신청 불가</strong> — 친구와 함께 신청해주세요. 친구 정보는 신청 후 운영진 DM으로 안내드려요.</p>
+        <p class="hint hint-warn">⚠️ 미팅은 <strong>1인 신청 불가</strong> — 친구와 함께, 대표자가 친구 정보까지 작성해주세요</p>
       </div>
       <div class="field">
         <label>학과 / 학년</label>
@@ -1394,12 +1394,31 @@ body::before {
         <textarea name="ideal" required placeholder="어떤 사람을 만나고 싶어?" maxlength="60"></textarea>
       </div>
 
+      <div class="friends-section" id="friendsSection" style="display:none">
+        <h3 class="friends-title">👯‍♀️ 같이 신청할 친구 정보</h3>
+        <p class="friends-sub">친구는 따로 신청 안 해도 돼요. 대표자가 한 번에 작성 ♡</p>
+
+        <div class="friend-card" data-idx="1">
+          <div class="friend-badge">친구 1</div>
+          <div class="field"><label>이름</label><input type="text" name="friend1_name" placeholder="친구 이름"></div>
+          <div class="field"><label>인스타 ID</label><input type="text" name="friend1_instagram" placeholder="@를 빼고"></div>
+          <div class="field"><label>카톡 ID</label><input type="text" name="friend1_kakao" placeholder="카톡 아이디"></div>
+        </div>
+
+        <div class="friend-card" data-idx="2" id="friend2Card" style="display:none">
+          <div class="friend-badge">친구 2</div>
+          <div class="field"><label>이름</label><input type="text" name="friend2_name" placeholder="친구 이름"></div>
+          <div class="field"><label>인스타 ID</label><input type="text" name="friend2_instagram" placeholder="@를 빼고"></div>
+          <div class="field"><label>카톡 ID</label><input type="text" name="friend2_kakao" placeholder="카톡 아이디"></div>
+        </div>
+      </div>
+
       <div class="payment-info">
         <h3>💘 비용 입금 안내 💘</h3>
         <div class="block">
           <p class="block-title">축제팅 (1:1 소개팅)</p>
-          <p class="row"><span>남학우</span><strong>15,000원</strong></p>
-          <p class="row"><span>여학우</span><strong>3,000원</strong></p>
+          <p class="row"><span>남학우</span><strong>12,000원</strong></p>
+          <p class="row"><span>여학우</span><strong>4,000원</strong></p>
         </div>
         <div class="block">
           <p class="block-title">💚 미팅 (2대2 / 3대3)</p>
@@ -1415,7 +1434,7 @@ body::before {
       </div>
       <div class="field">
         <label>입금자명 / 시간 / 금액</label>
-        <input type="text" name="payment" required placeholder="예: 홍길동 / 5월20일 14:30 / 3000">
+        <input type="text" name="payment" required placeholder="예: 홍길동 / 5월27일 14:30 / 4000">
       </div>
       <div class="field">
         <label>환불받을 은행 / 계좌번호</label>
@@ -1475,6 +1494,8 @@ const FIELD_IDS = {
   mbti: 'entry.833869921',
   intro: 'entry.922392339',
   ideal: 'entry.502467816',
+  // 미팅 친구 정보는 구글폼에 따로 칸 만들 필요 없이
+  // 제출 시 "한 줄 자기소개" 칸 끝에 자동으로 합쳐서 보냄 (아래 submit 핸들러 참고)
   payment: 'entry.278115013',
   refund: 'entry.1944630219'
 };
@@ -1527,6 +1548,32 @@ document.getElementById('applyForm').addEventListener('submit', function(e) {
   btn.disabled = true;
   btn.textContent = '보내는 중...';
 
+  // 친구 정보를 자기소개 끝에 합쳐서 제출 (구글폼에 친구 칸 따로 만들 필요 X)
+  const _eventType = (this.querySelector('input[name="event_type"]:checked') || {}).value || '';
+  const _isMeeting = _eventType && _eventType !== '소개팅';
+  const _introField = this.querySelector('textarea[name="intro"]');
+  let _originalIntro = _introField ? _introField.value : '';
+  if (_isMeeting && _introField) {
+    const buildFriend = (idx) => {
+      const n = (this.querySelector(`input[name="friend${idx}_name"]`) || {}).value || '';
+      const i = (this.querySelector(`input[name="friend${idx}_instagram"]`) || {}).value || '';
+      const k = (this.querySelector(`input[name="friend${idx}_kakao"]`) || {}).value || '';
+      if (!n && !i && !k) return '';
+      const parts = [];
+      if (n) parts.push(`이름:${n.trim()}`);
+      if (i) parts.push(`인스타:@${i.trim().replace(/^@/, '')}`);
+      if (k) parts.push(`카톡:${k.trim()}`);
+      return `[친구${idx}] ` + parts.join(' / ');
+    };
+    const friend1 = buildFriend(1);
+    const friend2 = _eventType.includes('3대3') ? buildFriend(2) : '';
+    const friendsBlock = [friend1, friend2].filter(Boolean).join('\n');
+    if (friendsBlock) {
+      _introField.removeAttribute('maxlength');
+      _introField.value = (_originalIntro ? _originalIntro.trim() + '\n\n' : '') + friendsBlock;
+    }
+  }
+
   if (GOOGLE_FORM_URL) {
     const formData = new FormData(this);
     const hiddenForm = document.createElement('form');
@@ -1546,6 +1593,12 @@ document.getElementById('applyForm').addEventListener('submit', function(e) {
     document.body.appendChild(hiddenForm);
     hiddenForm.submit();
     document.body.removeChild(hiddenForm);
+  }
+
+  // 자기소개 원복 (UI 깔끔하게)
+  if (_introField && _isMeeting) {
+    _introField.setAttribute('maxlength', '60');
+    _introField.value = _originalIntro;
   }
 
   const userName = (this.querySelector('input[name="name"]').value || '').trim() || '친구';
@@ -1654,6 +1707,51 @@ document.querySelectorAll('.char-counter').forEach(counter => {
 
 updateFormProgress();
 
+// ====== Event type → friends section toggle ======
+const FRIEND_REQUIRED_FIELDS = ['name', 'instagram', 'kakao'];
+
+function applyEventTypeUI() {
+  const checked = FORM_EL.querySelector('input[name="event_type"]:checked');
+  const val = checked ? checked.value : '';
+  const section = document.getElementById('friendsSection');
+  const friend2 = document.getElementById('friend2Card');
+
+  ['1', '2'].forEach(i => {
+    FRIEND_REQUIRED_FIELDS.forEach(k => {
+      const el = FORM_EL.querySelector(`[name="friend${i}_${k}"]`);
+      if (el) el.required = false;
+    });
+  });
+
+  if (!val || val === '소개팅') {
+    if (section) section.style.display = 'none';
+    updateFormProgress();
+    return;
+  }
+
+  if (section) section.style.display = 'block';
+  FRIEND_REQUIRED_FIELDS.forEach(k => {
+    const el = FORM_EL.querySelector(`[name="friend1_${k}"]`);
+    if (el) el.required = true;
+  });
+
+  if (val.includes('3대3')) {
+    if (friend2) friend2.style.display = 'block';
+    FRIEND_REQUIRED_FIELDS.forEach(k => {
+      const el = FORM_EL.querySelector(`[name="friend2_${k}"]`);
+      if (el) el.required = true;
+    });
+  } else {
+    if (friend2) friend2.style.display = 'none';
+  }
+  updateFormProgress();
+}
+
+FORM_EL.querySelectorAll('input[name="event_type"]').forEach(r => {
+  r.addEventListener('change', applyEventTypeUI);
+});
+applyEventTypeUI();
+
 document.getElementById('modal').addEventListener('click', function(e) {
   if (e.target === this) closeForm();
 });
@@ -1755,6 +1853,101 @@ async function updateLiveCounter() {
 }
 updateLiveCounter();
 setInterval(updateLiveCounter, 30000);
+
+// ====== Real applicants on post-it wall ======
+// 구글시트를 CSV로 게시하면 URL을 아래에 넣어주세요.
+//   시트 → 파일 → 공유 → 웹에 게시 → 콤마로 구분된 값(.csv) → 게시 → URL 복사
+// 비워두면 하드코딩된 가상 명단(박서준/지젤 등) 그대로.
+const APPLICANTS_CSV_URL = '';
+
+function _maskName(name) {
+  name = (name || '').trim();
+  if (name.length <= 1) return name;
+  if (name.length === 2) return name[0] + '*';
+  return name[0] + '*' + name.slice(-1);
+}
+
+function _shortenSchool(school) {
+  return (school || '').trim()
+    .replace(/여자대학교$/, '여대')
+    .replace(/대학교$/, '대')
+    .replace(/\s+/g, '');
+}
+
+function _parseCsvRow(row) {
+  const result = [];
+  let cur = '';
+  let q = false;
+  for (let i = 0; i < row.length; i++) {
+    const c = row[i];
+    if (c === '"') {
+      if (q && row[i + 1] === '"') { cur += '"'; i++; }
+      else { q = !q; }
+    } else if (c === ',' && !q) {
+      result.push(cur); cur = '';
+    } else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+function _shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+async function injectRealApplicants() {
+  if (!APPLICANTS_CSV_URL) return;
+  let applicants;
+  try {
+    const csv = await (await fetch(APPLICANTS_CSV_URL, { cache: 'no-store' })).text();
+    const rows = csv.split(/\r?\n/).filter(r => r.trim());
+    if (rows.length < 2) return;
+    const header = _parseCsvRow(rows[0]);
+    const find = kw => header.findIndex(h => h.includes(kw));
+    const idx = {
+      school: find('학교'),
+      mbti: find('MBTI'),
+      intro: find('자기소개')
+    };
+    applicants = rows.slice(1).map(r => {
+      const c = _parseCsvRow(r);
+      return {
+        school: c[idx.school],
+        mbti: (c[idx.mbti] || '').trim().toUpperCase(),
+        intro: c[idx.intro]
+      };
+    }).filter(r => r.school && r.intro && r.intro.trim().length > 0);
+  } catch (e) { console.warn('[postit] csv fetch failed', e); return; }
+  if (!applicants.length) return;
+
+  const slots = Array.from(document.querySelectorAll('.postit'));
+  const order = _shuffle([...slots.keys()]);
+  const apps = _shuffle(applicants);
+  const n = Math.min(apps.length, slots.length);
+
+  for (let i = 0; i < n; i++) {
+    const slot = slots[order[i]];
+    const app = apps[i];
+    const front = slot.querySelector('.postit-front');
+    const introEl = slot.querySelector('.back-intro');
+    if (front) {
+      const line2 = (app.mbti && /^[EI][SN][TF][JP]$/.test(app.mbti)) ? app.mbti : '';
+      front.innerHTML = line2
+        ? `${_shortenSchool(app.school)}<br>${line2}`
+        : `${_shortenSchool(app.school)}`;
+    }
+    if (introEl) {
+      const t = (app.intro || '').trim().replace(/\s+/g, ' ');
+      introEl.textContent = t.length > 28 ? t.slice(0, 28) + '…' : t;
+    }
+  }
+}
+injectRealApplicants();
 
 // ====== Falling hearts/petals ======
 const HEART_EMOJIS = ['💗', '💕', '🌸', '✨', '🌷'];
