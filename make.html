@@ -508,7 +508,8 @@ let hideMatched = false;
 // ============ URL ENCODING (match.html과 동일 방식) ============
 function encodeMatchData(obj) {
   const clean = {};
-  if (obj.n) clean.n = obj.n;
+  if (obj.s) clean.s = obj.s;   // 학교 (이름 자리 표시)
+  if (obj.a) clean.a = obj.a;   // 나이
   if (obj.i) clean.i = obj.i;
   if (obj.k) clean.k = obj.k;
   if (obj.m) clean.m = obj.m;
@@ -698,8 +699,10 @@ function hideResults() {
 }
 
 function buildPayload(person) {
+  // 이름은 더 이상 reveal에 표시하지 않음. 학교 + 나이로 대체.
   return {
-    n: person.name,
+    s: person.school,
+    a: person.age,
     i: person.instagram,
     k: person.kakao,
     m: person.mbti,
