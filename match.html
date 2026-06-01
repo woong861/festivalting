@@ -261,10 +261,11 @@ body::before {
 
 .reveal-card .match-name {
   font-family: 'Jua', sans-serif;
-  font-size: 38px;
+  font-size: clamp(26px, 7vw, 34px);
   color: #ff5d9e;
   margin: 8px 0 4px;
   word-break: keep-all;
+  line-height: 1.2;
 }
 
 .reveal-card .mbti-badge {
@@ -489,7 +490,16 @@ const params = new URLSearchParams(location.search);
 const p = params.get('p');
 let matchData = p ? decode(p) : null;
 
-if (!matchData || !matchData.n) {
+function _buildIdentity(d) {
+  const s = (d.s || '').trim();
+  const a = (d.a || '').toString().trim();
+  if (s && a) return s + ' · ' + a + '살';
+  if (s) return s;
+  if (a) return a + '살';
+  return d.n || ''; // 이전 버전 호환 (이름만 들어있을 때)
+}
+
+if (!matchData || (!matchData.s && !matchData.a && !matchData.n)) {
   document.getElementById('stage').style.display = 'none';
   document.getElementById('errorCard').classList.add('active');
 }
@@ -498,7 +508,7 @@ function reveal() {
   if (!matchData) return;
   document.getElementById('stage').style.display = 'none';
 
-  document.getElementById('matchName').textContent = matchData.n;
+  document.getElementById('matchName').textContent = _buildIdentity(matchData);
 
   if (matchData.m) {
     document.getElementById('matchMbti').textContent = matchData.m;
