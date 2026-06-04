@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>포스트잇팅 — 쪽지로 뽑는 인연 ♡</title>
+<title>쪽지팅 — 쪽지로 뽑는 인연 ♡</title>
 <meta name="description" content="쪽지로 뽑는 인연. 포스트잇처럼 가볍게, 인연은 진하게 ♡">
 <meta name="theme-color" content="#ff4dd2">
 
 <!-- Open Graph (카톡/페이스북/디스코드/슬랙 미리보기) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://postitt.cloud/">
-<meta property="og:title" content="포스트잇팅 ♡ 쪽지로 뽑는 인연">
+<meta property="og:title" content="쪽지팅 ♡ 쪽지로 뽑는 인연">
 <meta property="og:description" content="포스트잇처럼 가볍게, 인연은 진하게 ♡ 친구 추천 2,000원 할인 + 여성 친구와 함께 신청 시 무료!">
 <meta property="og:image" content="https://postitt.cloud/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:site_name" content="포스트잇팅">
+<meta property="og:site_name" content="쪽지팅">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="포스트잇팅 ♡ 쪽지로 뽑는 인연">
+<meta name="twitter:title" content="쪽지팅 ♡ 쪽지로 뽑는 인연">
 <meta name="twitter:description" content="포스트잇처럼 가볍게, 인연은 진하게 ♡">
 <meta name="twitter:image" content="https://postitt.cloud/og.png">
 
@@ -35,8 +35,9 @@ html, body { height: 100%; }
 
 body {
   font-family: 'Noto Sans KR', sans-serif;
-  background: radial-gradient(ellipse at top, #3d2766 0%, #1a1535 50%, #0a0820 100%);
-  color: white;
+  background:
+    radial-gradient(ellipse at top, #fff5fa 0%, #ffe5ee 45%, #ffd1e0 100%);
+  color: #4a2538;
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
@@ -47,23 +48,23 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    radial-gradient(2px 2px at 15% 20%, white, transparent),
-    radial-gradient(1px 1px at 55% 60%, white, transparent),
-    radial-gradient(1.5px 1.5px at 75% 15%, #ffb3d9, transparent),
-    radial-gradient(2px 2px at 35% 75%, white, transparent),
-    radial-gradient(1px 1px at 85% 45%, #ff5d9e, transparent),
+    radial-gradient(2px 2px at 15% 20%, #ff8fbe, transparent),
+    radial-gradient(1.5px 1.5px at 55% 60%, #ffb3d9, transparent),
+    radial-gradient(1.5px 1.5px at 75% 15%, #ff8fbe, transparent),
+    radial-gradient(2px 2px at 35% 75%, #ffb3d9, transparent),
+    radial-gradient(1.5px 1.5px at 85% 45%, #ff5d9e, transparent),
     radial-gradient(1.5px 1.5px at 25% 50%, #ffb3d9, transparent),
-    radial-gradient(1px 1px at 65% 85%, white, transparent);
+    radial-gradient(1px 1px at 65% 85%, #ff8fbe, transparent);
   background-size: 350px 350px;
-  opacity: 0.4;
+  opacity: 0.3;
   pointer-events: none;
   animation: twinkle 4s ease-in-out infinite;
   z-index: 0;
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0.25; }
-  50% { opacity: 0.55; }
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
 }
 
 .container {
@@ -78,10 +79,10 @@ body::before {
 
 .sub-top {
   font-size: 13px;
-  color: #ffd1e8;
+  color: #c43d8a;
   margin-bottom: 14px;
   letter-spacing: 0.3px;
-  opacity: 0.9;
+  font-weight: 500;
 }
 
 .title {
@@ -90,21 +91,21 @@ body::before {
   font-weight: 400;
   color: #ff4dd2;
   text-shadow:
-    -3px -3px 0 white, 3px -3px 0 white,
-    -3px 3px 0 white, 3px 3px 0 white,
-    -3px 0 0 white, 3px 0 0 white,
-    0 -3px 0 white, 0 3px 0 white,
-    0 0 25px rgba(255, 77, 210, 0.8),
-    0 0 50px rgba(255, 77, 210, 0.5);
+    -2px -2px 0 #ffc4e0, 2px -2px 0 #ffc4e0,
+    -2px 2px 0 #ffc4e0, 2px 2px 0 #ffc4e0,
+    -2px 0 0 #ffc4e0, 2px 0 0 #ffc4e0,
+    0 -2px 0 #ffc4e0, 0 2px 0 #ffc4e0,
+    0 8px 18px rgba(255, 77, 210, 0.35),
+    0 0 40px rgba(255, 77, 210, 0.2);
   letter-spacing: -3px;
   line-height: 1;
 }
 
 .subtitle {
   font-size: 14px;
-  color: white;
+  color: #6e2d8c;
   margin-top: 14px;
-  opacity: 0.95;
+  font-weight: 500;
 }
 
 .subtitle .heart { color: #ff5d9e; }
@@ -112,7 +113,7 @@ body::before {
 .prompt {
   font-family: 'Gaegu', cursive;
   font-size: 19px;
-  color: #ffd1e8;
+  color: #c43d8a;
   margin-top: 28px;
   font-weight: 700;
 }
@@ -209,10 +210,10 @@ body::before {
   left: 50%;
   width: 48px;
   height: 15px;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 200, 220, 0.6);
   transform: translateX(-50%) rotate(-2deg);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(200, 100, 150, 0.15);
 }
 
 .back-intro {
@@ -247,7 +248,7 @@ body::before {
 .postit:hover:not(.flipped) {
   transform: rotate(0) scale(1.06) !important;
   z-index: 5;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 12px 24px rgba(200, 100, 150, 0.35);
 }
 
 .postit.picking {
@@ -276,9 +277,9 @@ body::before {
   text-align: center;
   font-family: 'Gaegu', cursive;
   font-size: 14px;
-  color: #ffd1e8;
+  color: #a25080;
   margin-top: 32px;
-  opacity: 0.7;
+  opacity: 0.85;
 }
 
 /* Modal */
@@ -677,30 +678,31 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 77, 210, 0.18);
-  border: 1.5px solid rgba(255, 77, 210, 0.5);
+  background: white;
+  border: 1.5px solid #ff8fbe;
   padding: 7px 18px;
   border-radius: 100px;
   font-family: 'Gaegu', cursive;
   margin: 16px auto 0;
   font-size: 14px;
-  color: white;
-  backdrop-filter: blur(6px);
+  color: #6e2d8c;
+  box-shadow: 0 4px 12px rgba(255, 93, 158, 0.2);
   animation: ddayPulse 2.2s ease-in-out infinite;
 }
 .dday-banner .dd-icon { font-size: 16px; }
 .dday-banner .dd-count {
   font-family: 'Jua', sans-serif;
   font-size: 18px;
-  color: #ffb3d9;
+  color: #ff4dd2;
   letter-spacing: 0.5px;
 }
 .dday-banner.closed {
-  background: rgba(120, 120, 120, 0.18);
-  border-color: rgba(180, 180, 180, 0.4);
+  background: #f3f0f5;
+  border-color: #c5b5cc;
   animation: none;
+  color: #888;
 }
-.dday-banner.closed .dd-count { color: #ccc; }
+.dday-banner.closed .dd-count { color: #999; }
 
 .dday-banner.urgent {
   background: rgba(255, 80, 80, 0.22);
@@ -785,16 +787,16 @@ body::before {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 12px 16px;
-  background: linear-gradient(135deg, rgba(255, 93, 158, 0.15), rgba(129, 52, 175, 0.15));
-  border: 1.5px dashed rgba(255, 179, 217, 0.6);
+  padding: 14px 18px;
+  background: white;
+  border: 2px dashed #ff8fbe;
   border-radius: 14px;
-  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 16px rgba(255, 143, 190, 0.2);
 }
 .benefit-row {
   font-family: 'Gaegu', cursive;
   font-size: 15px;
-  color: white;
+  color: #6e2d8c;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -803,11 +805,11 @@ body::before {
 .benefit-row .b-ico { font-size: 18px; flex-shrink: 0; }
 .benefit-row strong {
   font-family: 'Jua', sans-serif;
-  color: #ffb3d9;
+  color: #ff4dd2;
   letter-spacing: 0.3px;
 }
 .benefit-row.featured strong {
-  color: #ffe9b1;
+  color: #ff4dd2;
   font-size: 17px;
 }
 .benefit-row.featured {
@@ -826,19 +828,20 @@ body::before {
   flex-wrap: wrap;
   gap: 4px 6px;
   margin-top: 10px;
-  padding: 6px 16px;
-  background: rgba(0, 0, 0, 0.25);
+  padding: 8px 18px;
+  background: white;
   border-radius: 18px;
   font-family: 'Gaegu', cursive;
   font-size: 13px;
-  color: #ffd1e8;
+  color: #6e2d8c;
   max-width: 360px;
   line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(255, 143, 190, 0.15);
 }
 .live-dot {
   width: 8px;
   height: 8px;
-  background: #6dcc7a;
+  background: #4caf50;
   border-radius: 50%;
   box-shadow: 0 0 8px #6dcc7a;
   animation: livePulse 1.6s ease-in-out infinite;
@@ -850,18 +853,17 @@ body::before {
 .live-count {
   font-family: 'Jua', sans-serif;
   font-size: 16px;
-  color: #ffe9b1;
+  color: #ff4dd2;
   margin: 0 2px;
 }
 .live-split {
   font-family: 'Gaegu', cursive;
   font-size: 12px;
-  color: #ffb3d9;
-  opacity: 0.85;
+  color: #a25080;
   flex-basis: 100%;
   text-align: center;
 }
-.live-split.recruit { color: #ff7878; font-weight: 700; opacity: 1; }
+.live-split.recruit { color: #e63946; font-weight: 700; }
 
 /* ========== Falling hearts background ========== */
 .hearts-rain {
@@ -905,28 +907,29 @@ body::before {
 .faq-title {
   font-family: 'Jua', sans-serif;
   font-size: 22px;
-  color: white;
+  color: #c43d8a;
   text-align: center;
   margin-bottom: 18px;
   letter-spacing: -0.5px;
 }
 .faq-item {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: white;
+  border: 1px solid #ffd1e0;
   border-radius: 12px;
   margin-bottom: 10px;
   overflow: hidden;
   transition: background 0.2s;
+  box-shadow: 0 2px 6px rgba(255, 143, 190, 0.08);
 }
 .faq-item[open] {
-  background: rgba(255, 77, 210, 0.08);
-  border-color: rgba(255, 77, 210, 0.3);
+  background: #fff5fa;
+  border-color: #ff8fbe;
 }
 .faq-item summary {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 15px;
   font-weight: 500;
-  color: white;
+  color: #4a2538;
   padding: 14px 18px;
   cursor: pointer;
   list-style: none;
@@ -952,7 +955,7 @@ body::before {
   font-family: 'Gaegu', cursive;
   font-size: 15px;
   line-height: 1.6;
-  color: #e8d3ff;
+  color: #6e2d8c;
 }
 
 /* ========== Operator footer ========== */
@@ -961,11 +964,10 @@ body::before {
   margin-top: 20px;
   font-family: 'Gaegu', cursive;
   font-size: 13px;
-  color: #ffd1e8;
-  opacity: 0.75;
+  color: #a25080;
 }
 .operator-credit a {
-  color: #ffb3d9;
+  color: #ff4dd2;
   text-decoration: none;
   font-weight: 700;
 }
@@ -1137,7 +1139,7 @@ body::before {
     <div class="ico">🌸</div>
     <h2>신청이 마감됐어요</h2>
     <p>
-      포스트잇팅과 함께해줘서 고마워요 ♡<br><br>
+      쪽지팅과 함께해줘서 고마워요 ♡<br><br>
       다음 이벤트 알림 받고 싶으면<br>
       운영진 인스타 팔로우해주세요!
     </p>
@@ -1150,7 +1152,7 @@ body::before {
 <div class="container">
   <div class="hero">
     <div class="sub-top">쪽지 한 장에 시작되는 인연</div>
-    <h1 class="title">포스트잇팅</h1>
+    <h1 class="title">쪽지팅</h1>
     <div class="subtitle">포스트잇 한 장 붙이고 가세요 <span class="heart">♡</span></div>
     <div class="dday-banner" id="ddayBanner">
       <span class="dd-icon">⏰</span>
@@ -1416,7 +1418,7 @@ body::before {
       <div class="payment-info">
         <h3>💘 비용 입금 안내 💘</h3>
         <div class="block">
-          <p class="block-title">포스트잇팅 (1:1 소개팅)</p>
+          <p class="block-title">쪽지팅 (1:1 소개팅)</p>
           <p class="row"><span>남학우</span><strong>15,000원</strong></p>
           <p class="row"><span>여학우</span><strong>3,000원</strong></p>
         </div>
@@ -1449,7 +1451,7 @@ body::before {
 <div class="modal-backdrop" id="successModal">
   <div>
     <div class="form-postit share-card" id="shareCard">
-      <div class="card-brand">포스트잇팅 ♡</div>
+      <div class="card-brand">쪽지팅 ♡</div>
       <div class="heart-pop">💖</div>
       <div class="done-label">신청 완료!</div>
       <div class="user-name" id="shareUserName">친구</div>
@@ -2015,7 +2017,7 @@ async function saveShareCard() {
       useCORS: true
     });
     const link = document.createElement('a');
-    link.download = '포스트잇팅_신청완료_' + Date.now() + '.png';
+    link.download = '쪽지팅_신청완료_' + Date.now() + '.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
     btn.textContent = '저장됨 ✓';
