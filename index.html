@@ -1066,6 +1066,51 @@ body::before {
 }
 .follow-cta:active { transform: translateY(2px); }
 
+.next-steps {
+  background: linear-gradient(135deg, #fff5fa, #ffe5ee);
+  border: 2px solid #ff8fbe;
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-top: 14px;
+  box-shadow: 0 4px 14px rgba(255, 143, 190, 0.2);
+}
+.next-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 16px;
+  color: #c43d8a;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.next-list {
+  margin: 0 0 12px;
+  padding: 0 0 0 22px;
+  font-family: 'Gaegu', cursive;
+  font-size: 15px;
+  color: #5a3d6b;
+  line-height: 1.55;
+}
+.next-list li { margin-bottom: 6px; }
+.next-list li b { color: #c43d8a; font-weight: 700; }
+.next-list ul {
+  margin-top: 4px;
+  padding-left: 0;
+  list-style: none;
+}
+.next-list ul li {
+  font-size: 14px;
+  color: #6e4858;
+  margin-bottom: 2px;
+}
+.next-list ul li::before { content: '✓ '; color: #ff5d9e; font-weight: 700; }
+.next-steps .follow-cta { margin-top: 6px; }
+.next-warn {
+  font-family: 'Gaegu', cursive;
+  font-size: 12px;
+  color: #c43d8a;
+  text-align: center;
+  margin-top: 10px;
+}
+
 .free-offer {
   margin-top: 14px;
   background: linear-gradient(135deg, #fff5cc 0%, #ffd1e8 100%);
@@ -1419,8 +1464,8 @@ body::before {
         <h3>💘 비용 입금 안내 💘</h3>
         <div class="block">
           <p class="block-title">쪽지팅 (1:1 소개팅)</p>
-          <p class="row"><span>남학우</span><strong>15,000원</strong></p>
-          <p class="row"><span>여학우</span><strong>3,000원</strong></p>
+          <p class="row"><span>남학우</span><strong>16,000원</strong></p>
+          <p class="row"><span>여학우</span><strong>4,000원</strong></p>
         </div>
         <div class="block">
           <p class="block-title">💚 미팅 (2대2 / 3대3)</p>
@@ -1463,13 +1508,26 @@ body::before {
       <div class="url-stamp">postitt.cloud</div>
       <div class="follow-stamp">📷 @post_it_ting</div>
     </div>
+    <div class="next-steps">
+      <div class="next-title">📌 신청 마무리하기 (필수)</div>
+      <ol class="next-list">
+        <li>아래 버튼으로 <b>@post_it_ting</b> 팔로우</li>
+        <li>인스타 DM으로 사진 2장 보내기
+          <ul>
+            <li>본인 사진 1장</li>
+            <li>입금내역 캡처 1장</li>
+          </ul>
+        </li>
+      </ol>
+      <a href="https://instagram.com/post_it_ting" target="_blank" rel="noopener" class="follow-cta">
+        📷 @post_it_ting 바로가기
+      </a>
+      <p class="next-warn">⚠️ 두 사진 확인 후 매칭 진행됩니다</p>
+    </div>
     <div class="share-actions">
       <button class="save-btn" onclick="saveShareCard()">📸 이미지 저장</button>
       <button class="close-share-btn" onclick="closeSuccess()">닫기</button>
     </div>
-    <a href="https://instagram.com/post_it_ting" target="_blank" rel="noopener" class="follow-cta">
-      📷 @post_it_ting 팔로우하고 매칭 알림 받기
-    </a>
   </div>
 </div>
 
