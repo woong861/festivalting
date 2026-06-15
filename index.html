@@ -1103,6 +1103,24 @@ body::before {
 }
 .next-list ul li::before { content: '✓ '; color: #ff5d9e; font-weight: 700; }
 .next-steps .follow-cta { margin-top: 6px; }
+
+.kakao-cta {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px;
+  background: #fee500;
+  color: #3c1e1e;
+  text-decoration: none;
+  border-radius: 24px;
+  font-family: 'Jua', sans-serif;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(254, 229, 0, 0.45);
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+.kakao-cta:hover { box-shadow: 0 6px 16px rgba(254, 229, 0, 0.55); }
+.kakao-cta:active { transform: translateY(2px); }
 .next-warn {
   font-family: 'Gaegu', cursive;
   font-size: 12px;
@@ -1511,18 +1529,18 @@ body::before {
     <div class="next-steps">
       <div class="next-title">📌 신청 마무리하기 (필수)</div>
       <ol class="next-list">
-        <li>아래 버튼으로 <b>@post_it_ting</b> 팔로우</li>
-        <li>인스타 DM으로 사진 2장 보내기
+        <li>아래 <b>오픈카톡방</b> 입장</li>
+        <li>방에 사진 보내기
           <ul>
-            <li>본인 사진 1장</li>
-            <li>입금내역 캡처 1장</li>
+            <li>입금내역 사진</li>
+            <li>본인 사진 1~2장 (매칭용)</li>
           </ul>
         </li>
       </ol>
-      <a href="https://instagram.com/post_it_ting" target="_blank" rel="noopener" class="follow-cta">
-        📷 @post_it_ting 바로가기
+      <a href="https://open.kakao.com/o/suAm4Lzi" target="_blank" rel="noopener" class="kakao-cta">
+        💬 오픈카톡방 입장하기
       </a>
-      <p class="next-warn">⚠️ 두 사진 확인 후 매칭 진행됩니다</p>
+      <p class="next-warn">⚠️ 사진 확인 후 매칭 진행됩니다</p>
     </div>
     <div class="share-actions">
       <button class="save-btn" onclick="saveShareCard()">📸 이미지 저장</button>
