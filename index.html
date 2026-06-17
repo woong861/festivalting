@@ -85,62 +85,31 @@ body::before {
   font-weight: 500;
 }
 
-.title-wrap {
-  position: relative;
-  display: inline-block;
-  margin: 0 auto;
-  padding: 12px 20px;
-}
 .title {
   font-family: 'Jua', sans-serif;
-  font-size: clamp(80px, 24vw, 110px);
+  font-size: clamp(72px, 22vw, 96px);
   font-weight: 400;
-  background: linear-gradient(180deg, #ffe0ec 0%, #ffa5cb 25%, #ff5d9e 55%, #d63d80 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ff4dd2;
+  text-shadow:
+    -2px -2px 0 #ffc4e0, 2px -2px 0 #ffc4e0,
+    -2px 2px 0 #ffc4e0, 2px 2px 0 #ffc4e0,
+    -2px 0 0 #ffc4e0, 2px 0 0 #ffc4e0,
+    0 -2px 0 #ffc4e0, 0 2px 0 #ffc4e0,
+    0 8px 18px rgba(255, 77, 210, 0.35),
+    0 0 40px rgba(255, 77, 210, 0.2);
   letter-spacing: -3px;
   line-height: 1;
-  margin: 0;
-  position: relative;
-  filter:
-    drop-shadow(0 -1px 0 #ffe8f1)
-    drop-shadow(0 1px 0 #ffffff)
-    drop-shadow(0 3px 0 rgba(180,40,100,0.55))
-    drop-shadow(0 5px 0 rgba(180,40,100,0.35))
-    drop-shadow(0 7px 0 rgba(180,40,100,0.18))
-    drop-shadow(0 12px 18px rgba(255,93,158,0.5));
 }
-/* title 데코 — 하트 + 분필 별 */
-.title-deco {
-  position: absolute;
-  pointer-events: none;
-  user-select: none;
-  line-height: 1;
-  z-index: 2;
+
+/* hero 메인 일러스트 이미지 (칠판 + 안내 포스트잇) */
+.hero-illust {
+  display: block;
+  width: 100%;
+  max-width: 440px;
+  margin: 26px auto 10px;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(200, 100, 150, 0.22);
 }
-.title-deco.heart-l {
-  left: -8px;
-  top: 18%;
-  color: #ff3a6e;
-  font-size: clamp(22px, 5vw, 30px);
-  transform: rotate(-18deg);
-  filter: drop-shadow(0 2px 4px rgba(255,60,110,0.45));
-}
-.title-deco.heart-r {
-  right: -8px;
-  top: 18%;
-  color: #ff3a6e;
-  font-size: clamp(22px, 5vw, 30px);
-  transform: rotate(18deg);
-  filter: drop-shadow(0 2px 4px rgba(255,60,110,0.45));
-}
-.title-deco.spark-1 { left: -22px; top: -4px; font-size: 22px; color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.7); transform: rotate(-10deg); }
-.title-deco.spark-2 { right: -20px; top: 0; font-size: 26px; color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.7); }
-.title-deco.spark-3 { left: 6%; bottom: 6px; font-size: 18px; color: #ffffff; text-shadow: 0 0 6px rgba(255,255,255,0.6); transform: rotate(12deg); }
-.title-deco.spark-4 { right: 8%; bottom: 8px; font-size: 20px; color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.7); }
-.title-deco.spark-5 { left: -28px; bottom: 22%; font-size: 16px; color: #ffd3e3; text-shadow: 0 0 6px rgba(255,200,220,0.6); }
-.title-deco.spark-6 { right: -26px; bottom: 25%; font-size: 16px; color: #ffd3e3; text-shadow: 0 0 6px rgba(255,200,220,0.6); transform: rotate(-15deg); }
 
 .subtitle {
   font-size: 14px;
@@ -1538,17 +1507,7 @@ body::before {
 <div class="container">
   <div class="hero">
     <div class="sub-top">쪽지 한 장에 시작되는 인연</div>
-    <div class="title-wrap">
-      <span class="title-deco spark-1">✦</span>
-      <span class="title-deco spark-2">✧</span>
-      <span class="title-deco spark-5">✦</span>
-      <span class="title-deco spark-6">✧</span>
-      <span class="title-deco heart-l">♥</span>
-      <span class="title-deco heart-r">♥</span>
-      <h1 class="title">쪽지팅</h1>
-      <span class="title-deco spark-3">✦</span>
-      <span class="title-deco spark-4">✧</span>
-    </div>
+    <h1 class="title">쪽지팅</h1>
     <div class="subtitle">포스트잇 한 장 붙이고 가세요 <span class="heart">♡</span></div>
     <div class="dday-banner" id="ddayBanner">
       <span class="dd-icon">⏰</span>
@@ -1575,40 +1534,9 @@ body::before {
     <div class="prompt">📌 마음에 드는 쪽지를 골라봐!</div>
   </div>
 
-  <div class="chalkboard-wrap">
-    <span class="outside-deco od-h1">♥</span>
-    <span class="outside-deco od-h2">♥</span>
-    <span class="outside-deco od-s1">✦</span>
-    <span class="outside-deco od-s2">✧</span>
-    <span class="outside-deco od-h3">♡</span>
-    <span class="outside-deco od-h4">♡</span>
-    <span class="outside-deco od-s3">✦</span>
+  <img class="hero-illust" src="promo/hero_chalkboard.png" alt="대학연합 쪽지팅 — 포스트잇 한 장, 설레는 인연의 시작">
 
-    <div class="chalkboard">
-      <div class="chalk-ribbon">포스트잇 한 장, 설레는 인연의 시작 ♡</div>
-
-      <span class="chalk-deco s1">✦</span>
-      <span class="chalk-deco s2">♡</span>
-      <span class="chalk-deco s3">✧</span>
-      <span class="chalk-deco s4">♡</span>
-      <span class="chalk-deco s5">✦</span>
-      <span class="chalk-deco s6">♡</span>
-
-      <div class="intro-postits">
-        <div class="intro-postit">포스트잇<br>한 장 뽑고<span class="intro-heart">♡</span></div>
-        <div class="intro-postit">인스타<br>교환하고<span class="intro-heart">♡</span></div>
-        <div class="intro-postit">설레는<br>쪽지팅<br>시작해요!<span class="intro-heart">♡</span></div>
-        <div class="intro-postit">새로운 인연을<br>만나보세요!<span class="intro-heart">♡</span></div>
-        <div class="intro-postit">당신의<br>인연은<br>누구일까요?</div>
-        <div class="intro-postit"><span class="intro-heart-big">♡</span></div>
-      </div>
-
-      <div class="chalk-insta">
-        <span class="insta-ico"></span>
-        <span>인스타 교환하고<br>더 가까워져요! ✨</span>
-      </div>
-
-      <div class="chalk-sub-prompt">👇 학교별로 골라봐!</div>
+  <div class="prompt">👇 학교별로 골라봐!</div>
 
   <div class="postit-wall" id="postitWall">
     <div class="postit-slot"><div class="postit" onclick="flipPostit(this)"><div class="postit-inner">
@@ -1707,14 +1635,6 @@ body::before {
       <div class="postit-front">서울예대<br>예지</div>
       <div class="postit-back"><p class="back-intro">춤추고 노래 듣는 게 행복</p><button class="back-apply-btn" onclick="event.stopPropagation();applyFromPostit(this)">신청하기 ♡</button></div>
     </div></div></div>
-  </div>
-
-      <div class="chalk-tray">
-        <span class="chalk-item chalk"></span>
-        <span class="chalk-item eraser"></span>
-        <span class="chalk-item heart-toy">♥</span>
-      </div>
-    </div>
   </div>
 
   <p class="footer-note">아무 쪽지나 골라도 같은 신청서로 연결돼요 ♡</p>
