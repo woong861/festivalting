@@ -11,7 +11,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://postitt.cloud/">
 <meta property="og:title" content="쪽지팅 ♡ 쪽지로 뽑는 인연">
-<meta property="og:description" content="포스트잇처럼 가볍게, 인연은 진하게 ♡ 친구 추천 2,000원 할인 + 여성 소개팅 동반신청 시 무료!">
+<meta property="og:description" content="포스트잇처럼 가볍게, 인연은 진하게 ♡ 추천인 코드 입력 시 3,000원 할인!">
 <meta property="og:image" content="https://postitt.cloud/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -1112,6 +1112,109 @@ body::before {
   50%      { transform: scale(1.03); }
 }
 
+/* ========== Hero 추천 코드 생성 배너 ========== */
+.hero-referral {
+  margin: 14px 0 0;
+  background: linear-gradient(135deg, #fff0d6 0%, #ffd9eb 100%);
+  border: 2px solid #ffb84d;
+  border-radius: 16px;
+  padding: 14px 16px;
+  box-shadow: 0 5px 16px rgba(255, 158, 90, 0.28);
+  position: relative;
+  overflow: hidden;
+}
+.hero-referral::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(255,255,255,0.4), transparent);
+  pointer-events: none;
+}
+.hr-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.hr-icon {
+  font-size: 26px;
+  flex-shrink: 0;
+  animation: featuredPulse 2.4s ease-in-out infinite;
+}
+.hr-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 15px;
+  color: #c43d8a;
+  line-height: 1.1;
+}
+.hr-desc {
+  font-family: 'Gaegu', cursive;
+  font-size: 12.5px;
+  color: #6e4858;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.hr-desc strong { color: #ff4dd2; font-family: 'Jua', sans-serif; }
+.hr-code-area {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.hr-code-display {
+  flex: 1;
+  background: white;
+  border: 2px dashed #ff8fbe;
+  border-radius: 10px;
+  padding: 11px 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 19px;
+  font-weight: 700;
+  color: #c43d8a;
+  letter-spacing: 2.5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: all;
+  min-height: 24px;
+}
+.hr-code-display.empty {
+  color: #c8b5c0;
+  letter-spacing: 0.3px;
+  font-size: 12px;
+  font-family: 'Gaegu', cursive;
+  font-weight: 400;
+}
+.hr-btn {
+  background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-family: 'Jua', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(255, 93, 158, 0.4);
+  transition: transform 0.1s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.hr-btn:active { transform: translateY(1px); }
+.hr-msg {
+  font-family: 'Gaegu', cursive;
+  font-size: 12px;
+  color: #2e9a4a;
+  text-align: center;
+  margin: 6px 0 0;
+  min-height: 14px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.hr-msg.show { opacity: 1; }
+
 /* ========== Live counter ========== */
 .live-counter {
   display: inline-flex;
@@ -1421,6 +1524,76 @@ body::before {
   margin-top: 10px;
 }
 
+/* 추천 코드 박스 (성공 모달) */
+.referral-box {
+  margin-top: 14px;
+  background: linear-gradient(135deg, #fff5e0 0%, #ffe8f3 100%);
+  border: 2px solid #ffb84d;
+  border-radius: 14px;
+  padding: 16px 18px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(255, 184, 77, 0.25);
+}
+.referral-box-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 15px;
+  color: #c43d8a;
+  margin-bottom: 6px;
+}
+.referral-box-desc {
+  font-family: 'Gaegu', cursive;
+  font-size: 13px;
+  color: #6e4858;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.referral-box-desc strong { color: #ff4dd2; }
+.referral-code-display {
+  display: block;
+  background: white;
+  border: 2px dashed #ff8fbe;
+  border-radius: 10px;
+  padding: 14px 12px;
+  margin: 10px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: #c43d8a;
+  letter-spacing: 3px;
+  user-select: all;
+}
+.referral-code-display.empty {
+  color: #c8b5c0;
+  letter-spacing: 0.3px;
+  font-size: 13px;
+  font-family: 'Gaegu', cursive;
+  font-weight: 400;
+}
+.referral-btn {
+  background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 24px;
+  font-family: 'Jua', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255, 93, 158, 0.35);
+  transition: transform 0.1s;
+  margin-top: 4px;
+}
+.referral-btn:active { transform: translateY(2px); }
+.referral-copy-msg {
+  font-family: 'Gaegu', cursive;
+  font-size: 12px;
+  color: #2e9a4a;
+  margin-top: 8px;
+  height: 14px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.referral-copy-msg.show { opacity: 1; }
+
 .free-offer {
   margin-top: 14px;
   background: linear-gradient(135deg, #fff5cc 0%, #ffd1e8 100%);
@@ -1521,10 +1694,24 @@ body::before {
       <span>명 신청 중</span>
       <span class="live-split" id="liveSplit"></span>
     </div>
+    <div class="hero-referral">
+      <div class="hr-head">
+        <span class="hr-icon">🎁</span>
+        <div>
+          <div class="hr-title">내 추천 코드 만들기</div>
+          <div class="hr-desc">친구가 입력하면 <strong>3,000원 할인</strong>받아요!</div>
+        </div>
+      </div>
+      <div class="hr-code-area">
+        <div class="hr-code-display empty" id="heroReferralDisplay">↓ 버튼을 눌러줘 ↓</div>
+        <button class="hr-btn" id="heroReferralBtn" onclick="generateHeroRefCode()">✨ 코드 받기</button>
+      </div>
+      <p class="hr-msg" id="heroReferralMsg"></p>
+    </div>
     <div class="benefit-banner">
       <div class="benefit-row">
         <span class="b-ico">🎁</span>
-        <span>친구 추천 시 <strong>2,000원 할인</strong></span>
+        <span>추천인 코드 입력 시 <strong>3,000원 할인</strong></span>
       </div>
       <div class="benefit-row featured">
         <span class="b-ico">💕</span>
@@ -1723,9 +1910,9 @@ body::before {
         <p class="hint">* 비공개 계정이면 운영진 팔로우 요청 수락해줘 ♡</p>
       </div>
       <div class="field referrer-field">
-        <label>🎁 추천인 이름 / 인스타 ID (선택)</label>
-        <input type="text" name="referrer" placeholder="추천인 이름 또는 인스타 ID">
-        <p class="hint hint-bonus">친구 추천받았다면 적어줘! 둘 다 <strong>2,000원 할인</strong> ♡</p>
+        <label>🎁 추천인 코드 (선택)</label>
+        <input type="text" name="referrer" placeholder="예: PT-A3K9" style="text-transform:uppercase;">
+        <p class="hint hint-bonus">추천인 코드 입력 시 <strong>3,000원 할인</strong> ♡</p>
       </div>
       <div class="field">
         <label>전화번호</label>
@@ -1778,8 +1965,8 @@ body::before {
         <h3>💘 비용 입금 안내 💘</h3>
         <div class="block">
           <p class="block-title">쪽지팅 (1:1 소개팅)</p>
-          <p class="row"><span>남학우</span><strong>15,000원</strong></p>
-          <p class="row"><span>여학우</span><strong>3,000원</strong></p>
+          <p class="row"><span>남학우</span><strong>18,000원</strong></p>
+          <p class="row"><span>여학우</span><strong>5,000원</strong></p>
         </div>
         <div class="block">
           <p class="block-title">💚 미팅 (2대2 / 3대3)</p>
@@ -1837,6 +2024,16 @@ body::before {
         💬 오픈카톡방 입장하기
       </a>
       <p class="next-warn">⚠️ 사진 확인 후 매칭 진행됩니다</p>
+    </div>
+    <div class="referral-box">
+      <div class="referral-box-title">🎁 친구에게 추천 코드 공유하기</div>
+      <div class="referral-box-desc">
+        에타에 코드 올려서 친구가 입력하면<br>
+        친구가 <strong>3,000원 할인</strong> ♡
+      </div>
+      <div class="referral-code-display empty" id="referralCodeDisplay">↓ 코드 받기 버튼을 눌러줘 ↓</div>
+      <button class="referral-btn" id="referralBtn" onclick="generateReferralCode()">✨ 추천 코드 받기</button>
+      <p class="referral-copy-msg" id="referralCopyMsg">코드 복사됨! ✓</p>
     </div>
     <div class="share-actions">
       <button class="save-btn" onclick="saveShareCard()">📸 이미지 저장</button>
@@ -1913,6 +2110,90 @@ function closeForm() {
 function closeSuccess() {
   document.getElementById('successModal').classList.remove('active');
   document.body.style.overflow = '';
+  resetReferralCode();
+}
+
+// ====== 추천인 코드 생성기 ======
+function generateReferralCode() {
+  // 헷갈리는 문자 제외 (I/L/O/0/1)
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 4; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  const full = 'PT-' + code;
+  const display = document.getElementById('referralCodeDisplay');
+  display.textContent = full;
+  display.classList.remove('empty');
+  const btn = document.getElementById('referralBtn');
+  btn.textContent = '📋 코드 복사하기';
+  btn.onclick = function() { copyReferralCode(full); };
+}
+
+function copyReferralCode(code) {
+  const showMsg = () => {
+    const msg = document.getElementById('referralCopyMsg');
+    msg.textContent = '코드 복사됨! 친구에게 공유해줘 ♡';
+    msg.classList.add('show');
+    setTimeout(() => msg.classList.remove('show'), 2200);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(showMsg).catch(() => fallbackCopy(code, showMsg));
+  } else {
+    fallbackCopy(code, showMsg);
+  }
+}
+
+function fallbackCopy(code, onDone) {
+  const ta = document.createElement('textarea');
+  ta.value = code;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+  onDone();
+}
+
+function resetReferralCode() {
+  const display = document.getElementById('referralCodeDisplay');
+  if (!display) return;
+  display.textContent = '↓ 코드 받기 버튼을 눌러줘 ↓';
+  display.classList.add('empty');
+  const btn = document.getElementById('referralBtn');
+  btn.textContent = '✨ 추천 코드 받기';
+  btn.onclick = generateReferralCode;
+  const msg = document.getElementById('referralCopyMsg');
+  if (msg) msg.classList.remove('show');
+}
+
+// Hero 영역 추천 코드 생성기 (모달과 별개)
+function generateHeroRefCode() {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  let c = '';
+  for (let i = 0; i < 4; i++) c += chars.charAt(Math.floor(Math.random() * chars.length));
+  const code = 'PT-' + c;
+  const display = document.getElementById('heroReferralDisplay');
+  display.textContent = code;
+  display.classList.remove('empty');
+  const btn = document.getElementById('heroReferralBtn');
+  btn.textContent = '📋 복사';
+  btn.onclick = function() { copyHeroRefCode(code); };
+}
+
+function copyHeroRefCode(code) {
+  const onDone = () => {
+    const msg = document.getElementById('heroReferralMsg');
+    msg.textContent = '복사됨! 친구에게 공유해줘 ♡';
+    msg.classList.add('show');
+    setTimeout(() => msg.classList.remove('show'), 2200);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(onDone).catch(() => fallbackCopy(code, onDone));
+  } else {
+    fallbackCopy(code, onDone);
+  }
 }
 
 document.getElementById('applyForm').addEventListener('submit', function(e) {
