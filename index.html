@@ -2467,9 +2467,9 @@ setInterval(updateDday, 60000);
 // 실제 구글시트 응답 수를 표시하려면 시트 "파일 → 공유 → 웹에 게시 → CSV" 후
 // 그 URL을 아래에 붙여넣으세요. 비워두면 자동 성장 시뮬 모드.
 const COUNTER_SHEET_CSV_URL = '';
-const COUNTER_LAUNCH = new Date('2026-05-20T18:00:00+09:00');
-const COUNTER_BASE = 32;        // 시작 숫자
-const COUNTER_PER_HOUR = 2.1;   // 시간당 증가 페이스
+const COUNTER_LAUNCH = new Date('2026-06-22T00:00:00+09:00');
+const COUNTER_BASE = 420;       // 시작 숫자 (실제 신청자 수 기준 리셋)
+const COUNTER_PER_HOUR = 0.5;   // 시간당 증가 페이스 (자연스러운 속도)
 
 async function updateLiveCounter() {
   const el = document.getElementById('liveCount');
