@@ -797,6 +797,108 @@ body::before {
 }
 .referrer-field label { color: #c43d8a !important; }
 
+/* ========== 카드 추가 옵션 (매칭 카드) ========== */
+.card-options-field {
+  background: rgba(255, 240, 214, 0.5);
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px dashed #ffb84d;
+  margin-bottom: 16px;
+}
+.card-options-field > label {
+  color: #c43d8a !important;
+  font-family: 'Jua', sans-serif !important;
+}
+.card-options-field .hint {
+  font-family: 'Gaegu', cursive;
+  color: #6e4858;
+  font-size: 12px;
+  margin: 4px 0 10px;
+}
+.card-options {
+  display: grid;
+  gap: 8px;
+}
+.card-option {
+  cursor: pointer;
+  display: block;
+  position: relative;
+}
+.card-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.card-option-inner {
+  background: white;
+  border: 2px solid #ffd1e8;
+  border-radius: 12px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+  position: relative;
+}
+.card-option input:checked + .card-option-inner {
+  border-color: #ff5d9e;
+  background: linear-gradient(135deg, #fff5fa, #ffe5ee);
+  box-shadow: 0 4px 12px rgba(255, 93, 158, 0.22);
+  transform: translateY(-1px);
+}
+.card-option-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 14px;
+  color: #c43d8a;
+  line-height: 1.1;
+}
+.card-option-desc {
+  font-family: 'Gaegu', cursive;
+  font-size: 12px;
+  color: #6e4858;
+  margin-top: 2px;
+}
+.card-option-body { flex: 1; }
+.card-option-price {
+  font-family: 'Jua', sans-serif;
+  font-size: 13.5px;
+  color: #ff4dd2;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.card-option-badge {
+  position: absolute;
+  top: -8px;
+  right: 10px;
+  background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
+  color: white;
+  font-family: 'Gaegu', cursive;
+  font-weight: 700;
+  font-size: 10.5px;
+  padding: 2px 9px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(255, 93, 158, 0.35);
+}
+.card-option.featured .card-option-inner {
+  border-color: #ffb84d;
+  background: linear-gradient(135deg, #fff9e0, #ffe5ee);
+}
+.card-option.featured input:checked + .card-option-inner {
+  border-color: #ff9a1f;
+  box-shadow: 0 4px 14px rgba(255, 154, 31, 0.28);
+}
+.card-option.premium .card-option-inner {
+  border-color: #b04bd6;
+  background: linear-gradient(135deg, #f5e8ff, #ffe5ee);
+}
+.card-option.premium input:checked + .card-option-inner {
+  border-color: #8e2acf;
+  box-shadow: 0 4px 14px rgba(142, 42, 207, 0.28);
+}
+.card-option.premium .card-option-badge {
+  background: linear-gradient(135deg, #b04bd6, #6e2acf);
+}
+
 .hint-info {
   color: #555;
   background: rgba(255, 255, 255, 0.45);
@@ -1942,6 +2044,65 @@ body::before {
         <textarea name="ideal" required placeholder="어떤 사람을 만나고 싶어?" maxlength="60"></textarea>
       </div>
 
+      <div class="field card-options-field">
+        <label>🎴 매칭 카드 추가 (선택)</label>
+        <p class="hint">여러 장 뽑고 그 중 <b>마음에 드는 한 장 골라잡기</b> ♡</p>
+        <div class="card-options">
+          <label class="card-option">
+            <input type="radio" name="card_option" value="기본 (1장)" checked>
+            <div class="card-option-inner">
+              <div class="card-option-body">
+                <div class="card-option-title">기본 매칭</div>
+                <div class="card-option-desc">운영진이 큐레이션한 1장</div>
+              </div>
+              <div class="card-option-price">+0원</div>
+            </div>
+          </label>
+          <label class="card-option">
+            <input type="radio" name="card_option" value="1장 추가 (2장 중 선택)">
+            <div class="card-option-inner">
+              <div class="card-option-body">
+                <div class="card-option-title">카드 1장 추가</div>
+                <div class="card-option-desc">2장 중 1명 선택</div>
+              </div>
+              <div class="card-option-price">+5,000원</div>
+            </div>
+          </label>
+          <label class="card-option featured">
+            <input type="radio" name="card_option" value="2장 추가 (3장 중 선택)">
+            <div class="card-option-inner">
+              <span class="card-option-badge">💫 인기</span>
+              <div class="card-option-body">
+                <div class="card-option-title">카드 2장 추가</div>
+                <div class="card-option-desc">3장 중 1명 선택</div>
+              </div>
+              <div class="card-option-price">+10,000원</div>
+            </div>
+          </label>
+          <label class="card-option">
+            <input type="radio" name="card_option" value="3장 추가 (4장 중 선택)">
+            <div class="card-option-inner">
+              <div class="card-option-body">
+                <div class="card-option-title">카드 3장 추가</div>
+                <div class="card-option-desc">4장 중 1명 선택</div>
+              </div>
+              <div class="card-option-price">+15,000원</div>
+            </div>
+          </label>
+          <label class="card-option premium">
+            <input type="radio" name="card_option" value="5장 추가 (6장 중 선택)">
+            <div class="card-option-inner">
+              <span class="card-option-badge">👑 VVIP</span>
+              <div class="card-option-body">
+                <div class="card-option-title">카드 5장 추가</div>
+                <div class="card-option-desc">6장 중 1명 선택</div>
+              </div>
+              <div class="card-option-price">+20,000원</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
       <div class="friends-section" id="friendsSection" style="display:none">
         <h3 class="friends-title">👯‍♀️ 같이 신청할 친구 정보</h3>
         <p class="friends-sub">친구는 따로 신청 안 해도 돼요. 대표자가 한 번에 작성 ♡</p>
@@ -1972,6 +2133,13 @@ body::before {
           <p class="block-title">💚 미팅 (2대2 / 3대3)</p>
           <p class="row"><span>남성</span><strong>1인 8,000원</strong></p>
           <p class="row"><span>여성</span><strong>1인 4,000원</strong></p>
+        </div>
+        <div class="block">
+          <p class="block-title">🎴 카드 추가 옵션</p>
+          <p class="row"><span>+1장 (2장 중 선택)</span><strong>+5,000원</strong></p>
+          <p class="row"><span>+2장 (3장 중 선택)</span><strong>+10,000원</strong></p>
+          <p class="row"><span>+3장 (4장 중 선택)</span><strong>+15,000원</strong></p>
+          <p class="row"><span>+5장 (6장 중 선택)</span><strong>+20,000원</strong></p>
         </div>
         <div class="account">
           <p class="block-title">📩 입금 계좌</p>
@@ -2065,6 +2233,8 @@ const FIELD_IDS = {
   mbti: 'entry.833869921',
   intro: 'entry.922392339',
   ideal: 'entry.502467816',
+  // 카드 추가 옵션 — 구글폼에 새 필드 만들고 entry ID 여기에 붙여넣기
+  card_option: '',
   // 미팅 친구 정보는 구글폼에 따로 칸 만들 필요 없이
   // 제출 시 "한 줄 자기소개" 칸 끝에 자동으로 합쳐서 보냄 (아래 submit 핸들러 참고)
   payment: 'entry.278115013',
