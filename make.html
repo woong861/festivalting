@@ -593,6 +593,15 @@ function encodeMatchData(obj) {
   return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
+// 카드 매칭용 — 전체 payload 그대로 base64 encode (me/cs 구조 유지)
+function encodePickData(obj) {
+  const json = JSON.stringify(obj);
+  const bytes = new TextEncoder().encode(json);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
 // ============ FILTER CHIPS ============
 document.querySelectorAll('.filter-chip').forEach(chip => {
   chip.addEventListener('click', () => {
@@ -998,7 +1007,7 @@ function generatePickUrl() {
       row: c.row
     }))
   };
-  const url = 'https://postitt.cloud/pick.html?p=' + encodeMatchData(payload);
+  const url = 'https://postitt.cloud/pick.html?p=' + encodePickData(payload);
   document.getElementById('pickUrl').value = url;
 
   const sms = '🎴 픽커: ' + pickerSlot.name + ' (' + (pickerSlot.phone || '전화없음') + ')\n' +
