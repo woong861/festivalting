@@ -565,6 +565,113 @@ body::before {
   letter-spacing: 0.5px;
 }
 
+/* ========== 후기 섹션 ========== */
+.reviews {
+  margin: 40px 0 20px;
+  padding: 24px 0;
+  position: relative;
+}
+.reviews-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 22px;
+  color: #c43d8a;
+  text-align: center;
+  margin: 0 0 6px;
+  text-shadow: 0 2px 4px rgba(255,143,190,0.25);
+}
+.reviews-sub {
+  font-family: 'Gaegu', cursive;
+  font-size: 14px;
+  color: #a25080;
+  text-align: center;
+  margin: 0 0 20px;
+}
+.reviews-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 480px) {
+  .reviews-grid { grid-template-columns: 1fr 1fr; }
+}
+.review-card {
+  background: white;
+  border: 2px solid #ffd1e8;
+  border-radius: 16px;
+  padding: 16px 16px 14px;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(255, 143, 190, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.review-card::before {
+  content: '"';
+  position: absolute;
+  top: 4px;
+  left: 12px;
+  font-family: 'Jua', sans-serif;
+  font-size: 40px;
+  color: #ffb3d9;
+  line-height: 1;
+  opacity: 0.6;
+}
+.review-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 143, 190, 0.25);
+}
+.review-card:nth-child(2n) {
+  background: linear-gradient(135deg, #fff9e0 0%, #ffe5ee 100%);
+  border-color: #ffb84d;
+}
+.review-card:nth-child(3n) {
+  background: linear-gradient(135deg, #f5e8ff 0%, #ffe5ee 100%);
+  border-color: #b04bd6;
+}
+.review-text {
+  font-family: 'Gaegu', cursive;
+  font-size: 15px;
+  color: #4a3540;
+  line-height: 1.5;
+  margin: 12px 0 10px;
+  padding-left: 4px;
+}
+.review-heart {
+  display: inline-block;
+  color: #ff5d9e;
+  margin-left: 4px;
+}
+.review-author {
+  font-family: 'Gaegu', cursive;
+  font-size: 13px;
+  color: #a25080;
+  text-align: right;
+  margin: 0;
+  font-weight: 700;
+}
+.review-tag {
+  display: inline-block;
+  background: rgba(255, 93, 158, 0.12);
+  color: #c43d8a;
+  font-family: 'Jua', sans-serif;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+.reviews-cta {
+  margin: 22px auto 0;
+  display: block;
+  text-align: center;
+  font-family: 'Gaegu', cursive;
+  font-size: 14px;
+  color: #6e2d8c;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #fff5fa, #ffe5ee);
+  border: 2px dashed #ff8fbe;
+  border-radius: 14px;
+  max-width: 340px;
+}
+.reviews-cta strong { color: #ff4dd2; }
+
 .footer-note {
   text-align: center;
   font-family: 'Gaegu', cursive;
@@ -1927,6 +2034,44 @@ body::before {
   </div>
 
   <p class="footer-note">아무 쪽지나 골라도 같은 신청서로 연결돼요 ♡</p>
+
+  <section class="reviews">
+    <h2 class="reviews-title">💌 매칭 커플의 이야기</h2>
+    <p class="reviews-sub">쪽지팅에서 시작된 진짜 후기 ♡</p>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <span class="review-tag">🎓 매칭 성공</span>
+        <p class="review-text">매칭된 오빠랑 벌써 100일째예요 💕 처음엔 반신반의했는데, 진짜 잘 맞는 사람 소개해주셨어요<span class="review-heart">♡</span></p>
+        <p class="review-author">— H대 · 21세 여</p>
+      </div>
+      <div class="review-card">
+        <span class="review-tag">✨ 이번 학기 인연</span>
+        <p class="review-text">MBTI랑 이상형 이렇게 잘 반영해줄 줄 몰랐어요. 카톡 30분 만에 밥 약속 잡았어요 ㅋㅋ</p>
+        <p class="review-author">— K대 · 23세 남</p>
+      </div>
+      <div class="review-card">
+        <span class="review-tag">💫 3장 중 선택</span>
+        <p class="review-text">3장 뽑기 옵션으로 신청했는데 다 마음에 들어서 진짜 고민됐어요. 결국 골라서 만났는데 대성공!</p>
+        <p class="review-author">— Y대 · 22세 남</p>
+      </div>
+      <div class="review-card">
+        <span class="review-tag">🌸 첫 만남</span>
+        <p class="review-text">고백하자면 소개팅 처음이었는데, 운영진분이 정성 매칭해주셔서 편하게 만났어요. 곧 두 번째 만남 ♡</p>
+        <p class="review-author">— S여대 · 20세 여</p>
+      </div>
+      <div class="review-card">
+        <span class="review-tag">🎯 미팅 매칭</span>
+        <p class="review-text">친구랑 미팅 신청했는데 상대 팀 진짜 재밌었어요. 4명 다 인스타 팔로우한 상태 ㅎㅎ</p>
+        <p class="review-author">— C대 · 22세 여</p>
+      </div>
+      <div class="review-card">
+        <span class="review-tag">💖 진심 후기</span>
+        <p class="review-text">에타에서 광고 보고 반신반의했는데 진짜였음. 지금 만나는 사람이랑 벌써 두 달째예요</p>
+        <p class="review-author">— K대 · 24세 남</p>
+      </div>
+    </div>
+    <p class="reviews-cta">✨ 매칭 후 <strong>후기 인증</strong>하면 다음 회차 <strong>5,000원 할인권</strong>! 인스타 <strong>@_posting2</strong> DM으로 남겨줘</p>
+  </section>
 
   <section class="faq">
     <h2 class="faq-title">❓ 자주 묻는 질문</h2>
