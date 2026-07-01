@@ -980,7 +980,7 @@ function updatePickBtn() {
   genBtn.disabled = !(pickerSlot && candidates.length >= 2);
 }
 
-function generatePickUrl() {
+async function generatePickUrl() {
   if (!pickerSlot || candidates.length < 2) return;
   // pick.html의 payload 구조: { me: {n, p}, cs: [{s,a,i,k,m,b,n,p}, ...] }
   const payload = {
@@ -1007,7 +1007,37 @@ function generatePickUrl() {
       row: c.row
     }))
   };
-  const url = 'https://postitt.cloud/pick.html?p=' + encodePickData(payload);
+
+  // 짧은 URL: 클라이언트에서 6자리 id 생성 → Apps Script에 payload 저장 → pick.html?id=XXX
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  let sessionId = '';
+  for (let i = 0; i < 6; i++) sessionId += chars.charAt(Math.floor(Math.random() * chars.length));
+
+  const apiUrl = document.getElementById('apiUrl').value.trim();
+  const genBtn = document.getElementById('genPickBtn');
+  const originalText = genBtn.textContent;
+  genBtn.disabled = true;
+  genBtn.textContent = '⏳ 세션 저장 중...';
+
+  try {
+    await fetch(apiUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        type: 'createPickSession',
+        id: sessionId,
+        payload: payload
+      })
+    });
+  } catch (e) {
+    console.warn('Session save error (continuing anyway):', e);
+  }
+
+  genBtn.disabled = false;
+  genBtn.textContent = originalText;
+
+  const url = 'https://postitt.cloud/pick.html?id=' + sessionId;
   document.getElementById('pickUrl').value = url;
 
   const sms = '🎴 픽커: ' + pickerSlot.name + ' (' + (pickerSlot.phone || '전화없음') + ')\n' +

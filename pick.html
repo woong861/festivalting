@@ -503,10 +503,23 @@ function encode(data) {
 
 const params = new URLSearchParams(location.search);
 const pParam = params.get('p');
-const payload = pParam ? decode(pParam) : null;
+const idParam = params.get('id');
+let payload = pParam ? decode(pParam) : null;
 
 let selectedIdx = null;
 let pickedAlready = false;
+
+// Session ID로 payload 서버에서 조회 (짧은 URL 지원)
+async function fetchSessionPayload(id) {
+  try {
+    const res = await fetch(APPS_SCRIPT_URL + '?action=getPickSession&id=' + encodeURIComponent(id));
+    const data = await res.json();
+    return data.payload || null;
+  } catch (e) {
+    console.error('Session fetch error:', e);
+    return null;
+  }
+}
 
 function buildIdentity(c) {
   const s = (c.s || '').trim();
@@ -615,7 +628,16 @@ async function submitPick() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-document.addEventListener('DOMContentLoaded', renderCards);
+document.addEventListener('DOMContentLoaded', async () => {
+  // id 파라미터가 있으면 서버에서 payload fetch
+  if (idParam && !payload) {
+    document.getElementById('loadingOverlay').classList.add('active');
+    document.querySelector('.loading-text').textContent = '쪽지를 불러오는 중...';
+    payload = await fetchSessionPayload(idParam);
+    document.getElementById('loadingOverlay').classList.remove('active');
+  }
+  renderCards();
+});
 </script>
 
 </body>
