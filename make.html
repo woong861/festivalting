@@ -200,6 +200,40 @@ body {
 .applicant-row .pick-btn:hover { background: #f0f0f0; }
 .applicant-row .pick-btn.a-btn { color: var(--pink); border-color: var(--pink); }
 .applicant-row .pick-btn.b-btn { color: var(--green); border-color: var(--green); }
+.applicant-row .pick-btn.picker-btn { color: #b04bd6; border-color: #b04bd6; }
+.applicant-row .pick-btn.card-btn { color: #ff9a1f; border-color: #ff9a1f; }
+.candidate-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: #fff5e6;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+.candidate-item .cand-idx {
+  width: 20px;
+  height: 20px;
+  background: #ff9a1f;
+  color: white;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.candidate-item .cand-info { flex: 1; }
+.candidate-item .cand-remove {
+  background: none;
+  border: none;
+  color: #c00;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 4px;
+}
 
 .status-pill {
   display: inline-block;
@@ -492,6 +526,44 @@ body {
         </div>
         <div class="status-line" id="sendStatus"></div>
       </div>
+
+      <!-- ============ 카드 매칭 모드 ============ -->
+      <div class="panel-title" style="margin-top:32px;border-top:1px dashed #ddd;padding-top:22px">🎴 카드 매칭 모드 (여러 장 뽑기)</div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:12px">
+        카드 옵션(2장 = 3명 / 5장 = 6명) 구매자용. <b>픽커 1명 + 후보 여러 명</b> 선택 → pick.html URL 발송 → 픽커가 선택하면 서로 매칭 완료.
+      </p>
+
+      <div class="slot" id="slotPicker">
+        <button class="clear-btn" onclick="clearPicker()" style="display:none">×</button>
+        <div class="slot-label">🎴 픽커 (뽑는 사람 — 왼쪽 목록에서 '픽커' 눌러서 추가)</div>
+        <div class="slot-content"><span class="empty-hint">비어있음</span></div>
+      </div>
+
+      <div class="slot" id="slotCandidates">
+        <div class="slot-label">💌 후보 <span id="candidateCount">(0명)</span> — 왼쪽 목록에서 '＋ 후보' 눌러서 추가</div>
+        <div class="slot-content" id="candidatesList"><span class="empty-hint">비어있음</span></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="clearCards()">🗑 카드 비우기</button>
+        <button class="btn btn-primary" onclick="generatePickUrl()" id="genPickBtn" disabled>🔗 pick URL 생성</button>
+      </div>
+
+      <div class="result-box hidden" id="pickResultBox">
+        <div class="result-row">
+          <span class="label">픽커→</span>
+          <input type="text" id="pickUrl" readonly>
+          <button class="mini-btn" onclick="copyValue('pickUrl', this)">복사</button>
+        </div>
+
+        <div style="margin-top:10px;font-weight:700;font-size:11px;color:var(--muted)">📱 SMS 미리보기 (픽커에게만 발송)</div>
+        <div class="sms-preview" id="pickSmsPreview">URL 생성하면 여기 표시됩니다.</div>
+
+        <div class="actions" style="margin-top:10px">
+          <button class="btn btn-success" onclick="sendPickSms()" id="sendPickBtn">📱 픽커에게 SMS 발송</button>
+        </div>
+        <div class="status-line" id="pickSendStatus"></div>
+      </div>
     </div>
 
   </div>
@@ -614,6 +686,8 @@ function renderList() {
         <div class="pickers">
           <button class="pick-btn a-btn" onclick="setSlot('a', ${a.row})">A로</button>
           <button class="pick-btn b-btn" onclick="setSlot('b', ${a.row})">B로</button>
+          <button class="pick-btn picker-btn" onclick="setPicker(${a.row})" title="카드 매칭 — 뽑는 사람">🎴 픽커</button>
+          <button class="pick-btn card-btn" onclick="addCandidate(${a.row})" title="카드 매칭 — 후보 추가">＋ 후보</button>
         </div>
       </div>
     `;
@@ -796,6 +870,194 @@ async function sendSms() {
   } catch (e) {
     btn.disabled = false;
     btn.textContent = '📱 SMS 양쪽 발송';
+    status.className = 'status-line err';
+    status.textContent = '❌ 발송 실패: ' + (e.message || e);
+  }
+}
+
+// ============ 🎴 CARD MATCHING MODE ============
+let pickerSlot = null;
+let candidates = []; // 후보 배열 (신청자 객체들)
+
+function setPicker(row) {
+  const a = APPLICANTS.find(x => x.row === row);
+  if (!a) return;
+  // 후보 목록에 있으면 제외
+  candidates = candidates.filter(c => c.row !== row);
+  pickerSlot = a;
+  renderPickerSlot();
+  renderCandidates();
+}
+
+function clearPicker() {
+  pickerSlot = null;
+  renderPickerSlot();
+}
+
+function addCandidate(row) {
+  if (pickerSlot && pickerSlot.row === row) {
+    alert('픽커로 지정된 사람은 후보로 추가할 수 없어요.');
+    return;
+  }
+  if (candidates.find(c => c.row === row)) {
+    alert('이미 후보 목록에 있어요.');
+    return;
+  }
+  if (candidates.length >= 6) {
+    alert('후보는 최대 6명까지만 추가할 수 있어요 (5장 옵션).');
+    return;
+  }
+  const a = APPLICANTS.find(x => x.row === row);
+  if (!a) return;
+  candidates.push(a);
+  renderCandidates();
+}
+
+function removeCandidate(row) {
+  candidates = candidates.filter(c => c.row !== row);
+  renderCandidates();
+}
+
+function clearCards() {
+  pickerSlot = null;
+  candidates = [];
+  renderPickerSlot();
+  renderCandidates();
+  document.getElementById('pickResultBox').classList.add('hidden');
+}
+
+function renderPickerSlot() {
+  const slot = document.getElementById('slotPicker');
+  const clear = slot.querySelector('.clear-btn');
+  const content = slot.querySelector('.slot-content');
+  if (pickerSlot) {
+    slot.classList.add('filled');
+    clear.style.display = '';
+    content.innerHTML = `
+      <div class="name">${esc(pickerSlot.name)} <span style="color:#b04bd6">🎴 픽커</span></div>
+      <div class="meta">${esc(pickerSlot.school || '')} · ${esc(pickerSlot.gender || '')} · ${esc(pickerSlot.age || '')}살</div>
+      <div class="meta">📱 ${esc(pickerSlot.phone || '전화 없음')} · MBTI ${esc(pickerSlot.mbti || '?')}</div>
+    `;
+  } else {
+    slot.classList.remove('filled');
+    clear.style.display = 'none';
+    content.innerHTML = '<span class="empty-hint">비어있음</span>';
+  }
+  updatePickBtn();
+}
+
+function renderCandidates() {
+  const list = document.getElementById('candidatesList');
+  const counter = document.getElementById('candidateCount');
+  counter.textContent = `(${candidates.length}명)`;
+  if (candidates.length === 0) {
+    list.innerHTML = '<span class="empty-hint">비어있음</span>';
+  } else {
+    list.innerHTML = candidates.map((c, i) => `
+      <div class="candidate-item">
+        <span class="cand-idx">${i+1}</span>
+        <div class="cand-info">
+          <b>${esc(c.name)}</b> · ${esc(c.school || '')} · ${esc(c.gender || '')} · ${esc(c.age || '?')}살 · ${esc(c.mbti || '?')}
+        </div>
+        <button class="cand-remove" onclick="removeCandidate(${c.row})">×</button>
+      </div>
+    `).join('');
+  }
+  updatePickBtn();
+}
+
+function updatePickBtn() {
+  const genBtn = document.getElementById('genPickBtn');
+  genBtn.disabled = !(pickerSlot && candidates.length >= 2);
+}
+
+function generatePickUrl() {
+  if (!pickerSlot || candidates.length < 2) return;
+  // pick.html의 payload 구조: { me: {n, p}, cs: [{s,a,i,k,m,b,n,p}, ...] }
+  const payload = {
+    me: {
+      n: pickerSlot.name,
+      p: pickerSlot.phone,
+      row: pickerSlot.row,
+      s: pickerSlot.school,
+      a: pickerSlot.age,
+      m: pickerSlot.mbti,
+      b: pickerSlot.intro,
+      i: pickerSlot.instagram,
+      k: pickerSlot.kakao
+    },
+    cs: candidates.map(c => ({
+      s: c.school,
+      a: c.age,
+      m: c.mbti,
+      b: c.intro,
+      n: c.name,
+      i: c.instagram,
+      k: c.kakao,
+      p: c.phone,
+      row: c.row
+    }))
+  };
+  const url = 'https://postitt.cloud/pick.html?p=' + encodeMatchData(payload);
+  document.getElementById('pickUrl').value = url;
+
+  const sms = '🎴 픽커: ' + pickerSlot.name + ' (' + (pickerSlot.phone || '전화없음') + ')\n' +
+    '💌 후보 ' + candidates.length + '명: ' + candidates.map(c => c.name).join(', ') + '\n' +
+    '\n📱 발송 SMS 미리보기:\n\n' +
+    '[쪽지팅] ' + pickerSlot.name + '님, 쪽지 ' + candidates.length + '장 도착! 💌\n' +
+    '\n마음에 드는 한 장을 골라봐:\n' + url +
+    '\n\n선택한 상대방에게 자동으로 매칭 안내가 갑니다 ♡' +
+    '\n- 쪽지팅 운영진' +
+    '\n\n※ 본 번호는 발송 전용 (응대 불가)' +
+    '\n문의는 인스타 @_posting2 DM으로 ♡';
+  document.getElementById('pickSmsPreview').textContent = sms;
+  document.getElementById('pickResultBox').classList.remove('hidden');
+  document.getElementById('sendPickBtn').disabled = !pickerSlot.phone;
+}
+
+async function sendPickSms() {
+  if (!pickerSlot || candidates.length < 2) return;
+  if (!pickerSlot.phone) { alert('픽커 전화번호가 없어요.'); return; }
+  if (!confirm(pickerSlot.name + ' (' + pickerSlot.phone + ')에게\n후보 ' + candidates.length + '명 카드 매칭 SMS를 발송할까요?')) return;
+
+  const pickUrl = document.getElementById('pickUrl').value;
+  const apiUrl = document.getElementById('apiUrl').value.trim();
+  const btn = document.getElementById('sendPickBtn');
+  const status = document.getElementById('pickSendStatus');
+  btn.disabled = true;
+  btn.textContent = '⏳ 발송 중...';
+  status.className = 'status-line';
+  status.textContent = 'Apps Script 호출 중...';
+
+  try {
+    await fetch(apiUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        type: 'sendPostitPickerSms',
+        picker: {
+          name: pickerSlot.name,
+          phone: pickerSlot.phone,
+          row: pickerSlot.row
+        },
+        url: pickUrl,
+        candidateCount: candidates.length
+      })
+    });
+    btn.textContent = '✓ 발송 요청 완료';
+    btn.style.background = '#6dcc7a';
+    status.className = 'status-line ok';
+    status.textContent = '✓ 픽커에게 SMS 발송 요청 보냄. 시트 로그에서 결과 확인.';
+    setTimeout(() => {
+      clearCards();
+      btn.textContent = '📱 픽커에게 SMS 발송';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 2500);
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = '📱 픽커에게 SMS 발송';
     status.className = 'status-line err';
     status.textContent = '❌ 발송 실패: ' + (e.message || e);
   }

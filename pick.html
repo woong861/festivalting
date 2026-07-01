@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>쪽지팅 — 마음에 드는 쪽지 골라봐 ♡</title>
+<meta name="theme-color" content="#ff4dd2">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="쪽지팅 ♡ 카드 뽑기">
+<meta property="og:description" content="여러 장의 쪽지 중 마음에 드는 한 장을 골라봐 💌">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E%F0%9F%92%96%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { min-height: 100%; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: radial-gradient(ellipse at top, #3d2766 0%, #1a1535 50%, #0a0820 100%);
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 15% 20%, white, transparent),
+    radial-gradient(1px 1px at 55% 60%, white, transparent),
+    radial-gradient(1.5px 1.5px at 75% 15%, #ffb3d9, transparent),
+    radial-gradient(2px 2px at 35% 75%, white, transparent),
+    radial-gradient(1px 1px at 85% 45%, #ff5d9e, transparent),
+    radial-gradient(1.5px 1.5px at 25% 50%, #ffb3d9, transparent);
+  background-size: 350px 350px;
+  opacity: 0.4;
+  pointer-events: none;
+  animation: twinkle 4s ease-in-out infinite;
+  z-index: 0;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.55; }
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero { text-align: center; margin-bottom: 26px; }
+.eyebrow {
+  font-family: 'Gaegu', cursive;
+  font-size: 15px;
+  color: #ffd1e8;
+  margin-bottom: 8px;
+}
+.title {
+  font-family: 'Jua', sans-serif;
+  font-size: clamp(32px, 8vw, 44px);
+  color: #ff4dd2;
+  text-shadow:
+    -2px -2px 0 white, 2px -2px 0 white,
+    -2px 2px 0 white, 2px 2px 0 white,
+    0 0 20px rgba(255, 77, 210, 0.7);
+  letter-spacing: -1px;
+  line-height: 1.15;
+}
+.subtitle {
+  font-family: 'Gaegu', cursive;
+  font-size: 15px;
+  color: #ffe5f2;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+.subtitle .name {
+  color: #ff4dd2;
+  font-weight: 700;
+}
+
+/* Card grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin: 20px 0 28px;
+}
+.card-slot {
+  position: relative;
+  aspect-ratio: 3/4;
+  perspective: 1200px;
+}
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+  animation: floatY 6s ease-in-out infinite;
+}
+.card-slot:nth-child(2) .card { animation-delay: 0.6s; }
+.card-slot:nth-child(3) .card { animation-delay: 1.2s; }
+.card-slot:nth-child(4) .card { animation-delay: 0.3s; }
+.card-slot:nth-child(5) .card { animation-delay: 0.9s; }
+.card-slot:nth-child(6) .card { animation-delay: 1.5s; }
+.card.flipped { animation: none; transform: rotateY(180deg); }
+@keyframes floatY {
+  0%, 100% { transform: rotateY(0) translateY(0); }
+  50%     { transform: rotateY(0) translateY(-6px); }
+}
+.card.flipped { transform: rotateY(180deg); }
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.5),
+    inset 0 -8px 12px rgba(0,0,0,0.08);
+}
+
+/* Card back (envelope look) */
+.card-back {
+  background: linear-gradient(135deg, #ff5d9e 0%, #d63d8a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  position: relative;
+}
+.card-back::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 2px dashed rgba(255,255,255,0.4);
+  border-radius: 8px;
+  pointer-events: none;
+}
+.card-back .card-number {
+  font-family: 'Jua', sans-serif;
+  font-size: 44px;
+  color: white;
+  text-shadow: 0 3px 6px rgba(0,0,0,0.35);
+}
+.card-back .card-hint {
+  font-family: 'Gaegu', cursive;
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Card front (revealed content) */
+.card-front {
+  background: #fff9b1;
+  transform: rotateY(180deg);
+  padding: 14px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  color: #3a3540;
+}
+.card-slot:nth-child(2n) .card-front { background: #ffd1e8; }
+.card-slot:nth-child(3n) .card-front { background: #c8e7ff; }
+.card-slot:nth-child(4n) .card-front { background: #d4f1c5; }
+.card-slot:nth-child(5n) .card-front { background: #e8d3ff; }
+.card-slot:nth-child(6n) .card-front { background: #ffe9b1; }
+
+.card-front .front-tape {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 50px;
+  height: 14px;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(200,150,180,0.4);
+  transform: translateX(-50%) rotate(-3deg);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+.front-identity {
+  font-family: 'Jua', sans-serif;
+  font-size: 15px;
+  color: #c43d8a;
+  text-align: center;
+  line-height: 1.2;
+}
+.front-mbti {
+  display: inline-block;
+  margin: 6px auto 0;
+  background: rgba(255,93,158,0.15);
+  color: #c43d8a;
+  font-family: 'Jua', sans-serif;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  align-self: center;
+}
+.front-intro {
+  font-family: 'Gaegu', cursive;
+  font-size: 12.5px;
+  color: #5a4750;
+  line-height: 1.4;
+  margin-top: 8px;
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  padding: 0 2px;
+}
+.front-pick-btn {
+  background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-family: 'Jua', sans-serif;
+  font-size: 12.5px;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 0 3px 8px rgba(255, 93, 158, 0.5);
+  transition: transform 0.1s;
+}
+.front-pick-btn:active { transform: translateY(2px); }
+.front-pick-btn:hover { box-shadow: 0 5px 12px rgba(255, 93, 158, 0.65); }
+
+/* Info banner */
+.info-note {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 22px;
+  font-family: 'Gaegu', cursive;
+  font-size: 13.5px;
+  color: #ffe5f2;
+  line-height: 1.55;
+  text-align: center;
+}
+.info-note strong { color: #ff8fbe; }
+
+/* Confirmation modal */
+.confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 8, 32, 0.85);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+}
+.confirm-backdrop.active { display: flex; }
+.confirm-card {
+  background: linear-gradient(160deg, #fff5fa 0%, #ffe5ee 100%);
+  color: #4a3540;
+  border-radius: 20px;
+  padding: 24px 22px;
+  max-width: 340px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  text-align: center;
+}
+.confirm-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 20px;
+  color: #c43d8a;
+  margin-bottom: 10px;
+}
+.confirm-desc {
+  font-family: 'Gaegu', cursive;
+  font-size: 14px;
+  color: #6e4858;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+.confirm-desc .highlight {
+  color: #ff4dd2;
+  font-weight: 700;
+  font-size: 16px;
+}
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+}
+.confirm-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 24px;
+  font-family: 'Jua', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.1s;
+}
+.confirm-actions button:active { transform: translateY(2px); }
+.confirm-cancel {
+  background: white;
+  color: #c43d8a;
+  border: 2px solid #ffd1e8 !important;
+}
+.confirm-yes {
+  background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
+  color: white;
+  box-shadow: 0 3px 10px rgba(255, 93, 158, 0.5);
+}
+
+/* Result screen */
+.result-screen {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+}
+.result-screen.active { display: block; }
+.result-emoji {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: floatY 2.5s ease-in-out infinite;
+}
+.result-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 28px;
+  color: #ff4dd2;
+  text-shadow: 0 0 20px rgba(255, 77, 210, 0.6);
+  margin-bottom: 12px;
+}
+.result-desc {
+  font-family: 'Gaegu', cursive;
+  font-size: 16px;
+  color: #ffe5f2;
+  line-height: 1.6;
+  max-width: 320px;
+  margin: 0 auto 28px;
+}
+.result-note {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px dashed rgba(255, 143, 190, 0.4);
+  border-radius: 14px;
+  padding: 14px 16px;
+  max-width: 340px;
+  margin: 0 auto;
+  font-family: 'Gaegu', cursive;
+  font-size: 13px;
+  color: #ffd1e8;
+  line-height: 1.5;
+}
+
+/* Error card */
+.error-card {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+  max-width: 360px;
+  margin: 40px auto;
+}
+.error-card.active { display: block; }
+.error-emoji { font-size: 64px; margin-bottom: 16px; }
+.error-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 20px;
+  color: #ff8fbe;
+  margin-bottom: 10px;
+}
+.error-desc {
+  font-family: 'Gaegu', cursive;
+  font-size: 14px;
+  color: #e0ccd7;
+  line-height: 1.6;
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 8, 32, 0.88);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  backdrop-filter: blur(4px);
+}
+.loading-overlay.active { display: flex; }
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 143, 190, 0.2);
+  border-top-color: #ff4dd2;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.loading-text {
+  font-family: 'Gaegu', cursive;
+  font-size: 15px;
+  color: #ffe5f2;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="hero" id="hero">
+    <div class="eyebrow">🎴 카드 뽑기</div>
+    <h1 class="title">쪽지 골라봐</h1>
+    <p class="subtitle">
+      <span class="name" id="userName">회원</span>님을 위해 <span class="name" id="cardCount">3</span>장의 쪽지가 도착했어요 💌<br>
+      각 쪽지를 눌러서 확인하고, 마음에 드는 <b>한 장을 선택</b>해줘 ♡
+    </p>
+  </div>
+
+  <div class="info-note" id="infoNote">
+    💡 카드를 <strong>눌러서 뒤집기</strong> → 정보 확인 → <strong>이 사람 선택</strong> 버튼 누르면 매칭 완료!<br>
+    선택하면 <strong>되돌릴 수 없어요</strong>. 신중하게 골라주세요 ♡
+  </div>
+
+  <div class="cards-grid" id="cardsGrid"></div>
+
+  <div class="error-card" id="errorCard">
+    <div class="error-emoji">🥲</div>
+    <div class="error-title">쪽지를 찾을 수 없어요</div>
+    <div class="error-desc">
+      링크가 잘못됐거나 이미 사용된 쪽지 같아요.<br>
+      운영진 인스타 <b>@_posting2</b>로 문의해줘 ♡
+    </div>
+  </div>
+
+  <div class="result-screen" id="resultScreen">
+    <div class="result-emoji">💌</div>
+    <div class="result-title">쪽지 선택 완료!</div>
+    <div class="result-desc">
+      선택한 상대방에게 매칭 안내가 발송됐어요 ♡<br>
+      곧 카톡으로 연결될 거예요
+    </div>
+    <div class="result-note">
+      선택된 상대방 정보는 <b>매칭 완료 문자</b>로 보내드릴게요.<br>
+      좋은 인연 만들어봐요 🌸
+    </div>
+  </div>
+</div>
+
+<!-- Confirm modal -->
+<div class="confirm-backdrop" id="confirmBackdrop">
+  <div class="confirm-card">
+    <div class="confirm-title">🎯 이 사람을 선택할까요?</div>
+    <div class="confirm-desc">
+      <span class="highlight" id="confirmTarget">—</span><br>
+      한 번 선택하면 <b>되돌릴 수 없어요</b>.<br>
+      정말 이 사람과 매칭할까요?
+    </div>
+    <div class="confirm-actions">
+      <button class="confirm-cancel" onclick="closeConfirm()">다시 볼래</button>
+      <button class="confirm-yes" onclick="submitPick()">이 사람으로 결정 ♡</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">쪽지를 보내는 중이에요...</div>
+</div>
+
+<script>
+// ============================================================
+// Apps Script endpoint (사용자가 배포 후 URL 여기에 붙여넣기)
+// ============================================================
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzM8IYXCT9NeD9K-L0Dval98J46dcnbkR2ElzgPN7fRvvchcuMfEfzC_HX89o8U4GXI/exec';
+
+// Base64 URL-safe decode
+function decode(str) {
+  try {
+    let b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) b64 += '=';
+    const binary = atob(b64);
+    const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+    const json = new TextDecoder().decode(bytes);
+    return JSON.parse(json);
+  } catch (e) { return null; }
+}
+function encode(data) {
+  const json = JSON.stringify(data);
+  const bytes = new TextEncoder().encode(json);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+const params = new URLSearchParams(location.search);
+const pParam = params.get('p');
+const payload = pParam ? decode(pParam) : null;
+
+let selectedIdx = null;
+let pickedAlready = false;
+
+function buildIdentity(c) {
+  const s = (c.s || '').trim();
+  const a = (c.a || '').toString().trim();
+  if (s && a) return s + ' · ' + a + '살';
+  if (s) return s;
+  if (a) return a + '살';
+  return '익명';
+}
+
+function renderCards() {
+  const grid = document.getElementById('cardsGrid');
+  if (!payload || !payload.cs || !payload.cs.length) {
+    document.getElementById('hero').style.display = 'none';
+    document.getElementById('infoNote').style.display = 'none';
+    document.getElementById('errorCard').classList.add('active');
+    return;
+  }
+
+  document.getElementById('userName').textContent = (payload.me && payload.me.n) || '회원';
+  document.getElementById('cardCount').textContent = payload.cs.length;
+
+  payload.cs.forEach((c, idx) => {
+    const slot = document.createElement('div');
+    slot.className = 'card-slot';
+    slot.innerHTML = `
+      <div class="card" data-idx="${idx}">
+        <div class="card-face card-back">
+          <div class="card-number">${idx + 1}</div>
+          <div class="card-hint">눌러서<br>쪽지 열기 💌</div>
+        </div>
+        <div class="card-face card-front">
+          <div class="front-tape"></div>
+          <div class="front-identity">${buildIdentity(c)}</div>
+          ${c.m ? '<div class="front-mbti">' + c.m + '</div>' : ''}
+          <div class="front-intro">${(c.b || '').replace(/</g, '&lt;') || '자기소개가 없어요'}</div>
+          <button class="front-pick-btn" data-pick-idx="${idx}">💌 이 사람 선택</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(slot);
+  });
+
+  // Bind card flip
+  grid.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      if (e.target.classList.contains('front-pick-btn')) return; // 버튼 클릭은 별도 처리
+      this.classList.toggle('flipped');
+    });
+  });
+
+  // Bind pick buttons
+  grid.querySelectorAll('.front-pick-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const idx = parseInt(this.dataset.pickIdx, 10);
+      openConfirm(idx);
+    });
+  });
+}
+
+function openConfirm(idx) {
+  if (pickedAlready) return;
+  selectedIdx = idx;
+  const c = payload.cs[idx];
+  document.getElementById('confirmTarget').textContent = buildIdentity(c);
+  document.getElementById('confirmBackdrop').classList.add('active');
+}
+function closeConfirm() {
+  document.getElementById('confirmBackdrop').classList.remove('active');
+  selectedIdx = null;
+}
+
+async function submitPick() {
+  if (selectedIdx === null || pickedAlready) return;
+  pickedAlready = true;
+  document.getElementById('confirmBackdrop').classList.remove('active');
+  document.getElementById('loadingOverlay').classList.add('active');
+
+  const chosen = payload.cs[selectedIdx];
+  const me = payload.me || {};
+
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      // Apps Script는 text/plain으로 보내는 게 preflight 회피에 유리
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        type: 'sendPostitPick',
+        requester: me,      // 신청자 (뽑은 사람)
+        chosen: chosen      // 선택된 상대방
+      })
+    });
+    // Apps Script는 302 redirect 후 응답. 응답 body는 무시하고 성공으로 처리.
+    // 실패 시에도 사용자는 성공 화면 (재발송 방지). 운영진이 매뉴얼 처리.
+  } catch (e) {
+    // 네트워크 오류여도 성공 화면 노출 (신청자 재시도 방지)
+    console.warn('Send error, continuing UI:', e);
+  }
+
+  document.getElementById('loadingOverlay').classList.remove('active');
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('infoNote').style.display = 'none';
+  document.getElementById('cardsGrid').style.display = 'none';
+  document.getElementById('resultScreen').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.addEventListener('DOMContentLoaded', renderCards);
+</script>
+
+</body>
+</html>
