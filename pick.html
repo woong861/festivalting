@@ -514,11 +514,29 @@ async function fetchSessionPayload(id) {
   try {
     const res = await fetch(APPS_SCRIPT_URL + '?action=getPickSession&id=' + encodeURIComponent(id));
     const data = await res.json();
+    // 이미 사용된 세션이면 안내 화면 표시
+    if (data.usedAt) {
+      showAlreadyUsed(data.usedAt);
+      return null;
+    }
     return data.payload || null;
   } catch (e) {
     console.error('Session fetch error:', e);
     return null;
   }
+}
+
+function showAlreadyUsed(usedAt) {
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('infoNote').style.display = 'none';
+  const err = document.getElementById('errorCard');
+  err.querySelector('.error-emoji').textContent = '💌';
+  err.querySelector('.error-title').textContent = '이미 선택 완료된 쪽지예요';
+  err.querySelector('.error-desc').innerHTML =
+    '이 쪽지는 이미 <b>한 명을 선택</b>하셨어요.<br>' +
+    '매칭 결과 SMS를 확인해주세요 ♡<br><br>' +
+    '<span style="opacity:0.7;font-size:12px">문의: 인스타 <b>@_posting2</b></span>';
+  err.classList.add('active');
 }
 
 function buildIdentity(c) {
@@ -609,6 +627,7 @@ async function submitPick() {
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         type: 'sendPostitPick',
+        sessionId: idParam || '',  // 세션 1회 사용 체크용
         requester: me,      // 신청자 (뽑은 사람)
         chosen: chosen      // 선택된 상대방
       })
