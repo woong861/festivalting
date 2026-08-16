@@ -1098,13 +1098,15 @@ body::before {
 
 .payment-info .row {
   font-size: 15px;
+  line-height: 1.4;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .payment-info .row strong { color: #ff5d9e; }
-.payment-info .row .old-price { color: #b8a0a8; font-weight: 400; text-decoration: line-through; margin-right: 6px; font-size: 12.5px; }
-.payment-info .row .sale-price { color: #ff4dd2; font-weight: 700; }
+.payment-info .row .old-price { color: #b8a0a8; font-weight: 400; text-decoration: line-through; margin-right: 6px; font-size: 12.5px; white-space: nowrap; }
+.payment-info .row .sale-price { color: #ff4dd2; font-weight: 700; white-space: nowrap; }
 .payment-info .badge-hot {
   display: inline-block;
   background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
@@ -1113,18 +1115,24 @@ body::before {
   font-size: 10.5px;
   padding: 2px 8px;
   border-radius: 10px;
-  margin-left: 6px;
   box-shadow: 0 2px 4px rgba(255, 93, 158, 0.35);
   vertical-align: middle;
+  white-space: nowrap;
 }
 .payment-info .row-sub {
   font-family: 'Gaegu', cursive;
-  font-size: 11.5px;
+  font-size: 12px;
   color: #a25080;
-  margin: -6px 0 8px 0;
+  margin: 8px 0 12px 0;
   padding-left: 2px;
-  line-height: 1.3;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
 }
+.payment-info .row + .row-sub { margin-top: 14px; }
+.payment-info .row-sub + .row { margin-top: 14px; }
 
 .payment-info .account {
   background: #fff5fa;
@@ -2273,8 +2281,8 @@ body::before {
         <h3>💘 비용 입금 안내 💘</h3>
         <div class="block">
           <p class="block-title">쪽지팅 (1:1 소개팅)</p>
-          <p class="row"><span>남학우 <span class="badge-hot">🎉 1천명 돌파</span></span><strong><span class="old-price">20,000원</span><span class="sale-price">17,000원</span></strong></p>
-          <p class="row-sub">└ 1,000명 신청 돌파 기념 · <b>-3,000원 할인가</b></p>
+          <p class="row"><span>남학우</span><strong><span class="old-price">20,000원</span><span class="sale-price">17,000원</span></strong></p>
+          <p class="row-sub"><span class="badge-hot">🎉 1천명 돌파</span> 기념 · <b>-3,000원 할인가</b></p>
           <p class="row"><span>여학우</span><strong>무료 🎁</strong></p>
         </div>
         <div class="block">
