@@ -1499,6 +1499,104 @@ body::before {
 }
 .live-split.recruit { color: #e63946; font-weight: 700; }
 
+/* === A. 신청자 카운터 시각화 (성비 바) === */
+.live-ratio {
+  flex-basis: 100%;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.live-ratio-bar {
+  display: flex;
+  height: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fce8f2;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+}
+.live-ratio-bar .male-bar {
+  background: linear-gradient(90deg, #6ec6ff, #4a9eff);
+  transition: width 0.6s ease;
+}
+.live-ratio-bar .female-bar {
+  background: linear-gradient(90deg, #ff8fbe, #ff5d9e);
+  transition: width 0.6s ease;
+}
+.live-ratio-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Gaegu', cursive;
+  font-size: 11.5px;
+  color: #6e2d8c;
+  padding: 0 2px;
+}
+.live-ratio-labels .male-label { color: #3b7bd9; font-weight: 700; }
+.live-ratio-labels .female-label { color: #d63d80; font-weight: 700; }
+.live-hint {
+  flex-basis: 100%;
+  margin-top: 4px;
+  font-family: 'Gaegu', cursive;
+  font-size: 11.5px;
+  color: #6dcc7a;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* === B. 얼리버드 배너 (D-day 아래) === */
+.early-bird-banner {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #fff5b0 0%, #ffe0d0 100%);
+  border: 2px dashed #ff8f3d;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Gaegu', cursive;
+  font-size: 13px;
+  color: #b04a00;
+  box-shadow: 0 3px 10px rgba(255, 143, 61, 0.2);
+  animation: eb-pulse 2.4s ease-in-out infinite;
+}
+.early-bird-banner b { color: #d33500; font-family: 'Jua', sans-serif; font-size: 14px; }
+.early-bird-banner .eb-emoji { font-size: 18px; }
+@keyframes eb-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.02); }
+}
+
+/* === D. 큰 CTA 버튼 === */
+.hero-cta {
+  display: inline-block;
+  margin: 22px auto 8px;
+  padding: 16px 40px;
+  background: linear-gradient(135deg, #ff5d9e 0%, #ff4dd2 100%);
+  color: white;
+  font-family: 'Jua', sans-serif;
+  font-size: 18px;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255, 93, 158, 0.4);
+  text-decoration: none;
+  transition: transform 0.15s;
+  position: relative;
+  overflow: hidden;
+  animation: cta-pulse 2s ease-in-out infinite;
+}
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 93, 158, 0.5); }
+.hero-cta:active { transform: translateY(1px); }
+.hero-cta .arrow { display: inline-block; margin-left: 6px; animation: arrow-slide 1.2s ease-in-out infinite; }
+@keyframes cta-pulse {
+  0%, 100% { box-shadow: 0 6px 20px rgba(255, 93, 158, 0.4); }
+  50%      { box-shadow: 0 8px 28px rgba(255, 93, 158, 0.6); }
+}
+@keyframes arrow-slide {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(4px); }
+}
+
 /* ========== Falling hearts background ========== */
 .hearts-rain {
   position: fixed;
@@ -1926,12 +2024,26 @@ body::before {
       <span>신청 마감까지</span>
       <span class="dd-count" id="ddayCount">D-?</span>
     </div>
+    <div class="early-bird-banner">
+      <span class="eb-emoji">🎉</span>
+      <span><b>1천명 돌파 기념</b> · 남 <b>17K</b> / 여 <b>3K</b> 할인가</span>
+    </div>
     <div class="live-counter" id="liveCounter">
       <span class="live-dot"></span>
       <span>지금까지</span>
       <span class="live-count" id="liveCount">―</span>
       <span>명 신청 중</span>
-      <span class="live-split" id="liveSplit"></span>
+      <div class="live-ratio">
+        <div class="live-ratio-bar">
+          <div class="male-bar" id="maleBar" style="width:0%"></div>
+          <div class="female-bar" id="femaleBar" style="width:0%"></div>
+        </div>
+        <div class="live-ratio-labels">
+          <span class="male-label">남 <span id="maleCount">0</span>명 (<span id="malePct">0</span>%)</span>
+          <span class="female-label">여 <span id="femaleCount">0</span>명 (<span id="femalePct">0</span>%)</span>
+        </div>
+      </div>
+      <div class="live-hint" id="liveHint"></div>
     </div>
     <div class="hero-referral">
       <div class="hr-head">
@@ -1957,6 +2069,9 @@ body::before {
         <span>추천 코드 입력 시 <strong>3,000원 할인</strong></span>
       </div>
     </div>
+    <button class="hero-cta" onclick="document.querySelector('.postit-wall').scrollIntoView({behavior:'smooth', block:'start'})">
+      ✨ 지금 쪽지 뽑기 <span class="arrow">→</span>
+    </button>
     <div class="prompt">📌 마음에 드는 쪽지를 골라봐!</div>
   </div>
 
@@ -2817,12 +2932,36 @@ async function updateLiveCounter() {
     _liveCacheCount = total;
     _liveCacheAt = Date.now();
 
-    if (split) {
-      const needFemales = males - females > 8;
-      split.textContent = needFemales
-        ? `남 ${males} · 여 ${females} — 여자 추가 모집 ♡`
-        : `남 ${males} · 여 ${females}`;
-      split.classList.toggle('recruit', needFemales);
+    // 성비 프로그레스 바 업데이트
+    const totalGender = males + females;
+    if (totalGender > 0) {
+      const malePct = Math.round((males / totalGender) * 100);
+      const femalePct = 100 - malePct;
+      const mb = document.getElementById('maleBar');
+      const fb = document.getElementById('femaleBar');
+      if (mb) mb.style.width = malePct + '%';
+      if (fb) fb.style.width = femalePct + '%';
+      const mc = document.getElementById('maleCount');
+      const fc = document.getElementById('femaleCount');
+      const mp = document.getElementById('malePct');
+      const fp = document.getElementById('femalePct');
+      if (mc) mc.textContent = males;
+      if (fc) fc.textContent = females;
+      if (mp) mp.textContent = malePct;
+      if (fp) fp.textContent = femalePct;
+      const hint = document.getElementById('liveHint');
+      if (hint) {
+        if (males < females * 0.7) {
+          hint.textContent = '💙 남학우 매칭 성공률 ↑ (여자 대기 많음)';
+          hint.style.color = '#3b7bd9';
+        } else if (females < males * 0.7) {
+          hint.textContent = '💗 여학우 매칭 성공률 ↑ (남자 대기 많음)';
+          hint.style.color = '#d63d80';
+        } else {
+          hint.textContent = '✨ 남녀 균형 매칭 진행 중';
+          hint.style.color = '#6dcc7a';
+        }
+      }
     }
     return;
   } catch (e) {
