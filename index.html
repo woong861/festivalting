@@ -1209,15 +1209,17 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: white;
+  background: linear-gradient(135deg, #ffffff 0%, #fff5fa 100%);
   border: 1.5px solid #ff8fbe;
-  padding: 7px 18px;
+  padding: 9px 22px;
   border-radius: 100px;
   font-family: 'Gaegu', cursive;
-  margin: 16px auto 0;
+  margin: 18px auto 0;
   font-size: 14px;
   color: #6e2d8c;
-  box-shadow: 0 4px 12px rgba(255, 93, 158, 0.2);
+  box-shadow:
+    0 6px 18px rgba(255, 93, 158, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
   animation: ddayPulse 2.2s ease-in-out infinite;
 }
 .dday-banner .dd-icon { font-size: 16px; }
@@ -1313,16 +1315,18 @@ body::before {
 
 /* ========== Benefit banner ========== */
 .benefit-banner {
-  margin: 14px auto 0;
-  max-width: 360px;
+  margin: 16px auto 0;
+  max-width: 380px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 14px 18px;
-  background: white;
-  border: 2px dashed #ff8fbe;
-  border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(255, 143, 190, 0.2);
+  gap: 8px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #fff8fc 100%);
+  border: 1.5px dashed #ff8fbe;
+  border-radius: 18px;
+  box-shadow:
+    0 6px 20px rgba(255, 143, 190, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 .benefit-row {
   font-family: 'Gaegu', cursive;
@@ -1462,15 +1466,18 @@ body::before {
   flex-wrap: wrap;
   gap: 4px 6px;
   margin-top: 10px;
-  padding: 8px 18px;
-  background: white;
-  border-radius: 18px;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, #ffffff 0%, #fff8fc 100%);
+  border: 1px solid rgba(255, 143, 190, 0.25);
+  border-radius: 22px;
   font-family: 'Gaegu', cursive;
-  font-size: 13px;
+  font-size: 13.5px;
   color: #6e2d8c;
-  max-width: 360px;
+  max-width: 380px;
   line-height: 1.4;
-  box-shadow: 0 2px 8px rgba(255, 143, 190, 0.15);
+  box-shadow:
+    0 6px 20px rgba(255, 143, 190, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 .live-dot {
   width: 8px;
@@ -1545,25 +1552,28 @@ body::before {
 
 /* === B. 얼리버드 배너 (D-day 아래) === */
 .early-bird-banner {
-  margin-top: 8px;
-  padding: 10px 14px;
-  background: linear-gradient(135deg, #fff5b0 0%, #ffe0d0 100%);
-  border: 2px dashed #ff8f3d;
-  border-radius: 14px;
+  margin-top: 10px;
+  padding: 11px 18px;
+  background: linear-gradient(135deg, #ffd6ec 0%, #ffe4d1 60%, #fff2c8 100%);
+  border: 1.5px solid rgba(255, 143, 190, 0.6);
+  border-radius: 18px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-family: 'Gaegu', cursive;
   font-size: 13px;
-  color: #b04a00;
-  box-shadow: 0 3px 10px rgba(255, 143, 61, 0.2);
+  color: #a83a68;
+  box-shadow:
+    0 4px 14px rgba(255, 143, 190, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
   animation: eb-pulse 2.4s ease-in-out infinite;
+  position: relative;
 }
-.early-bird-banner b { color: #d33500; font-family: 'Jua', sans-serif; font-size: 14px; }
-.early-bird-banner .eb-emoji { font-size: 18px; }
+.early-bird-banner b { color: #d63d80; font-family: 'Jua', sans-serif; font-size: 14px; letter-spacing: 0.2px; }
+.early-bird-banner .eb-emoji { font-size: 18px; filter: drop-shadow(0 1px 2px rgba(255, 143, 190, 0.4)); }
 @keyframes eb-pulse {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.02); }
+  0%, 100% { transform: scale(1); box-shadow: 0 4px 14px rgba(255, 143, 190, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.6); }
+  50%      { transform: scale(1.02); box-shadow: 0 6px 20px rgba(255, 143, 190, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6); }
 }
 
 /* === D. 큰 CTA 버튼 === */
