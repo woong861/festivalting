@@ -2033,16 +2033,6 @@ body::before {
       <span>지금까지</span>
       <span class="live-count" id="liveCount">―</span>
       <span>명 신청 중</span>
-      <div class="live-ratio">
-        <div class="live-ratio-bar">
-          <div class="male-bar" id="maleBar" style="width:0%"></div>
-          <div class="female-bar" id="femaleBar" style="width:0%"></div>
-        </div>
-        <div class="live-ratio-labels">
-          <span class="male-label">남 <span id="maleCount">0</span>명 (<span id="malePct">0</span>%)</span>
-          <span class="female-label">여 <span id="femaleCount">0</span>명 (<span id="femalePct">0</span>%)</span>
-        </div>
-      </div>
       <div class="live-hint" id="liveHint"></div>
     </div>
     <div class="hero-referral">
@@ -2931,35 +2921,17 @@ async function updateLiveCounter() {
     _liveCacheCount = total;
     _liveCacheAt = Date.now();
 
-    // 성비 프로그레스 바 업데이트
-    const totalGender = males + females;
-    if (totalGender > 0) {
-      const malePct = Math.round((males / totalGender) * 100);
-      const femalePct = 100 - malePct;
-      const mb = document.getElementById('maleBar');
-      const fb = document.getElementById('femaleBar');
-      if (mb) mb.style.width = malePct + '%';
-      if (fb) fb.style.width = femalePct + '%';
-      const mc = document.getElementById('maleCount');
-      const fc = document.getElementById('femaleCount');
-      const mp = document.getElementById('malePct');
-      const fp = document.getElementById('femalePct');
-      if (mc) mc.textContent = males;
-      if (fc) fc.textContent = females;
-      if (mp) mp.textContent = malePct;
-      if (fp) fp.textContent = femalePct;
-      const hint = document.getElementById('liveHint');
-      if (hint) {
-        if (males < females * 0.7) {
-          hint.textContent = '💙 남학우 매칭 성공률 ↑ (여자 대기 많음)';
-          hint.style.color = '#3b7bd9';
-        } else if (females < males * 0.7) {
-          hint.textContent = '💗 여학우 매칭 성공률 ↑ (남자 대기 많음)';
-          hint.style.color = '#d63d80';
-        } else {
-          hint.textContent = '✨ 남녀 균형 매칭 진행 중';
-          hint.style.color = '#6dcc7a';
-        }
+    // 성비 힌트 (숫자 비공개, 남학우 부족 시에만 어필)
+    const hint = document.getElementById('liveHint');
+    if (hint) {
+      if (males < females * 0.7) {
+        hint.textContent = '💙 남학우 신청 부족 · 지금 신청 시 매칭 성공률 ↑';
+        hint.style.color = '#3b7bd9';
+      } else if (females < males * 0.7) {
+        hint.textContent = '💗 여학우 신청 부족 · 지금 신청 시 매칭 성공률 ↑';
+        hint.style.color = '#d63d80';
+      } else {
+        hint.textContent = '';
       }
     }
     return;
