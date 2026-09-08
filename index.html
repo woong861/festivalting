@@ -2378,7 +2378,6 @@ body::before {
           <label><input type="radio" name="event_type" value="미팅 (3대3)" required> 미팅 (3대3)</label>
         </div>
         <p class="hint hint-warn">⚠️ 미팅은 <strong>1인 신청 불가</strong> — 친구와 함께, 대표자가 친구 정보까지 작성해주세요</p>
-        <div class="group-discount-badge" id="soloInviteBadge" style="display:none">🎁 <b>친구 2명과 함께</b> 소개팅 신청 시 대표자 <b>-3,000원 자동 할인!</b></div>
       </div>
       <div class="field">
         <label>학과 / 학년</label>
@@ -2547,8 +2546,7 @@ body::before {
           <p class="block-title">쪽지팅 (1:1 소개팅)</p>
           <p class="row"><span>남학우</span><strong><span class="old-price">20,000원</span><span class="sale-price">15,000원</span><span class="save-badge">-5천원</span></strong></p>
           <p class="row"><span>여학우</span><strong><span class="sale-price" style="color:#c43d8a">무료</span><span class="save-badge">FREE</span></strong></p>
-          <p class="deposit-hi"><span>💰&nbsp;여학우&nbsp;보증금&nbsp;5천원&nbsp;·&nbsp;<b>리뷰&nbsp;인증&nbsp;시&nbsp;100%&nbsp;환급</b></span></p>
-          <p class="row-sub"><span class="badge-hot">🎁 단체 할인</span> · <b>친구 2명과 함께 신청 시 대표자 -3,000원</b></p>
+          <p class="deposit-hi"><span>💰&nbsp;여학우&nbsp;보증금&nbsp;5천원&nbsp;_&nbsp;<b>리뷰시&nbsp;100%&nbsp;환급</b></span></p>
         </div>
         <div class="block">
           <p class="block-title">💚 미팅 (2대2 / 3대3)</p>
@@ -2968,7 +2966,6 @@ function applyEventTypeUI() {
   const val = checked ? checked.value : '';
   const section = document.getElementById('friendsSection');
   const friend2 = document.getElementById('friend2Card');
-  const soloBadge = document.getElementById('soloInviteBadge');
 
   ['1', '2'].forEach(i => {
     FRIEND_REQUIRED_FIELDS.forEach(k => {
@@ -2979,12 +2976,10 @@ function applyEventTypeUI() {
 
   if (!val || val === '소개팅') {
     if (section) section.style.display = 'none';
-    if (soloBadge) soloBadge.style.display = val === '소개팅' ? 'block' : 'none';
     updateFormProgress();
     return;
   }
 
-  if (soloBadge) soloBadge.style.display = 'none';
   if (section) section.style.display = 'block';
   FRIEND_REQUIRED_FIELDS.forEach(k => {
     const el = FORM_EL.querySelector(`[name="friend1_${k}"]`);
