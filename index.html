@@ -2128,7 +2128,7 @@ body::before {
     </div>
     <div class="early-bird-banner">
       <span class="eb-emoji">🎉</span>
-      <span>남학우 <b>-5천원 할인</b> · 여학우 <b>미팅 무료</b></span>
+      <span style="line-height:1.5;text-align:center"><b>1천명 돌파 기념</b><br>남학우 <b>-5천원 할인</b> · 여학우 <b>미팅 무료</b></span>
     </div>
     <div class="live-counter" id="liveCounter">
       <span class="live-dot"></span>
@@ -2374,6 +2374,7 @@ body::before {
           <label><input type="radio" name="event_type" value="미팅 (3대3)" required> 미팅 (3대3)</label>
         </div>
         <p class="hint hint-warn">⚠️ 미팅은 <strong>1인 신청 불가</strong> — 친구와 함께, 대표자가 친구 정보까지 작성해주세요</p>
+        <div class="group-discount-badge" id="soloInviteBadge" style="display:none">🎁 <b>친구 2명과 함께</b> 소개팅 신청 시 대표자 <b>-3,000원 자동 할인!</b></div>
       </div>
       <div class="field">
         <label>학과 / 학년</label>
@@ -2520,7 +2521,6 @@ body::before {
       <div class="friends-section" id="friendsSection" style="display:none">
         <h3 class="friends-title">👯‍♀️ 같이 신청할 친구 정보</h3>
         <p class="friends-sub">친구는 따로 신청 안 해도 돼요. 대표자가 한 번에 작성 ♡</p>
-        <div class="group-discount-badge">🎁 <b>친구 2명 모두</b> 채우면 대표자 <b>-3,000원 자동 할인!</b></div>
 
         <div class="friend-card" data-idx="1">
           <div class="friend-badge">친구 1</div>
@@ -2545,12 +2545,12 @@ body::before {
           <p class="row-sub"><span class="badge-hot">🎉 1천명 돌파</span> 기념 · <b>-5,000원 할인가</b></p>
           <p class="row"><span>여학우</span><strong><span class="sale-price" style="color:#c43d8a">무료</span><span class="save-badge">FREE</span></strong></p>
           <p class="deposit-hi">💰 보증금 5천원 · <b>리뷰 인증 시 100% 환급</b></p>
+          <p class="row-sub"><span class="badge-hot">🎁 단체 할인</span> · <b>친구 2명과 함께 신청 시 대표자 -3,000원</b></p>
         </div>
         <div class="block">
           <p class="block-title">💚 미팅 (2대2 / 3대3)</p>
           <p class="row"><span>남성</span><strong>1인 6,000원</strong></p>
           <p class="row"><span>여성</span><strong><span class="sale-price" style="color:#c43d8a">무료</span><span class="save-badge">FREE</span></strong></p>
-          <p class="row-sub"><span class="badge-hot">🎁 단체 할인</span> · <b>친구 2명 모두 신청 시 대표자 -3,000원</b></p>
         </div>
         <div class="block">
           <p class="block-title">🎴 카드 추가 옵션</p>
@@ -2965,6 +2965,7 @@ function applyEventTypeUI() {
   const val = checked ? checked.value : '';
   const section = document.getElementById('friendsSection');
   const friend2 = document.getElementById('friend2Card');
+  const soloBadge = document.getElementById('soloInviteBadge');
 
   ['1', '2'].forEach(i => {
     FRIEND_REQUIRED_FIELDS.forEach(k => {
@@ -2975,10 +2976,12 @@ function applyEventTypeUI() {
 
   if (!val || val === '소개팅') {
     if (section) section.style.display = 'none';
+    if (soloBadge) soloBadge.style.display = val === '소개팅' ? 'block' : 'none';
     updateFormProgress();
     return;
   }
 
+  if (soloBadge) soloBadge.style.display = 'none';
   if (section) section.style.display = 'block';
   FRIEND_REQUIRED_FIELDS.forEach(k => {
     const el = FORM_EL.querySelector(`[name="friend1_${k}"]`);
