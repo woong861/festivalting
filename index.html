@@ -1045,6 +1045,20 @@ body::before {
   color: #6b8c5a;
   margin-bottom: 12px;
 }
+.group-discount-badge {
+  background: linear-gradient(135deg, #fff1f7, #ffe4ee);
+  border: 1.5px dashed #ff8fbe;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  font-family: 'Gaegu', cursive;
+  font-size: 14px;
+  color: #c43d8a;
+  text-align: center;
+  line-height: 1.5;
+  animation: slotsPulse 2s ease-in-out infinite;
+}
+.group-discount-badge b { font-family: 'Jua', sans-serif; color: #ff2470; }
 .friend-card {
   background: rgba(255, 255, 255, 0.55);
   border-radius: 10px;
@@ -1525,6 +1539,32 @@ body::before {
   text-align: center;
 }
 .live-split.recruit { color: #e63946; font-weight: 700; }
+
+.live-slots {
+  flex-basis: 100%;
+  margin-top: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #fff1f7, #ffe4ee);
+  border: 1px dashed #ff8fbe;
+  border-radius: 14px;
+  font-family: 'Gaegu', cursive;
+  font-size: 13px;
+  color: #c43d8a;
+  text-align: center;
+  animation: slotsPulse 2s ease-in-out infinite;
+}
+.live-slots b { font-family: 'Jua', sans-serif; color: #ff2470; font-size: 15px; margin: 0 2px; }
+.live-slots .ls-fire { display: inline-block; animation: slotsFire 1.2s ease-in-out infinite; }
+.live-slots.urgent { background: linear-gradient(135deg, #fff0f0, #ffdada); border-color: #ff5252; color: #d62828; }
+.live-slots.urgent b { color: #d62828; }
+@keyframes slotsPulse {
+  0%, 100% { box-shadow: 0 2px 6px rgba(255, 143, 190, 0.25); }
+  50%      { box-shadow: 0 3px 12px rgba(255, 36, 112, 0.4); }
+}
+@keyframes slotsFire {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50%      { transform: scale(1.15) rotate(3deg); }
+}
 
 /* === A. 신청자 카운터 시각화 (성비 바) === */
 .live-ratio {
@@ -2063,6 +2103,7 @@ body::before {
       <span>지금까지</span>
       <span class="live-count" id="liveCount">―</span>
       <span>명 신청 중</span>
+      <div class="live-slots" id="liveSlots"><span class="ls-fire">🔥</span> 이번 회차 남은 자리 <b><span id="slotsRemain">―</span>석</b></div>
       <div class="live-hint" id="liveHint"></div>
     </div>
     <div class="hero-referral">
@@ -2447,6 +2488,7 @@ body::before {
       <div class="friends-section" id="friendsSection" style="display:none">
         <h3 class="friends-title">👯‍♀️ 같이 신청할 친구 정보</h3>
         <p class="friends-sub">친구는 따로 신청 안 해도 돼요. 대표자가 한 번에 작성 ♡</p>
+        <div class="group-discount-badge">🎁 <b>친구 2명 모두</b> 채우면 대표자 <b>-3,000원 자동 할인!</b></div>
 
         <div class="friend-card" data-idx="1">
           <div class="friend-badge">친구 1</div>
@@ -2476,6 +2518,7 @@ body::before {
           <p class="block-title">💚 미팅 (2대2 / 3대3)</p>
           <p class="row"><span>남성</span><strong>1인 6,000원</strong></p>
           <p class="row"><span>여성</span><strong><span class="sale-price" style="color:#c43d8a">무료</span><span class="save-badge">FREE</span></strong></p>
+          <p class="row-sub"><span class="badge-hot">🎁 단체 할인</span> · <b>친구 2명 모두 신청 시 대표자 -3,000원</b></p>
         </div>
         <div class="block">
           <p class="block-title">🎴 카드 추가 옵션</p>
@@ -2992,6 +3035,30 @@ const COUNTER_PER_HOUR = 0.5;
 
 let _liveCacheCount = null;
 let _liveCacheAt = 0;
+
+// 이번 회차 잔여 슬롯 (하드 상수 · 마감일까지 자연 감소 시뮬)
+// 정원 조정: SLOTS_START(D-7 시점) / SLOTS_END(마감 직전)
+const SLOTS_START = 68;
+const SLOTS_END = 3;
+function computeRemainingSlots() {
+  const now = new Date();
+  const msLeft = APPLICATION_DEADLINE - now;
+  if (msLeft <= 0) return 0;
+  const daysLeft = msLeft / 86400000;
+  const ratio = Math.min(1, daysLeft / 7);
+  return Math.max(SLOTS_END, Math.round(SLOTS_END + (SLOTS_START - SLOTS_END) * ratio));
+}
+function updateSlots() {
+  const slots = document.getElementById('slotsRemain');
+  const wrap = document.getElementById('liveSlots');
+  if (!slots || !wrap) return;
+  const n = computeRemainingSlots();
+  slots.textContent = n;
+  if (n <= 15) wrap.classList.add('urgent');
+  else wrap.classList.remove('urgent');
+}
+updateSlots();
+setInterval(updateSlots, 60000);
 
 async function updateLiveCounter() {
   const el = document.getElementById('liveCount');
