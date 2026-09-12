@@ -2460,56 +2460,6 @@ body::before {
         </div>
       </div>
 
-      <div class="field card-options-field school-tier-field">
-        <label>🎓 학교 선호 옵션 (선택)</label>
-        <p class="hint">특정 학교 이성 <b>우선 매칭</b>을 원한다면 선택해줘</p>
-        <div class="card-options">
-          <label class="card-option">
-            <input type="radio" name="school_tier" value="무관 (기본)" checked>
-            <div class="card-option-inner">
-              <div class="card-option-body">
-                <div class="card-option-title">학교 무관</div>
-                <div class="card-option-desc">모든 학교 이성 매칭</div>
-              </div>
-              <div class="card-option-price">+0원</div>
-            </div>
-          </label>
-          <label class="card-option">
-            <input type="radio" name="school_tier" value="같은 학교 매칭">
-            <div class="card-option-inner">
-              <span class="card-option-badge">🏫 같은 학교</span>
-              <div class="card-option-body">
-                <div class="card-option-title">같은 학교 매칭</div>
-                <div class="card-option-desc">내 학교 이성만 매칭 (CC ↑)</div>
-              </div>
-              <div class="card-option-price">+10,000원</div>
-            </div>
-          </label>
-          <label class="card-option featured">
-            <input type="radio" name="school_tier" value="서성한 우선 (서강대·성균관대·한양대)">
-            <div class="card-option-inner">
-              <span class="card-option-badge">🏛 서성한</span>
-              <div class="card-option-body">
-                <div class="card-option-title">서성한 우선 매칭</div>
-                <div class="card-option-desc">서강대·성균관대·한양대</div>
-              </div>
-              <div class="card-option-price">+10,000원</div>
-            </div>
-          </label>
-          <label class="card-option premium">
-            <input type="radio" name="school_tier" value="서연고 우선 (서울대·연세대·고려대)">
-            <div class="card-option-inner">
-              <span class="card-option-badge">🏛 서연고</span>
-              <div class="card-option-body">
-                <div class="card-option-title">서연고 우선 매칭</div>
-                <div class="card-option-desc">서울대·연세대·고려대</div>
-              </div>
-              <div class="card-option-price">+20,000원</div>
-            </div>
-          </label>
-        </div>
-      </div>
-
       <div class="friends-section" id="friendsSection" style="display:none">
         <h3 class="friends-title">👯‍♀️ 같이 신청할 친구 정보</h3>
         <p class="friends-sub">친구는 따로 신청 안 해도 돼요. 대표자가 한 번에 작성 ♡</p>
@@ -2545,12 +2495,6 @@ body::before {
           <p class="block-title">🎴 카드 추가 옵션</p>
           <p class="row"><span>+2장 (3장 중 선택)</span><strong>+10,000원</strong></p>
           <p class="row"><span>+5장 (6장 중 선택)</span><strong>+20,000원</strong></p>
-        </div>
-        <div class="block">
-          <p class="block-title">🎓 학교 선호 옵션</p>
-          <p class="row"><span>같은 학교 매칭</span><strong>+10,000원</strong></p>
-          <p class="row"><span>서성한 우선</span><strong>+10,000원</strong></p>
-          <p class="row"><span>서연고 우선</span><strong>+20,000원</strong></p>
         </div>
         <div class="account">
           <p class="block-title">📩 입금 계좌</p>
@@ -2645,11 +2589,7 @@ const FIELD_IDS = {
   mbti: 'entry.833869921',
   intro: 'entry.922392339',
   ideal: 'entry.502467816',
-  // 카드 추가 옵션 — 구글폼에 새 필드 만들고 entry ID 여기에 붙여넣기
-  card_option: '',
-  // 학교 선호 옵션 — 구글폼에 새 필드 만들고 entry ID 여기에 붙여넣기
-  school_tier: '',
-  // 미팅 친구 정보는 구글폼에 따로 칸 만들 필요 없이
+  // 카드 추가 옵션 / 미팅 친구 정보는 구글폼에 따로 칸 만들 필요 없이
   // 제출 시 "한 줄 자기소개" 칸 끝에 자동으로 합쳐서 보냄 (아래 submit 핸들러 참고)
   payment: 'entry.278115013',
   refund: 'entry.1944630219'
@@ -2787,29 +2727,35 @@ document.getElementById('applyForm').addEventListener('submit', function(e) {
   btn.disabled = true;
   btn.textContent = '보내는 중...';
 
-  // 친구 정보를 자기소개 끝에 합쳐서 제출 (구글폼에 친구 칸 따로 만들 필요 X)
+  // 카드옵션/친구정보를 자기소개 끝에 합쳐서 제출 (구글폼 필드 추가 없이 시트 저장)
   const _eventType = (this.querySelector('input[name="event_type"]:checked') || {}).value || '';
   const _isMeeting = _eventType && _eventType !== '소개팅';
   const _introField = this.querySelector('textarea[name="intro"]');
+  const _cardOption = (this.querySelector('input[name="card_option"]:checked') || {}).value || '';
   let _originalIntro = _introField ? _introField.value : '';
-  if (_isMeeting && _introField) {
-    const buildFriend = (idx) => {
-      const n = (this.querySelector(`input[name="friend${idx}_name"]`) || {}).value || '';
-      const i = (this.querySelector(`input[name="friend${idx}_instagram"]`) || {}).value || '';
-      const k = (this.querySelector(`input[name="friend${idx}_kakao"]`) || {}).value || '';
-      if (!n && !i && !k) return '';
-      const parts = [];
-      if (n) parts.push(`이름:${n.trim()}`);
-      if (i) parts.push(`인스타:@${i.trim().replace(/^@/, '')}`);
-      if (k) parts.push(`카톡:${k.trim()}`);
-      return `[친구${idx}] ` + parts.join(' / ');
-    };
-    const friend1 = buildFriend(1);
-    const friend2 = _eventType.includes('3대3') ? buildFriend(2) : '';
-    const friendsBlock = [friend1, friend2].filter(Boolean).join('\n');
-    if (friendsBlock) {
+  const _hasCardExtra = _cardOption && _cardOption !== '기본 (1장)';
+  if (_introField && (_isMeeting || _hasCardExtra)) {
+    const extras = [];
+    if (_hasCardExtra) extras.push(`[카드옵션] ${_cardOption}`);
+    if (_isMeeting) {
+      const buildFriend = (idx) => {
+        const n = (this.querySelector(`input[name="friend${idx}_name"]`) || {}).value || '';
+        const i = (this.querySelector(`input[name="friend${idx}_instagram"]`) || {}).value || '';
+        const k = (this.querySelector(`input[name="friend${idx}_kakao"]`) || {}).value || '';
+        if (!n && !i && !k) return '';
+        const parts = [];
+        if (n) parts.push(`이름:${n.trim()}`);
+        if (i) parts.push(`인스타:@${i.trim().replace(/^@/, '')}`);
+        if (k) parts.push(`카톡:${k.trim()}`);
+        return `[친구${idx}] ` + parts.join(' / ');
+      };
+      const friend1 = buildFriend(1);
+      const friend2 = _eventType.includes('3대3') ? buildFriend(2) : '';
+      [friend1, friend2].filter(Boolean).forEach(f => extras.push(f));
+    }
+    if (extras.length > 0) {
       _introField.removeAttribute('maxlength');
-      _introField.value = (_originalIntro ? _originalIntro.trim() + '\n\n' : '') + friendsBlock;
+      _introField.value = (_originalIntro ? _originalIntro.trim() + '\n\n' : '') + extras.join('\n');
     }
   }
 
@@ -2835,7 +2781,7 @@ document.getElementById('applyForm').addEventListener('submit', function(e) {
   }
 
   // 자기소개 원복 (UI 깔끔하게)
-  if (_introField && _isMeeting) {
+  if (_introField && (_isMeeting || _hasCardExtra)) {
     _introField.setAttribute('maxlength', '60');
     _introField.value = _originalIntro;
   }
