@@ -1942,6 +1942,29 @@ body::before {
 .next-list ul li::before { content: '✓ '; color: #ff5d9e; font-weight: 700; }
 .next-steps .follow-cta { margin-top: 6px; }
 
+.pay-account-box {
+  margin: 6px 0 10px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #fff8fc, #fff1f7);
+  border: 1.5px dashed #ff8fbe;
+  border-radius: 12px;
+  text-align: center;
+}
+.pay-account-box .pay-bank {
+  font-family: 'Jua', sans-serif;
+  font-size: 15.5px;
+  color: #d63d80;
+  margin: 0 0 3px;
+  letter-spacing: 0.3px;
+  word-break: break-all;
+}
+.pay-account-box .pay-holder {
+  font-family: 'Gaegu', cursive;
+  font-size: 13px;
+  color: #a25080;
+  margin: 0;
+}
+
 .kakao-cta {
   display: block;
   width: 100%;
@@ -2320,7 +2343,7 @@ body::before {
 
     <details class="faq-item">
       <summary>비용은 어떻게 입금해요?</summary>
-      <div class="answer">신청서 안에 입금 계좌 안내가 있어요. 입금하신 후 '입금자명 / 시간 / 금액'을 신청서에 적어주시면 됩니다.</div>
+      <div class="answer">신청 완료 후 안내 화면에 입금 계좌가 표시돼요. 입금 후 오픈카톡방에 입금내역 사진을 보내주세요 ♡</div>
     </details>
 
     <details class="faq-item">
@@ -2497,9 +2520,8 @@ body::before {
           <p class="row"><span>+5장 (6장 중 선택)</span><strong>+20,000원</strong></p>
         </div>
         <div class="account">
-          <p class="block-title">📩 입금 계좌</p>
-          <p class="account-num">카카오뱅크 3333-24-1809842</p>
-          <p>예금주: 박*일</p>
+          <p class="block-title">📩 입금 계좌 안내</p>
+          <p style="color:#a25080;font-size:13.5px;line-height:1.6;margin:6px 0">신청 완료 후 <b style="color:#ff2470">안내 화면</b>에 입금 계좌가 표시돼요 ♡</p>
         </div>
         <p class="notice">입금 확인 후 매칭이 진행돼요 ♡</p>
       </div>
@@ -2536,6 +2558,12 @@ body::before {
     <div class="next-steps">
       <div class="next-title">📌 신청 마무리하기 (필수)</div>
       <ol class="next-list">
+        <li><b>아래 계좌로 입금</b>
+          <div class="pay-account-box">
+            <p class="pay-bank">국민 78232593129310</p>
+            <p class="pay-holder">예금주: 이*익</p>
+          </div>
+        </li>
         <li>아래 <b>오픈카톡방</b> 입장 (<b>기본프로필</b>로 입장)</li>
         <li>방에 사진 보내기
           <ul>
