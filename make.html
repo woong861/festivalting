@@ -455,6 +455,8 @@ body {
   <div class="config-bar">
     <label>Apps Script URL:</label>
     <input type="text" id="apiUrl" value="https://script.google.com/macros/s/AKfycbzM8IYXCT9NeD9K-L0Dval98J46dcnbkR2ElzgPN7fRvvchcuMfEfzC_HX89o8U4GXI/exec" />
+    <label>운영진 키:</label>
+    <input type="password" id="adminKey" placeholder="처음 한 번만 입력" autocomplete="off" style="max-width:200px" />
     <button class="btn btn-secondary" onclick="loadApplicants()">🔄 신청자 새로고침</button>
   </div>
 
@@ -570,6 +572,14 @@ body {
 </div>
 
 <script>
+// 운영진 키 (브라우저에 저장)
+function adminKey() {
+  const v = (document.getElementById('adminKey') || {}).value || '';
+  try { if (v) localStorage.setItem('zz_admin_key', v.trim()); } catch (e) { }
+  return v.trim();
+}
+window.addEventListener('DOMContentLoaded', () => { try { const k = localStorage.getItem('zz_admin_key'); if (k) document.getElementById('adminKey').value = k; } catch (e) { } });
+
 // ============ STATE ============
 let APPLICANTS = [];
 let slotA = null, slotB = null;
@@ -629,7 +639,9 @@ async function loadApplicants() {
   const listEl = document.getElementById('applicantList');
   listEl.innerHTML = '<div class="list-empty">⏳ 로드 중...</div>';
   try {
-    const res = await fetch(url + '?action=postitListApplicants&t=' + Date.now());
+    const key = adminKey();
+    if (!key) { alert('운영진 키를 먼저 입력하세요'); return; }
+    const res = await fetch(url + '?action=postitListApplicants&key=' + encodeURIComponent(key) + '&t=' + Date.now());
     const data = await res.json();
     APPLICANTS = data.applicants || [];
     document.getElementById('loadedCount').textContent = `${APPLICANTS.length}명 로드`;
@@ -857,6 +869,7 @@ async function sendSms() {
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         type: 'sendPostitMatch',
+        key: adminKey(),
         a: { name: slotA.name, phone: slotA.phone, url: urlA, row: slotA.row },
         b: { name: slotB.name, phone: slotB.phone, url: urlB, row: slotB.row }
       })
@@ -1026,6 +1039,7 @@ async function generatePickUrl() {
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         type: 'createPickSession',
+        key: adminKey(),
         id: sessionId,
         payload: payload
       })
@@ -1075,6 +1089,7 @@ async function sendPickSms() {
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         type: 'sendPostitPickerSms',
+        key: adminKey(),
         picker: {
           name: pickerSlot.name,
           phone: pickerSlot.phone,

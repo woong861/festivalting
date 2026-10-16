@@ -3098,12 +3098,13 @@ async function updateLiveCounter() {
 
   // 실제 신청자 데이터 fetch
   try {
-    const res = await fetch(COUNTER_APPS_SCRIPT + '?action=postitListApplicants', { cache: 'no-store' });
+    // 숫자만 받아옴 (신청자 개인정보는 운영진 키 없이 안 내려옴)
+    const res = await fetch(COUNTER_APPS_SCRIPT + '?action=postitStats', { cache: 'no-store' });
     const data = await res.json();
-    const apps = data.applicants || [];
-    const total = apps.length;
-    const males = apps.filter(a => a.gender === '남자').length;
-    const females = apps.filter(a => a.gender === '여자').length;
+    if (typeof data.total !== 'number') throw new Error('stats unavailable');
+    const total = data.total;
+    const males = data.male || 0;
+    const females = data.female || 0;
 
     el.textContent = total;
     _liveCacheCount = total;
