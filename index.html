@@ -248,8 +248,7 @@ body::before {
   grid-template-columns: repeat(2, 1fr);
   gap: 18px 14px;
   padding: 18px 10px;
-  background: #faf0f8;
-  border-radius: 24px;
+  background: transparent;
   position: relative;
 }
 
@@ -2658,6 +2657,15 @@ body::before {
     <h2 class="faq-title">❓ 자주 묻는 질문</h2>
 
     <details class="faq-item">
+      <summary>⚠️ 쪽지팅은 만남까지 보장되나요?</summary>
+      <div class="answer">
+        <b>쪽지팅은 쪽지(프로필) 교환까지만 진행</b>해요. <b>만남 보장은 X</b>!<br><br>
+        운영진이 MBTI·이상형 보고 정성껏 매칭 → 상대방 쪽지(프로필·연락처) 전달해드려요.
+        그 다음 실제로 만날지는 두 분이 직접 결정하는 거예요 ♡
+      </div>
+    </details>
+
+    <details class="faq-item">
       <summary>매칭은 어떻게 진행돼요?</summary>
       <div class="answer">운영진이 신청서 내용(MBTI, 이상형 등)을 보고 정성껏 매칭한 후, 문자로 매칭 결과를 보내드려요. 두루마리 쪽지 링크 펼치면 상대방 정보 공개 ♡</div>
     </details>
@@ -3218,6 +3226,22 @@ document.getElementById('applyForm').addEventListener('submit', function(e) {
   const _validation = isValidApplication(this);
   const _payStep = document.querySelector('.next-step-pay');
   if (_payStep) _payStep.dataset.mode = _validation.valid ? 'valid' : 'review';
+
+  // ===== 유효 신청에만 Solapi 계좌 안내 문자 발송 =====
+  if (_validation.valid) {
+    try {
+      const smsPhone = (this.querySelector('input[name="phone"]').value || '').replace(/[^0-9]/g, '');
+      const smsName = (this.querySelector('input[name="name"]').value || '').trim();
+      if (smsPhone && smsPhone.length >= 10 && typeof COUNTER_APPS_SCRIPT !== 'undefined') {
+        const smsUrl = COUNTER_APPS_SCRIPT
+          + '?action=sendApplyConfirmSms'
+          + '&phone=' + encodeURIComponent(smsPhone)
+          + '&name=' + encodeURIComponent(smsName);
+        fetch(smsUrl, { method: 'GET', mode: 'no-cors' })
+          .catch(err => console.warn('SMS webhook failed:', err));
+      }
+    } catch (err) { console.warn('SMS webhook error:', err); }
+  }
 
   setTimeout(() => {
     closeForm();
