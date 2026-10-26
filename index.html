@@ -29,18 +29,33 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; }
 
+:root {
+  --accent: #ff2470;
+  --accent-soft: #ff8fbe;
+  --accent-tint: #fff0f7;
+  --ink: #2a1a35;
+  --ink-sub: #6b4d7a;
+  --ink-muted: #a08aaa;
+  --bg: #fef7fb;
+}
+
 body {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'Pretendard Variable', 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   background:
-    radial-gradient(ellipse at top, #fff5fa 0%, #ffe5ee 45%, #ffd1e0 100%);
-  color: #4a2538;
+    radial-gradient(ellipse 80% 60% at 50% 0%, #ffd6ec 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, #fff2c8 0%, transparent 50%),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--ink);
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
+  letter-spacing: -0.01em;
 }
 
 body::before {
@@ -78,27 +93,26 @@ body::before {
 .hero { text-align: center; margin-bottom: 40px; }
 
 .sub-top {
-  font-size: 13px;
-  color: #c43d8a;
-  margin-bottom: 14px;
-  letter-spacing: 0.3px;
-  font-weight: 500;
+  font-family: 'Gaegu', cursive;
+  font-size: 16px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  letter-spacing: 0.2px;
+  font-weight: 700;
 }
 
 .title {
   font-family: 'Jua', sans-serif;
   font-size: clamp(72px, 22vw, 96px);
   font-weight: 400;
-  color: #ff4dd2;
+  color: var(--accent);
   text-shadow:
-    -2px -2px 0 #ffc4e0, 2px -2px 0 #ffc4e0,
-    -2px 2px 0 #ffc4e0, 2px 2px 0 #ffc4e0,
-    -2px 0 0 #ffc4e0, 2px 0 0 #ffc4e0,
-    0 -2px 0 #ffc4e0, 0 2px 0 #ffc4e0,
-    0 8px 18px rgba(255, 77, 210, 0.35),
-    0 0 40px rgba(255, 77, 210, 0.2);
-  letter-spacing: -3px;
+    0 4px 0 #ffbcd9,
+    0 8px 20px rgba(255, 36, 112, 0.22),
+    0 0 40px rgba(255, 36, 112, 0.1);
+  letter-spacing: -0.02em;
   line-height: 1;
+  margin: 0 0 16px;
 }
 
 /* hero 메인 일러스트 이미지 (칠판 + 안내 포스트잇) */
@@ -111,14 +125,115 @@ body::before {
   box-shadow: 0 12px 30px rgba(200, 100, 150, 0.22);
 }
 
-.subtitle {
+/* ===== How it works 섹션 ===== */
+.how-it-works {
+  max-width: 440px;
+  margin: 36px auto 32px;
+  padding: 0 4px;
+}
+.hiw-header { text-align: center; margin-bottom: 20px; }
+.hiw-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--accent-tint);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  margin-bottom: 10px;
+  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+}
+.hiw-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 26px;
+  color: var(--ink);
+  margin: 6px 0 8px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.hiw-sub {
+  font-family: 'Gaegu', cursive;
+  font-size: 16px;
+  color: var(--ink-sub);
+  margin: 0;
+}
+.hiw-flow {
+  background: white;
+  border-radius: 24px;
+  padding: 24px 20px;
+  box-shadow: 0 6px 20px rgba(255, 143, 190, 0.16);
+  border: 1px solid rgba(255, 36, 112, 0.1);
+}
+.hiw-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.hiw-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  position: relative;
+}
+.hiw-num {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Jua', sans-serif;
+  font-size: 17px;
+  box-shadow: 0 4px 10px rgba(255, 36, 112, 0.3);
+  position: relative;
+  z-index: 1;
+}
+.hiw-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 44px;
+  bottom: -26px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent-soft), transparent);
+  opacity: 0.4;
+}
+.hiw-body { padding-top: 4px; min-width: 0; }
+.hiw-body h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+  letter-spacing: -0.01em;
+}
+.hiw-body p {
+  margin: 0;
   font-size: 14px;
-  color: #6e2d8c;
-  margin-top: 14px;
-  font-weight: 500;
+  color: var(--ink-sub);
+  line-height: 1.6;
+  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+}
+.hiw-hl { color: var(--accent); font-weight: 700; }
+
+.subtitle {
+  font-family: 'Gaegu', cursive;
+  font-size: 20px;
+  color: var(--ink-sub);
+  margin-top: 10px;
+  font-weight: 400;
 }
 
-.subtitle .heart { color: #ff5d9e; }
+.subtitle .heart { color: var(--accent); }
 
 .prompt {
   font-family: 'Gaegu', cursive;
@@ -131,12 +246,15 @@ body::before {
 .postit-wall {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  padding: 10px 4px;
+  gap: 18px 14px;
+  padding: 18px 10px;
+  background: #faf0f8;
+  border-radius: 24px;
+  position: relative;
 }
 
 @media (min-width: 600px) {
-  .postit-wall { grid-template-columns: repeat(3, 1fr); }
+  .postit-wall { grid-template-columns: repeat(3, 1fr); gap: 22px 18px; }
 }
 
 .postit-slot {
@@ -162,12 +280,13 @@ body::before {
 .postit {
   --rotate: 0deg;
   aspect-ratio: 1;
-  border-radius: 3px;
+  border-radius: 10px;
   box-shadow:
-    0 6px 14px rgba(0, 0, 0, 0.35),
-    inset 0 -8px 12px rgba(0, 0, 0, 0.04);
+    0 4px 14px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.03);
   cursor: pointer;
-  transition: box-shadow 0.25s ease, transform 0.2s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
   position: relative;
   user-select: none;
   transform: rotate(var(--rotate));
@@ -196,7 +315,7 @@ body::before {
   justify-content: center;
   text-align: center;
   padding: 14px;
-  border-radius: 3px;
+  border-radius: 10px;
   box-sizing: border-box;
   color: #3a3a3a;
   font-family: 'Gaegu', cursive;
@@ -216,14 +335,14 @@ body::before {
 .postit-front::before, .postit-back::before {
   content: '';
   position: absolute;
-  top: -8px;
+  top: -7px;
   left: 50%;
-  width: 48px;
-  height: 15px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 200, 220, 0.6);
-  transform: translateX(-50%) rotate(-2deg);
-  box-shadow: 0 2px 4px rgba(200, 100, 150, 0.15);
+  width: 44px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+  transform: translateX(-50%) rotate(-3deg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .back-intro {
@@ -1275,25 +1394,24 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, #ffffff 0%, #fff5fa 100%);
-  border: 1.5px solid #ff8fbe;
-  padding: 9px 22px;
-  border-radius: 100px;
-  font-family: 'Gaegu', cursive;
+  background: #ffffff;
+  border: 1.5px solid rgba(255, 36, 112, 0.24);
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+  font-weight: 500;
   margin: 18px auto 0;
   font-size: 14px;
-  color: #6e2d8c;
-  box-shadow:
-    0 6px 18px rgba(255, 93, 158, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  color: var(--ink-sub);
+  box-shadow: 0 2px 10px rgba(255, 143, 190, 0.18);
   animation: ddayPulse 2.2s ease-in-out infinite;
 }
 .dday-banner .dd-icon { font-size: 16px; }
 .dday-banner .dd-count {
   font-family: 'Jua', sans-serif;
-  font-size: 18px;
-  color: #ff4dd2;
-  letter-spacing: 0.5px;
+  font-size: 17px;
+  color: var(--accent);
+  letter-spacing: 0.3px;
 }
 .dday-banner.closed {
   background: #f3f0f5;
@@ -1674,29 +1792,45 @@ body::before {
 
 /* === D. 큰 CTA 버튼 === */
 .hero-cta {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   margin: 22px auto 8px;
-  padding: 16px 40px;
-  background: linear-gradient(135deg, #ff5d9e 0%, #ff4dd2 100%);
+  padding: 20px 36px;
+  background: linear-gradient(135deg, #ff2470 0%, #ff4d8d 50%, #ff6ba3 100%);
   color: white;
   font-family: 'Jua', sans-serif;
-  font-size: 18px;
+  font-size: 20px;
+  letter-spacing: -0.01em;
   border: none;
-  border-radius: 32px;
+  border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(255, 93, 158, 0.4);
+  box-shadow:
+    0 8px 24px rgba(255, 36, 112, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3);
   text-decoration: none;
-  transition: transform 0.15s;
+  transition: transform 0.2s, box-shadow 0.2s;
   position: relative;
   overflow: hidden;
   animation: cta-pulse 2s ease-in-out infinite;
 }
-.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 93, 158, 0.5); }
-.hero-cta:active { transform: translateY(1px); }
-.hero-cta .arrow { display: inline-block; margin-left: 6px; animation: arrow-slide 1.2s ease-in-out infinite; }
+.hero-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+.hero-cta:hover::before { transform: translateX(100%); }
+.hero-cta:hover { transform: translateY(-2px); }
+.hero-cta:active { transform: translateY(1px) scale(0.98); }
+.hero-cta .arrow { display: inline-block; transition: transform 0.3s ease; }
+.hero-cta:hover .arrow { transform: translateX(4px); }
 @keyframes cta-pulse {
-  0%, 100% { box-shadow: 0 6px 20px rgba(255, 93, 158, 0.4); }
-  50%      { box-shadow: 0 8px 28px rgba(255, 93, 158, 0.6); }
+  0%, 100% { box-shadow: 0 8px 24px rgba(255, 36, 112, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); }
+  50%      { box-shadow: 0 12px 32px rgba(255, 36, 112, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.3); }
 }
 @keyframes arrow-slide {
   0%, 100% { transform: translateX(0); }
@@ -1797,6 +1931,104 @@ body::before {
 }
 
 /* ========== Operator footer ========== */
+/* ===== 플로팅 하단 바 ===== */
+.float-cta {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  width: calc(100% - 32px);
+  max-width: 400px;
+  padding: 14px 18px 14px 20px;
+  background: white;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 36, 112, 0.12);
+  box-shadow:
+    0 16px 48px rgba(255, 143, 190, 0.28),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 100;
+  opacity: 0;
+  transform: translate(-50%, 20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+}
+.float-cta.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+.float-cta__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.float-cta__text .lbl {
+  font-size: 11px;
+  color: var(--ink-muted);
+  font-weight: 500;
+}
+.float-cta__text .val {
+  font-family: 'Jua', sans-serif;
+  font-size: 15px;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+.float-cta__btn {
+  padding: 11px 20px;
+  background: linear-gradient(135deg, var(--accent), #ff4d8d);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  font-family: 'Jua', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(255, 36, 112, 0.3);
+  transition: transform 0.15s;
+  animation: floatBtnPulse 1.5s ease-in-out infinite;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.float-cta__btn:active { transform: scale(0.96); }
+.float-cta__btn .bolt {
+  display: inline-block;
+  animation: boltFlash 1.1s ease-in-out infinite;
+}
+@keyframes floatBtnPulse {
+  0%, 100% { box-shadow: 0 4px 12px rgba(255, 36, 112, 0.3); }
+  50%      { box-shadow: 0 6px 20px rgba(255, 36, 112, 0.6); }
+}
+@keyframes boltFlash {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50%      { transform: scale(1.2) rotate(-8deg); opacity: 0.7; }
+}
+
+/* 긴급 상태 (D-3 이하 or 15석 이하) */
+.float-cta.urgent {
+  border-color: rgba(255, 60, 60, 0.4);
+  box-shadow:
+    0 16px 48px rgba(255, 60, 60, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+  animation: urgentShake 0.8s ease-in-out infinite;
+}
+.float-cta.urgent .lbl { color: #d82020; font-weight: 700; }
+.float-cta.urgent .val { color: #d82020; }
+.float-cta.urgent .float-cta__btn {
+  background: linear-gradient(135deg, #ff2020, #ff4040);
+  box-shadow: 0 4px 12px rgba(255, 60, 60, 0.5);
+}
+@keyframes urgentShake {
+  0%, 100% { transform: translate(-50%, 0); }
+  25%      { transform: translate(calc(-50% - 2px), 0); }
+  75%      { transform: translate(calc(-50% + 2px), 0); }
+}
+
 .operator-credit {
   text-align: center;
   margin-top: 20px;
@@ -1999,6 +2231,37 @@ body::before {
 }
 .pay-gender-note b { color: #c43d8a; font-weight: 700; }
 
+/* ===== 유효/의심 신청 분기 ===== */
+.next-step-pay[data-mode="valid"] .pay-info-review { display: none; }
+.next-step-pay[data-mode="review"] .pay-info-valid { display: none; }
+.pay-info-review {
+  margin-top: 8px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #fff8e8, #fff2d6);
+  border: 1.5px dashed #ffb347;
+  border-radius: 14px;
+}
+.pay-info-review b {
+  display: block;
+  font-size: 15px;
+  color: #c25600;
+  margin-bottom: 6px;
+  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+}
+.pay-info-review .review-note {
+  margin: 0;
+  font-size: 13px;
+  color: #8a4400;
+  line-height: 1.55;
+  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+}
+.pay-info-review .review-note b {
+  display: inline;
+  color: #c25600;
+  font-size: 13px;
+  margin: 0;
+}
+
 .kakao-cta {
   display: block;
   width: 100%;
@@ -2189,7 +2452,7 @@ body::before {
     </div>
     <div class="early-bird-banner">
       <span class="eb-emoji">🎉</span>
-      <span><b>개강 기념</b> · 남학우 <b>-2천원</b> · 여학우 <b>소개팅 무료</b></span>
+      <span><b>중간고사끝!</b> · 남학우 <b>-2천원</b> · 여학우 <b>첫신청 무료</b></span>
     </div>
     <div class="live-counter" id="liveCounter">
       <span class="live-dot"></span>
@@ -2217,7 +2480,38 @@ body::before {
     <div class="prompt">📌 마음에 드는 쪽지를 골라봐!</div>
   </div>
 
-  <img class="hero-illust" src="promo/hero_v2.png" alt="대학연합 쪽지팅 — 포스트잇 한 장, 설레는 인연의 시작">
+  <section class="how-it-works">
+    <div class="hiw-header">
+      <span class="hiw-eyebrow">💡 How it works</span>
+      <h2 class="hiw-title">쪽지가 매칭되는 과정</h2>
+      <p class="hiw-sub">신청하고 나면 운영진이 책임져드려요</p>
+    </div>
+    <div class="hiw-flow">
+      <ol class="hiw-list">
+        <li class="hiw-item">
+          <div class="hiw-num">1</div>
+          <div class="hiw-body">
+            <h3>쪽지 작성 · 1분이면 끝</h3>
+            <p>이름·학교·MBTI·이상형 한 줄만 적어주세요. <span class="hiw-hl">여학우는 무료!</span></p>
+          </div>
+        </li>
+        <li class="hiw-item">
+          <div class="hiw-num">2</div>
+          <div class="hiw-body">
+            <h3>운영진 정성 매칭</h3>
+            <p>마감 후 최대 <span class="hiw-hl">1~2주 이내</span> 쪽지를 정성껏 골라 매칭해드려요.</p>
+          </div>
+        </li>
+        <li class="hiw-item">
+          <div class="hiw-num">3</div>
+          <div class="hiw-body">
+            <h3>문자로 결과 안내</h3>
+            <p>매칭된 상대 쪽지를 문자로 전달. <span class="hiw-hl">두루마리 쪽지</span>를 펼치면 상대방 정보가 드러나요 ♡</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
 
   <div class="prompt">👇 학교별로 골라봐!</div>
 
@@ -2598,16 +2892,23 @@ body::before {
     <div class="next-steps">
       <div class="next-title">📌 신청 마무리하기 (필수)</div>
       <ol class="next-list">
-        <li><b>아래 계좌로 입금</b>
-          <div class="pay-account-box">
-            <p class="pay-bank">카카오뱅크 3333-24-1809842</p>
-            <p class="pay-holder">예금주: 박*일</p>
+        <li class="next-step-pay" data-mode="valid">
+          <div class="pay-info-valid">
+            <b>아래 계좌로 입금</b>
+            <div class="pay-account-box">
+              <p class="pay-bank">카카오뱅크 3333-24-1809842</p>
+              <p class="pay-holder">예금주: 박*일</p>
+            </div>
+            <div class="pay-gender-note">
+              <p class="pgn-male">💙 <b>남학우</b> — 신청한 옵션 금액 결제</p>
+              <p class="pgn-female">💗 <b>여학우</b> — <b class="pgn-hi">보증금 5,000원</b> 입금
+                <span class="pgn-sub">매칭 후 만남 인증 시 100% 환급</span>
+              </p>
+            </div>
           </div>
-          <div class="pay-gender-note">
-            <p class="pgn-male">💙 <b>남학우</b> — 신청한 옵션 금액 결제</p>
-            <p class="pgn-female">💗 <b>여학우</b> — <b class="pgn-hi">보증금 5,000원</b> 입금
-              <span class="pgn-sub">매칭 후 만남 인증 시 100% 환급</span>
-            </p>
+          <div class="pay-info-review">
+            <b>📩 운영진 확인 후 오픈카톡으로 안내</b>
+            <p class="review-note">신청 내용을 확인한 뒤 <b>입금 계좌를 개별 안내</b>드려요. 최대 24시간 이내 응대돼요.</p>
           </div>
         </li>
         <li>아래 <b>오픈카톡방</b> 입장 (<b>기본프로필</b>로 입장)</li>
@@ -2794,6 +3095,53 @@ function copyHeroRefCode(code) {
   }
 }
 
+// ===== 입력 패턴 검증 (가짜 신청 완료 화면 계좌 노출 차단) =====
+function isValidApplication(form) {
+  const g = n => (form.querySelector('[name="' + n + '"]')?.value || '').trim();
+  const name = g('name');
+  const phone = g('phone');
+  const school = g('school');
+  const intro = g('intro');
+  const ideal = g('ideal');
+  const major = g('major');
+  const mbti = g('mbti');
+  const kakao = g('kakao');
+  const instagram = g('instagram');
+
+  const suspicious = v => {
+    if (!v) return false;
+    if (/^[a-zA-Z]+$/.test(v)) return true;           // 영문만
+    if (/^[ㄱ-ㅎㅏ-ㅣ]+$/.test(v)) return true;        // 자음/모음 단독 (ㅁㅇㄹ 등)
+    if (/^(.)\1{2,}$/.test(v)) return true;            // 같은 글자 반복
+    if (/^[0-9]+$/.test(v)) return true;               // 숫자만
+    return false;
+  };
+
+  // 이름: 한글 2자 이상
+  if (!/^[가-힣]{2,10}$/.test(name)) return { valid: false, reason: 'name' };
+
+  // 전화번호: 010 + 7~8자리
+  if (!/^010\d{7,8}$/.test(phone.replace(/[^\d]/g, ''))) return { valid: false, reason: 'phone' };
+
+  // 학교: 한글 + '대' 포함
+  if (school && !/[가-힣]{2,}(대|대학교|대학|학교|예대|여대)/.test(school)) return { valid: false, reason: 'school' };
+
+  // 학과: 최소 2자 한글
+  if (major && !/[가-힣]{2,}/.test(major)) return { valid: false, reason: 'major' };
+
+  // 이상형: 최소 5자, 의심 패턴 X
+  if (ideal.length < 5 || suspicious(ideal)) return { valid: false, reason: 'ideal' };
+
+  // 자기소개(선택): 입력됐으면 의심 패턴 체크
+  if (intro && (intro.length < 5 || suspicious(intro))) return { valid: false, reason: 'intro' };
+
+  // 이름/MBTI/카톡/인스타 의심 패턴
+  if (suspicious(name)) return { valid: false, reason: 'name_sus' };
+  if (mbti && !/^[EI][SN][TF][JP]$/i.test(mbti) && mbti !== '모름') return { valid: false, reason: 'mbti' };
+
+  return { valid: true };
+}
+
 document.getElementById('applyForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -2865,6 +3213,11 @@ document.getElementById('applyForm').addEventListener('submit', function(e) {
   const userEvent = (this.querySelector('input[name="event_type"]:checked') || {}).value || '';
   const metaParts = [userSchool, userEvent].filter(Boolean);
   const userMeta = metaParts.length ? metaParts.join(' · ') : '';
+
+  // ===== 입력 패턴 검증 (가짜 신청 차단) =====
+  const _validation = isValidApplication(this);
+  const _payStep = document.querySelector('.next-step-pay');
+  if (_payStep) _payStep.dataset.mode = _validation.valid ? 'valid' : 'review';
 
   setTimeout(() => {
     closeForm();
@@ -3328,7 +3681,37 @@ async function saveShareCard() {
     btn.disabled = false;
   }
 }
+
+// ===== 플로팅 하단 바 (div가 아래에 있어 setTimeout으로 지연 초기화) =====
+setTimeout(function initFloatCta(){
+  const floatCta = document.getElementById('floatCta');
+  const heroCta = document.querySelector('.hero-cta');
+  if (!floatCta || !heroCta) return;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => floatCta.classList.toggle('show', !e.isIntersecting));
+  }, { threshold: 0.1 });
+  io.observe(heroCta);
+
+  function syncFloatCta() {
+    const dday = document.getElementById('ddayCount')?.textContent || '';
+    const slots = document.getElementById('slotsRemain')?.textContent || '';
+    const el = document.getElementById('floatVal');
+    if (!el) return;
+    el.textContent = slots ? `${dday} · 남은자리 ${slots}석` : dday;
+  }
+  syncFloatCta();
+  setInterval(syncFloatCta, 2000);
+}, 0);
 </script>
+
+<!-- ===== 플로팅 하단 바 ===== -->
+<div class="float-cta" id="floatCta">
+  <div class="float-cta__text">
+    <span class="lbl">🔥 신청 마감까지</span>
+    <span class="val" id="floatVal">D-?</span>
+  </div>
+  <button class="float-cta__btn" onclick="document.querySelector('.postit-wall').scrollIntoView({behavior:'smooth', block:'start'})">쪽지 뽑기 →</button>
+</div>
 
 </body>
 </html>
