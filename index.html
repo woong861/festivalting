@@ -3099,26 +3099,12 @@ function copyHeroRefCode(code) {
 }
 
 // ===== 입력 패턴 검증 (가짜 신청 완료 화면 계좌 노출 차단) =====
+// 2026-11-23 완화: 실제 신청자들이 fail되는 사례 다수 발생 → 이름/전화만 체크
+// 완전 트롤("ㅁㅁㅁ", "aaa" 등)은 운영자 수동 삭제로 관리
 function isValidApplication(form) {
   const g = n => (form.querySelector('[name="' + n + '"]')?.value || '').trim();
   const name = g('name');
   const phone = g('phone');
-  const school = g('school');
-  const intro = g('intro');
-  const ideal = g('ideal');
-  const major = g('major');
-  const mbti = g('mbti');
-  const kakao = g('kakao');
-  const instagram = g('instagram');
-
-  const suspicious = v => {
-    if (!v) return false;
-    if (/^[a-zA-Z]+$/.test(v)) return true;           // 영문만
-    if (/^[ㄱ-ㅎㅏ-ㅣ]+$/.test(v)) return true;        // 자음/모음 단독 (ㅁㅇㄹ 등)
-    if (/^(.)\1{2,}$/.test(v)) return true;            // 같은 글자 반복
-    if (/^[0-9]+$/.test(v)) return true;               // 숫자만
-    return false;
-  };
 
   // 이름: 한글 2자 이상
   if (!/^[가-힣]{2,10}$/.test(name)) return { valid: false, reason: 'name' };
@@ -3126,21 +3112,8 @@ function isValidApplication(form) {
   // 전화번호: 010 + 7~8자리
   if (!/^010\d{7,8}$/.test(phone.replace(/[^\d]/g, ''))) return { valid: false, reason: 'phone' };
 
-  // 학교: 한글 + '대' 포함
-  if (school && !/[가-힣]{2,}(대|대학교|대학|학교|예대|여대)/.test(school)) return { valid: false, reason: 'school' };
-
-  // 학과: 최소 2자 한글
-  if (major && !/[가-힣]{2,}/.test(major)) return { valid: false, reason: 'major' };
-
-  // 이상형: 최소 5자, 의심 패턴 X
-  if (ideal.length < 5 || suspicious(ideal)) return { valid: false, reason: 'ideal' };
-
-  // 자기소개(선택): 입력됐으면 의심 패턴 체크
-  if (intro && (intro.length < 5 || suspicious(intro))) return { valid: false, reason: 'intro' };
-
-  // 이름/MBTI/카톡/인스타 의심 패턴
-  if (suspicious(name)) return { valid: false, reason: 'name_sus' };
-  if (mbti && !/^[EI][SN][TF][JP]$/i.test(mbti) && mbti !== '모름') return { valid: false, reason: 'mbti' };
+  // 같은 글자 3번 이상 반복(ㅁㅁㅁ 식 트롤)만 이름에서 거름
+  if (/^(.)\1{2,}$/.test(name)) return { valid: false, reason: 'name_sus' };
 
   return { valid: true };
 }
