@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>쪽지팅 광장 💌</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💌%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Jua&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; background: #fff6f9; color: #3a1f2f; font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+  body { background:
+    radial-gradient(1200px 500px at 50% -100px, #ffe3ef 0%, transparent 60%),
+    radial-gradient(900px 500px at 10% 110%, #fff2d8 0%, transparent 60%),
+    #fff6f9;
+    background-attachment: fixed;
+  }
+
+  /* ===== Header ===== */
+  .top-bar { position: sticky; top: 0; z-index: 30; background: rgba(255, 246, 249, 0.92); backdrop-filter: blur(10px); border-bottom: 1px solid #fde0ec; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+  .brand { font-family: 'Jua', sans-serif; font-size: 18px; color: #c43d8a; display: flex; align-items: center; gap: 4px; }
+  .brand .emoji { font-size: 20px; }
+  .top-spacer { flex: 1; }
+  .wallet-chip { background: linear-gradient(135deg, #ffcf6e 0%, #ff9fcd 100%); color: #3a1f2f; padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; box-shadow: 0 2px 8px rgba(255, 207, 110, 0.4); display: flex; align-items: center; gap: 4px; }
+  .wallet-chip:active { transform: scale(0.97); }
+  .top-menu-btn { background: transparent; border: none; font-size: 20px; cursor: pointer; padding: 4px 8px; color: #6e4858; }
+
+  /* ===== Common ===== */
+  .container { max-width: 520px; margin: 0 auto; padding: 16px; }
+  .section-title { font-family: 'Jua', sans-serif; font-size: 20px; color: #c43d8a; margin: 12px 0 8px; }
+  .hint { font-size: 13px; color: #8a6678; line-height: 1.5; }
+  .btn-primary { background: linear-gradient(135deg, #ff5d9e, #ff4dd2); color: white; border: none; border-radius: 999px; padding: 13px 28px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(255, 93, 158, 0.35); font-family: 'Jua', sans-serif; }
+  .btn-primary:active { transform: translateY(1px); }
+  .btn-primary:disabled { opacity: 0.5; cursor: wait; }
+  .btn-ghost { background: white; color: #c43d8a; border: 2px solid #ffb5d6; border-radius: 999px; padding: 11px 24px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Jua', sans-serif; }
+  .btn-ghost:active { background: #fff0f7; }
+  .btn-small { padding: 7px 14px; font-size: 13px; border-radius: 999px; border: none; cursor: pointer; font-weight: 600; }
+
+  /* ===== Login ===== */
+  .center-wrap { min-height: calc(100vh - 56px); display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .login-card { background: white; border-radius: 20px; padding: 28px 22px; box-shadow: 0 8px 28px rgba(255, 93, 158, 0.15); border: 2px solid #ffe0ed; max-width: 380px; width: 100%; text-align: center; }
+  .login-hero { font-size: 40px; margin-bottom: 8px; }
+  .login-title { font-family: 'Jua', sans-serif; font-size: 22px; color: #c43d8a; margin-bottom: 6px; }
+  .login-sub { font-size: 13px; color: #8a6678; margin-bottom: 20px; line-height: 1.5; }
+  .input-row { margin-bottom: 12px; text-align: left; }
+  .input-row label { display: block; font-size: 12px; color: #8a6678; margin-bottom: 4px; font-weight: 600; }
+  .input-row input { width: 100%; padding: 13px 14px; border: 1.5px solid #ffd4e5; border-radius: 10px; font-size: 15px; background: #fffafc; color: #3a1f2f; font-family: inherit; }
+  .input-row input:focus { outline: none; border-color: #ff5d9e; background: white; }
+  .input-row input.code-input { font-size: 22px; letter-spacing: 8px; text-align: center; font-family: 'Courier New', monospace; font-weight: 700; }
+  .login-note { font-size: 12px; color: #8a6678; margin-top: 14px; padding: 10px; background: #fff0f7; border-radius: 10px; }
+  .login-note b { color: #c43d8a; }
+  .resend-row { margin-top: 10px; font-size: 12px; color: #8a6678; }
+  .resend-row button { background: none; border: none; color: #c43d8a; cursor: pointer; text-decoration: underline; font-size: 12px; padding: 0; }
+  .err-msg { background: #ffe5e5; color: #b02121; padding: 10px 12px; border-radius: 8px; font-size: 13px; margin-top: 10px; display: none; }
+  .err-msg.show { display: block; }
+
+  /* ===== Opt-in ===== */
+  .optin-card { background: white; border-radius: 20px; padding: 24px 20px; box-shadow: 0 8px 28px rgba(255, 93, 158, 0.15); border: 2px solid #ffe0ed; max-width: 380px; width: 100%; text-align: center; }
+  .optin-emoji { font-size: 48px; margin-bottom: 8px; }
+  .optin-title { font-family: 'Jua', sans-serif; font-size: 20px; color: #c43d8a; margin-bottom: 10px; }
+  .optin-desc { font-size: 14px; color: #5e4252; line-height: 1.6; text-align: left; background: #fff0f7; padding: 14px; border-radius: 12px; margin-bottom: 16px; }
+  .optin-desc b { color: #c43d8a; }
+  .optin-desc li { margin: 6px 0; }
+  .optin-btn-row { display: flex; gap: 8px; }
+  .optin-btn-row button { flex: 1; }
+
+  /* ===== Gallery ===== */
+  .gallery-intro { background: linear-gradient(135deg, #fff5e0 0%, #ffe8f3 100%); border: 1.5px solid #ffcf85; border-radius: 14px; padding: 12px 14px; margin-bottom: 14px; font-size: 13px; color: #5e4252; line-height: 1.5; }
+  .gallery-intro b { color: #c43d8a; }
+  .gallery-stats { font-size: 12px; color: #8a6678; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+  .gallery-stats .pill { background: white; padding: 4px 10px; border-radius: 999px; border: 1px solid #ffd4e5; }
+
+  .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-bottom: 80px; }
+  @media (min-width: 540px) { .cards-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+  .card {
+    aspect-ratio: 3/4; background: #fffbe0;
+    border-radius: 6px 6px 10px 10px;
+    padding: 12px 10px; cursor: pointer;
+    position: relative;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08), inset 0 -3px 0 rgba(0, 0, 0, 0.03);
+    transition: transform 0.15s, box-shadow 0.15s;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .card:active { transform: scale(0.97) rotate(-1deg); }
+  .card.opened { background: #fff0d6; border: 1.5px solid #ffcf85; }
+  .card.hogam-sent { background: #ffd4e8; border: 1.5px solid #ff5d9e; }
+  .card:nth-child(3n) { background: #e0f5ff; transform: rotate(-1deg); }
+  .card:nth-child(3n+2) { background: #ffe8f3; transform: rotate(1deg); }
+  .card:nth-child(4n) { background: #e8ffe3; transform: rotate(-0.5deg); }
+  .card.opened:nth-child(3n) { background: #fff0d6; }
+  .card.opened:nth-child(3n+2) { background: #fff0d6; }
+  .card.opened:nth-child(4n) { background: #fff0d6; }
+
+  .card-school { font-family: 'Jua', sans-serif; font-size: 13px; color: #c43d8a; margin-bottom: 4px; }
+  .card-tags { font-size: 11px; color: #6e4858; margin-bottom: 8px; display: flex; gap: 4px; flex-wrap: wrap; }
+  .card-tag { background: rgba(255, 255, 255, 0.6); padding: 2px 6px; border-radius: 4px; }
+  .card-intro { font-family: 'Gaegu', cursive; font-size: 13px; color: #3a1f2f; line-height: 1.4; flex: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
+  .card-foot { margin-top: auto; font-size: 10px; color: #8a6678; text-align: center; padding-top: 4px; border-top: 1px dashed rgba(138, 102, 120, 0.3); }
+  .card-foot.opened { color: #c43d8a; font-weight: 700; }
+
+  .card-tape {
+    position: absolute; top: -8px; left: 50%; transform: translateX(-50%) rotate(-3deg);
+    width: 40px; height: 14px; background: rgba(255, 207, 110, 0.6);
+    border-radius: 2px;
+  }
+  .card-hogam-badge {
+    position: absolute; top: 6px; right: 6px; font-size: 10px;
+    background: #ff5d9e; color: white; padding: 2px 6px; border-radius: 999px;
+    font-weight: 700;
+  }
+
+  .empty-gallery { text-align: center; padding: 60px 20px; color: #8a6678; }
+  .empty-gallery .emoji { font-size: 48px; display: block; margin-bottom: 10px; }
+
+  /* ===== Modal ===== */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(60, 20, 40, 0.55); display: none; align-items: center; justify-content: center; z-index: 100; padding: 16px; }
+  .modal-backdrop.show { display: flex; }
+  .modal-card { background: white; border-radius: 20px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); position: relative; }
+  .modal-close { position: absolute; top: 10px; right: 12px; background: none; border: none; font-size: 22px; cursor: pointer; color: #8a6678; padding: 4px 10px; z-index: 5; }
+
+  .card-detail-inner { padding: 24px 20px; }
+  .cd-header { text-align: center; margin-bottom: 14px; }
+  .cd-school { font-family: 'Jua', sans-serif; font-size: 22px; color: #c43d8a; margin-bottom: 6px; }
+  .cd-tags { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+  .cd-tag { background: #fff0f7; color: #c43d8a; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .cd-name { font-family: 'Jua', sans-serif; font-size: 18px; color: #c43d8a; margin-top: 4px; }
+  .cd-name-masked { font-family: 'Jua', sans-serif; font-size: 16px; color: #8a6678; letter-spacing: 3px; margin-top: 4px; }
+  .cd-blur-notice { font-size: 12px; color: #8a6678; margin-top: 2px; }
+
+  .cd-intro-box {
+    background: #fffbe0; border-radius: 12px; padding: 16px;
+    font-family: 'Gaegu', cursive; font-size: 15px; line-height: 1.5; color: #3a1f2f;
+    position: relative;
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.03);
+    margin-bottom: 14px;
+  }
+  .cd-intro-box::before {
+    content: '"'; position: absolute; top: 4px; left: 10px;
+    font-size: 30px; color: #ffcf85; font-family: Georgia, serif;
+  }
+
+  .cd-contact-box {
+    background: #fff0f7; border-radius: 12px; padding: 14px;
+    text-align: center; margin-bottom: 14px;
+  }
+  .cd-contact-box .lbl { font-size: 11px; color: #8a6678; display: block; margin-bottom: 4px; }
+  .cd-contact-box .val { font-family: 'Courier New', monospace; font-size: 17px; color: #c43d8a; font-weight: 700; user-select: all; }
+  .cd-contact-sub { font-size: 12px; color: #8a6678; }
+
+  .cd-action-row { display: flex; gap: 10px; }
+  .cd-action-row button { flex: 1; }
+  .cd-hogam-btn { background: linear-gradient(135deg, #ff5d9e, #ff4dd2); color: white; border: none; padding: 13px; border-radius: 12px; font-weight: 700; cursor: pointer; font-family: 'Jua', sans-serif; font-size: 14px; box-shadow: 0 4px 10px rgba(255, 93, 158, 0.35); }
+  .cd-hogam-btn:disabled { background: #d4d4d4; cursor: not-allowed; box-shadow: none; }
+  .cd-open-btn { background: linear-gradient(135deg, #ffcf6e, #ff9fcd); color: #3a1f2f; border: none; padding: 13px; border-radius: 12px; font-weight: 700; cursor: pointer; font-family: 'Jua', sans-serif; font-size: 14px; box-shadow: 0 4px 10px rgba(255, 207, 110, 0.35); }
+
+  .cd-coin-price { background: #fff5e0; border: 1px dashed #ffb84d; border-radius: 10px; padding: 12px; margin-bottom: 14px; text-align: center; font-size: 13px; color: #5e4252; }
+  .cd-coin-price b { color: #c43d8a; font-size: 15px; }
+  .cd-balance-after { font-size: 11px; color: #8a6678; margin-top: 4px; }
+
+  /* ===== Charge Modal ===== */
+  .charge-inner { padding: 22px 20px; }
+  .charge-title { font-family: 'Jua', sans-serif; font-size: 20px; color: #c43d8a; text-align: center; margin-bottom: 4px; }
+  .charge-sub { font-size: 13px; color: #8a6678; text-align: center; margin-bottom: 18px; }
+  .charge-account { background: #fff5e0; border: 2px solid #ffcf85; border-radius: 12px; padding: 14px; text-align: center; margin-bottom: 16px; }
+  .charge-account .bank { font-family: 'Jua', sans-serif; font-size: 18px; color: #c43d8a; margin-bottom: 2px; }
+  .charge-account .holder { font-size: 13px; color: #6e4858; }
+  .charge-packs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .pack { background: white; border: 1.5px solid #ffd4e5; border-radius: 12px; padding: 12px 10px; text-align: center; }
+  .pack.best { border-color: #ff5d9e; position: relative; }
+  .pack.best::after { content: '인기'; position: absolute; top: -8px; right: 10px; background: #ff5d9e; color: white; font-size: 10px; padding: 2px 8px; border-radius: 999px; font-weight: 700; }
+  .pack-won { font-family: 'Jua', sans-serif; font-size: 16px; color: #c43d8a; }
+  .pack-coin { font-size: 13px; color: #3a1f2f; margin-top: 4px; }
+  .pack-bonus { font-size: 11px; color: #d87c00; font-weight: 700; margin-top: 2px; }
+  .charge-howto { background: #fff0f7; border-radius: 12px; padding: 12px 14px; font-size: 12.5px; color: #5e4252; line-height: 1.6; }
+  .charge-howto b { color: #c43d8a; }
+  .charge-howto ol { margin: 6px 0 0; padding-left: 20px; }
+  .charge-contact { text-align: center; margin-top: 12px; }
+  .charge-contact a { color: #c43d8a; font-weight: 700; text-decoration: none; font-size: 13px; }
+
+  /* ===== Menu ===== */
+  .menu-sheet { position: fixed; top: 56px; right: 10px; background: white; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 6px 0; z-index: 50; min-width: 180px; display: none; border: 1px solid #ffe0ed; }
+  .menu-sheet.show { display: block; }
+  .menu-item { padding: 12px 18px; font-size: 14px; cursor: pointer; color: #3a1f2f; display: flex; align-items: center; gap: 10px; }
+  .menu-item:hover { background: #fff0f7; }
+  .menu-item.danger { color: #b02121; }
+  .menu-item.toggle span.on { color: #2e9a4a; font-weight: 700; }
+  .menu-item.toggle span.off { color: #8a6678; }
+
+  /* ===== Toast ===== */
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(60, 20, 40, 0.9); color: white; padding: 12px 20px; border-radius: 999px; font-size: 13px; opacity: 0; transition: all 0.3s; z-index: 200; pointer-events: none; max-width: 90vw; text-align: center; }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* ===== Hidden by default ===== */
+  .screen { display: none; }
+  .screen.active { display: block; }
+</style>
+</head>
+<body>
+
+<div class="top-bar" id="topBar" style="display:none">
+  <div class="brand"><span class="emoji">💌</span> 쪽지팅 광장</div>
+  <div class="top-spacer"></div>
+  <button class="wallet-chip" id="walletChip" onclick="openCharge()">💰 <span id="walletBalance">0</span>코인</button>
+  <button class="top-menu-btn" onclick="toggleMenu()">☰</button>
+</div>
+<div class="menu-sheet" id="menuSheet">
+  <div class="menu-item toggle" onclick="toggleOptIn()" id="menuOptIn">
+    <span>📝 내 쪽지 광장 공개</span>
+    <div style="margin-left:auto"><span class="off" id="optInLabel">OFF</span></div>
+  </div>
+  <div class="menu-item" onclick="openCharge()">💰 코인 충전</div>
+  <div class="menu-item danger" onclick="doLogout()">🚪 로그아웃</div>
+</div>
+
+<!-- ===== Login Screen ===== -->
+<div class="screen" id="screenLogin">
+  <div class="center-wrap">
+    <div class="login-card">
+      <div class="login-hero">💌</div>
+      <div class="login-title">쪽지팅 광장 입장</div>
+      <div class="login-sub">신청 시 적은 전화번호로 인증하고<br>다른 쪽지들을 볼 수 있어요</div>
+      <div class="input-row" id="phoneRow">
+        <label>전화번호</label>
+        <input type="tel" id="phoneInput" placeholder="010" inputmode="numeric" maxlength="13">
+      </div>
+      <div class="input-row" id="codeRow" style="display:none">
+        <label>인증코드 (5분 안에)</label>
+        <input type="tel" id="codeInput" class="code-input" placeholder="000000" inputmode="numeric" maxlength="6">
+      </div>
+      <button class="btn-primary" id="loginBtn" onclick="handleLogin()" style="width:100%">인증코드 받기</button>
+      <div class="resend-row" id="resendRow" style="display:none">
+        <span id="resendTimer">60초 후 재발송 가능</span>
+        · <button onclick="resetLogin()">번호 수정</button>
+      </div>
+      <div class="err-msg" id="loginErr"></div>
+      <div class="login-note">
+        <b>안내</b> · 쪽지팅에 신청한 사람만 광장에 입장할 수 있어요. 아직 신청 안 했다면 <a href="/" style="color:#c43d8a">메인에서 쪽지 보내기</a>!
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Opt-in Screen ===== -->
+<div class="screen" id="screenOptIn">
+  <div class="center-wrap">
+    <div class="optin-card">
+      <div class="optin-emoji">🌸</div>
+      <div class="optin-title">내 쪽지도 광장에 올릴까?</div>
+      <div class="optin-desc">
+        <b>동의하면</b>
+        <ul>
+          <li>내 <b>학교 · MBTI · 한줄소개</b>만 광장에 뜸 (실명 X, 연락처 X)</li>
+          <li>관심 있는 사람이 열람하면 <b>코인 1개</b>, 호감 보내면 <b>2개</b>를 내가 받음</li>
+          <li>내가 올린 쪽지로 매칭 성사율 ↑</li>
+        </ul>
+        <br>
+        <b>거절해도</b> 광장에서 다른 쪽지는 볼 수 있어요. 언제든 메뉴에서 바꿀 수 있어요.
+      </div>
+      <div class="optin-btn-row">
+        <button class="btn-ghost" onclick="doOptIn(false)">나중에</button>
+        <button class="btn-primary" onclick="doOptIn(true)">💌 동의하고 올리기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Gallery Screen ===== -->
+<div class="screen" id="screenGallery">
+  <div class="container">
+    <div class="gallery-intro">
+      💡 <b>쪽지 열람 1코인 · 호감 보내기 2코인(여학우 1코인)</b><br>
+      마음에 드는 쪽지를 열어보고, 운영진이 상호 호감 확인 후 매칭을 진행해요
+    </div>
+    <div class="gallery-stats">
+      <span><b id="statsTotal">0</b>장의 쪽지</span>
+      <span class="pill">💰 <b id="statsBalance">0</b>코인</span>
+    </div>
+    <div class="cards-grid" id="cardsGrid"></div>
+    <div id="emptyGallery" class="empty-gallery" style="display:none">
+      <span class="emoji">🪄</span>
+      <p>아직 광장에 쪽지가 없어요</p>
+      <p style="font-size:12px">곧 많은 쪽지가 올라올 거예요 ♡</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Card Detail Modal ===== -->
+<div class="modal-backdrop" id="modalDetail">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal('modalDetail')">✕</button>
+    <div class="card-detail-inner" id="detailBody"></div>
+  </div>
+</div>
+
+<!-- ===== Charge Modal ===== -->
+<div class="modal-backdrop" id="modalCharge">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal('modalCharge')">✕</button>
+    <div class="charge-inner">
+      <div class="charge-title">💰 코인 충전</div>
+      <div class="charge-sub">입금 후 운영진이 수동 충전 (평일 24시간 이내)</div>
+      <div class="charge-account">
+        <div class="bank">농협 350-12-112832</div>
+        <div class="holder">예금주: 이*익</div>
+        <div style="font-size:11px;color:#8a6678;margin-top:6px">입금자명: <b id="chargeUserName">본인 이름</b></div>
+      </div>
+      <div class="charge-packs" id="chargePacks"></div>
+      <div class="charge-howto">
+        <b>충전 방법</b>
+        <ol>
+          <li>원하는 금액 입금 (입금자명 = 본인 이름)</li>
+          <li>오픈카톡 <a href="https://open.kakao.com/o/sCQOUiNi" target="_blank" style="color:#c43d8a">입금 확인방</a>에 입금 스샷 전송</li>
+          <li>24시간 이내 코인 지급 + 확인 문자 발송</li>
+        </ol>
+      </div>
+      <div class="charge-contact">
+        문의: <a href="https://open.kakao.com/o/sCQOUiNi" target="_blank">오픈카톡 바로가기 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast"></div>
+
+<script>
+const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzM8IYXCT9NeD9K-L0Dval98J46dcnbkR2ElzgPN7fRvvchcuMfEfzC_HX89o8U4GXI/exec';
+const LS_TOKEN = 'postitt_gly_token';
+const LS_PHONE = 'postitt_gly_phone';
+
+const PRICE_OPEN = 1;
+const PRICE_HOGAM_M = 2;
+const PRICE_HOGAM_F = 1;
+
+const CHARGE_PACKS = [
+  { won: 5000, coins: 2, bonus: 0, label: '' },
+  { won: 10000, coins: 4, bonus: 0, label: '' },
+  { won: 20000, coins: 9, bonus: 1, label: '보너스 +1', best: true },
+  { won: 50000, coins: 25, bonus: 5, label: '보너스 +5' },
+];
+
+let state = {
+  token: '',
+  phone: '',
+  name: '',
+  gender: '',
+  balance: 0,
+  optIn: false,
+  cards: [],
+};
+
+// ===== Helpers =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function setTopBar(show) {
+  document.getElementById('topBar').style.display = show ? 'flex' : 'none';
+}
+
+function toast(msg, ms) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), ms || 2600);
+}
+
+function showErr(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 5000);
+}
+
+function updateWalletUi() {
+  document.getElementById('walletBalance').textContent = state.balance;
+  const sb = document.getElementById('statsBalance');
+  if (sb) sb.textContent = state.balance;
+}
+
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// ===== API =====
+async function apiGet(params) {
+  const qs = new URLSearchParams(params).toString();
+  const res = await fetch(APPS_SCRIPT + '?' + qs);
+  return res.json();
+}
+
+async function apiPost(body) {
+  const res = await fetch(APPS_SCRIPT, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+  });
+  return res.json();
+}
+
+// ===== Login flow =====
+let loginStage = 'phone';
+let resendTimerId = null;
+
+document.getElementById('phoneInput').addEventListener('input', e => {
+  let v = e.target.value.replace(/[^0-9]/g, '');
+  if (v.length > 3 && v.length <= 7) v = v.slice(0, 3) + '-' + v.slice(3);
+  else if (v.length > 7) v = v.slice(0, 3) + '-' + v.slice(3, 7) + '-' + v.slice(7, 11);
+  e.target.value = v;
+});
+
+document.getElementById('codeInput').addEventListener('input', e => {
+  e.target.value = e.target.value.replace(/[^0-9]/g, '');
+  if (e.target.value.length === 6) handleLogin();
+});
+
+async function handleLogin() {
+  const btn = document.getElementById('loginBtn');
+  const phoneRaw = document.getElementById('phoneInput').value.replace(/[^0-9]/g, '');
+  if (!/^010\d{7,8}$/.test(phoneRaw)) { showErr('loginErr', '올바른 전화번호를 입력해주세요'); return; }
+
+  if (loginStage === 'phone') {
+    btn.disabled = true; btn.textContent = '전송 중...';
+    const r = await apiPost({ type: 'glyRequestCode', phone: phoneRaw });
+    btn.disabled = false; btn.textContent = '로그인';
+    if (r.error === 'not_applicant') { showErr('loginErr', '쪽지팅 신청자 명단에 없어요. 메인 페이지에서 먼저 신청해주세요'); return; }
+    if (r.error === 'cooldown') { showErr('loginErr', `${r.waitSec || 60}초 후 다시 요청`); return; }
+    if (r.error === 'daily_limit') { showErr('loginErr', '오늘 인증 요청 한도 초과. 내일 다시'); return; }
+    if (r.error) { showErr('loginErr', '인증 발송 실패: ' + r.error); return; }
+    document.getElementById('codeRow').style.display = 'block';
+    document.getElementById('resendRow').style.display = 'block';
+    document.getElementById('codeInput').focus();
+    loginStage = 'code';
+    startResendTimer();
+  } else {
+    const code = document.getElementById('codeInput').value.trim();
+    if (!/^\d{6}$/.test(code)) { showErr('loginErr', '6자리 숫자 코드를 입력해주세요'); return; }
+    btn.disabled = true; btn.textContent = '확인 중...';
+    const r = await apiPost({ type: 'glyVerifyCode', phone: phoneRaw, code });
+    btn.disabled = false; btn.textContent = '로그인';
+    if (r.error === 'wrong_code') { showErr('loginErr', `코드가 달라요 (남은 시도: ${r.attemptsLeft || 0}회)`); return; }
+    if (r.error === 'code_expired') { showErr('loginErr', '코드가 만료됐어요. 다시 발송하세요'); return; }
+    if (r.error === 'too_many_attempts') { showErr('loginErr', '시도 횟수 초과. 다시 발송하세요'); return; }
+    if (r.error) { showErr('loginErr', '인증 실패: ' + r.error); return; }
+    state.token = r.token;
+    state.phone = phoneRaw;
+    state.name = r.name;
+    state.gender = r.gender;
+    localStorage.setItem(LS_TOKEN, r.token);
+    localStorage.setItem(LS_PHONE, phoneRaw);
+    await loadMeAndEnter();
+  }
+}
+
+function resetLogin() {
+  loginStage = 'phone';
+  document.getElementById('codeRow').style.display = 'none';
+  document.getElementById('resendRow').style.display = 'none';
+  document.getElementById('codeInput').value = '';
+  document.getElementById('loginBtn').textContent = '인증코드 받기';
+  if (resendTimerId) clearInterval(resendTimerId);
+}
+
+function startResendTimer() {
+  let sec = 60;
+  const el = document.getElementById('resendTimer');
+  el.textContent = `${sec}초 후 재발송 가능`;
+  if (resendTimerId) clearInterval(resendTimerId);
+  resendTimerId = setInterval(() => {
+    sec--;
+    if (sec <= 0) {
+      clearInterval(resendTimerId);
+      el.innerHTML = '<button onclick="resetLogin()" style="color:#c43d8a;background:none;border:none;text-decoration:underline;cursor:pointer;font-size:12px">인증코드 다시 받기</button>';
+    } else {
+      el.textContent = `${sec}초 후 재발송 가능`;
+    }
+  }, 1000);
+}
+
+// ===== After login =====
+async function loadMeAndEnter() {
+  const r = await apiGet({ action: 'glyMe', token: state.token });
+  if (r.error) {
+    if (r.error === 'invalid_token' || r.error === 'not_applicant') {
+      localStorage.removeItem(LS_TOKEN);
+      state.token = '';
+      showScreen('screenLogin');
+      setTopBar(false);
+      return;
+    }
+    toast('로그인 정보 불러오기 실패');
+    return;
+  }
+  state.name = r.name;
+  state.gender = r.gender;
+  state.balance = r.balance;
+  state.optIn = r.optIn;
+  updateWalletUi();
+  updateOptInLabel();
+  setTopBar(true);
+  if (!r.optIn && !localStorage.getItem('postitt_gly_optin_asked')) {
+    showScreen('screenOptIn');
+  } else {
+    showScreen('screenGallery');
+    await loadGallery();
+  }
+}
+
+async function doOptIn(consent) {
+  localStorage.setItem('postitt_gly_optin_asked', '1');
+  if (consent) {
+    const r = await apiPost({ type: 'glyOptIn', token: state.token });
+    if (r.error) { toast('실패: ' + r.error); return; }
+    state.optIn = true;
+    updateOptInLabel();
+    toast('💌 광장에 내 쪽지 올라갔어요');
+  }
+  showScreen('screenGallery');
+  await loadGallery();
+}
+
+function updateOptInLabel() {
+  const el = document.getElementById('optInLabel');
+  if (!el) return;
+  el.textContent = state.optIn ? 'ON' : 'OFF';
+  el.className = state.optIn ? 'on' : 'off';
+}
+
+async function toggleOptIn() {
+  closeMenu();
+  const next = !state.optIn;
+  const r = await apiPost({ type: next ? 'glyOptIn' : 'glyOptOut', token: state.token });
+  if (r.error) { toast('실패: ' + r.error); return; }
+  state.optIn = next;
+  updateOptInLabel();
+  toast(next ? '✨ 내 쪽지 광장에 올림' : '📴 광장 노출 끔');
+}
+
+// ===== Gallery =====
+async function loadGallery() {
+  const r = await apiGet({ action: 'glyGallery', token: state.token, page: 0 });
+  if (r.error) {
+    toast('광장 로드 실패: ' + r.error);
+    return;
+  }
+  state.cards = r.cards || [];
+  document.getElementById('statsTotal').textContent = r.total || 0;
+  renderCards();
+  // balance 동기화
+  const b = await apiGet({ action: 'glyBalance', token: state.token });
+  if (!b.error) { state.balance = b.balance; updateWalletUi(); }
+}
+
+function renderCards() {
+  const grid = document.getElementById('cardsGrid');
+  const empty = document.getElementById('emptyGallery');
+  if (!state.cards.length) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.innerHTML = state.cards.map((c, i) => {
+    const tags = [c.age ? `${c.age}살` : '', c.mbti].filter(Boolean).map(t => `<span class="card-tag">${escapeHtml(t)}</span>`).join('');
+    const cls = 'card' + (c.opened ? ' opened' : '') + (c.hogamSent ? ' hogam-sent' : '');
+    const badge = c.hogamSent ? '<div class="card-hogam-badge">💌 호감</div>' : '';
+    const nameLine = c.opened
+      ? `<div class="card-foot opened">${escapeHtml(c.name || '')} ♡</div>`
+      : '<div class="card-foot">🔒 1코인으로 열기</div>';
+    return `<div class="${cls}" onclick="openCard('${c.cardId}')">
+      <div class="card-tape"></div>
+      ${badge}
+      <div class="card-school">${escapeHtml(c.school || '학교미공개')}</div>
+      <div class="card-tags">${tags}</div>
+      <div class="card-intro">${escapeHtml(c.intro || '아직 한줄소개가 없어요')}</div>
+      ${nameLine}
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+}
+
+// ===== Card detail =====
+let currentCard = null;
+
+async function openCard(cardId) {
+  const card = state.cards.find(c => c.cardId === cardId);
+  if (!card) return;
+  currentCard = card;
+  renderDetail(card, false);
+  openModal('modalDetail');
+}
+
+function renderDetail(card, afterOpen) {
+  const body = document.getElementById('detailBody');
+  const tags = [card.age ? `${card.age}살` : '', card.mbti].filter(Boolean).map(t => `<span class="cd-tag">${escapeHtml(t)}</span>`).join('');
+  const isOpened = card.opened || afterOpen;
+  const hogamPrice = state.gender === '여자' ? PRICE_HOGAM_F : PRICE_HOGAM_M;
+
+  let html = `
+    <div class="cd-header">
+      <div class="cd-school">${escapeHtml(card.school || '학교미공개')}</div>
+      <div class="cd-tags">${tags}</div>`;
+  if (isOpened && card.name) {
+    html += `<div class="cd-name">♡ ${escapeHtml(card.name)}</div>`;
+  } else {
+    html += `<div class="cd-name-masked">${escapeHtml(card.nameMasked || '?*')}</div>
+      <div class="cd-blur-notice">열어보면 이름이 공개돼요</div>`;
+  }
+  html += `</div>
+    <div class="cd-intro-box">${escapeHtml(card.intro || '한줄소개가 아직 없어요')}</div>`;
+
+  if (isOpened) {
+    if (card.kakao) {
+      html += `<div class="cd-contact-box">
+        <span class="lbl">카카오톡 ID</span>
+        <span class="val">${escapeHtml(card.kakao)}</span>
+      </div>`;
+    } else if (card.instagram) {
+      html += `<div class="cd-contact-box">
+        <span class="lbl">인스타그램</span>
+        <span class="val">@${escapeHtml(card.instagram)}</span>
+      </div>`;
+    } else {
+      html += `<div class="cd-contact-box"><span class="cd-contact-sub">연락처가 아직 공개되지 않았어요</span></div>`;
+    }
+    const hogamDone = card.hogamSent;
+    html += `<div class="cd-action-row">
+      <button class="btn-ghost" onclick="closeModal('modalDetail')">닫기</button>
+      <button class="cd-hogam-btn" onclick="sendHogam()" ${hogamDone ? 'disabled' : ''}>
+        ${hogamDone ? '💌 호감 보냈어요' : `💌 호감 보내기 (${hogamPrice}코인)`}
+      </button>
+    </div>`;
+  } else {
+    html += `<div class="cd-coin-price">
+      쪽지 열람 <b>${PRICE_OPEN}코인</b>
+      <div class="cd-balance-after">현재 잔액 ${state.balance}코인 → 열람 후 ${state.balance - PRICE_OPEN}코인</div>
+    </div>
+    <div class="cd-action-row">
+      <button class="btn-ghost" onclick="closeModal('modalDetail')">닫기</button>
+      <button class="cd-open-btn" onclick="doOpen()">🔓 열어보기</button>
+    </div>`;
+  }
+  body.innerHTML = html;
+}
+
+async function doOpen() {
+  if (!currentCard) return;
+  if (state.balance < PRICE_OPEN) {
+    closeModal('modalDetail');
+    toast('💰 코인이 부족해요. 충전창이 열립니다');
+    setTimeout(openCharge, 500);
+    return;
+  }
+  const r = await apiPost({ type: 'glyOpen', token: state.token, cardId: currentCard.cardId });
+  if (r.error) {
+    if (r.error === 'insufficient_coin') {
+      closeModal('modalDetail');
+      toast('💰 코인이 부족해요');
+      setTimeout(openCharge, 500);
+      return;
+    }
+    toast('열기 실패: ' + r.error);
+    return;
+  }
+  Object.assign(currentCard, {
+    opened: true,
+    name: r.name,
+    kakao: r.kakao,
+    instagram: r.instagram,
+  });
+  if (typeof r.balance === 'number') { state.balance = r.balance; updateWalletUi(); }
+  renderDetail(currentCard, true);
+  renderCards();
+  toast('✨ 쪽지를 열었어요!');
+}
+
+async function sendHogam() {
+  if (!currentCard) return;
+  const hogamPrice = state.gender === '여자' ? PRICE_HOGAM_F : PRICE_HOGAM_M;
+  if (state.balance < hogamPrice) {
+    closeModal('modalDetail');
+    toast('💰 호감 보내기엔 코인이 부족해요');
+    setTimeout(openCharge, 500);
+    return;
+  }
+  if (!confirm(`${currentCard.name || '이 분'}께 호감을 보낼까요?\n(${hogamPrice}코인 차감 · 운영진이 상대의 응답을 확인하면 매칭 진행)`)) return;
+  const r = await apiPost({ type: 'glyHogam', token: state.token, cardId: currentCard.cardId });
+  if (r.error) {
+    if (r.error === 'already_hogam') { toast('이미 호감을 보냈어요'); return; }
+    if (r.error === 'insufficient_coin') { toast('💰 코인이 부족해요'); setTimeout(openCharge, 500); return; }
+    toast('호감 보내기 실패: ' + r.error);
+    return;
+  }
+  currentCard.hogamSent = true;
+  if (typeof r.balance === 'number') { state.balance = r.balance; updateWalletUi(); }
+  renderDetail(currentCard, true);
+  renderCards();
+  toast('💌 호감이 전달됐어요. 상대 응답 알림 기다려주세요!');
+}
+
+// ===== Charge =====
+function openCharge() {
+  closeMenu();
+  document.getElementById('chargeUserName').textContent = state.name || '본인 이름';
+  const packs = CHARGE_PACKS.map(p => {
+    const total = p.coins + p.bonus;
+    const bonusLine = p.bonus ? `<div class="pack-bonus">${p.label}</div>` : '';
+    return `<div class="pack${p.best ? ' best' : ''}">
+      <div class="pack-won">${p.won.toLocaleString()}원</div>
+      <div class="pack-coin">💰 ${total}코인</div>
+      ${bonusLine}
+    </div>`;
+  }).join('');
+  document.getElementById('chargePacks').innerHTML = packs;
+  openModal('modalCharge');
+}
+
+// ===== Menu =====
+function toggleMenu() {
+  document.getElementById('menuSheet').classList.toggle('show');
+}
+function closeMenu() {
+  document.getElementById('menuSheet').classList.remove('show');
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('.top-menu-btn') || e.target.closest('.menu-sheet')) return;
+  closeMenu();
+});
+
+async function doLogout() {
+  closeMenu();
+  if (!confirm('로그아웃 할까요?')) return;
+  await apiPost({ type: 'glyLogout', token: state.token }).catch(() => {});
+  localStorage.removeItem(LS_TOKEN);
+  localStorage.removeItem(LS_PHONE);
+  localStorage.removeItem('postitt_gly_optin_asked');
+  state = { token: '', phone: '', name: '', gender: '', balance: 0, optIn: false, cards: [] };
+  setTopBar(false);
+  showScreen('screenLogin');
+}
+
+// ===== Boot =====
+(async function boot() {
+  const savedToken = localStorage.getItem(LS_TOKEN);
+  const savedPhone = localStorage.getItem(LS_PHONE);
+  if (savedToken) {
+    state.token = savedToken;
+    state.phone = savedPhone || '';
+    await loadMeAndEnter();
+  } else {
+    showScreen('screenLogin');
+    document.getElementById('phoneInput').focus();
+  }
+})();
+</script>
+
+</body>
+</html>
