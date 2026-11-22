@@ -2288,46 +2288,46 @@ body::before {
 
 /* 추천 코드 박스 (성공 모달) */
 .referral-box {
-  margin-top: 14px;
+  margin-top: 10px;
   background: linear-gradient(135deg, #fff5e0 0%, #ffe8f3 100%);
-  border: 2px solid #ffb84d;
-  border-radius: 14px;
-  padding: 16px 18px;
+  border: 1.5px solid #ffb84d;
+  border-radius: 10px;
+  padding: 10px 12px;
   text-align: center;
-  box-shadow: 0 4px 14px rgba(255, 184, 77, 0.25);
+  box-shadow: 0 2px 8px rgba(255, 184, 77, 0.2);
 }
 .referral-box-title {
   font-family: 'Jua', sans-serif;
-  font-size: 15px;
+  font-size: 13px;
   color: #c43d8a;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 .referral-box-desc {
   font-family: 'Gaegu', cursive;
-  font-size: 13px;
+  font-size: 12px;
   color: #6e4858;
-  margin-bottom: 12px;
-  line-height: 1.5;
+  margin-bottom: 8px;
+  line-height: 1.3;
 }
 .referral-box-desc strong { color: #ff4dd2; }
 .referral-code-display {
   display: block;
   background: white;
-  border: 2px dashed #ff8fbe;
-  border-radius: 10px;
-  padding: 14px 12px;
-  margin: 10px 0;
+  border: 1.5px dashed #ff8fbe;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin: 6px 0;
   font-family: 'Courier New', monospace;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
   color: #c43d8a;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   user-select: all;
 }
 .referral-code-display.empty {
   color: #c8b5c0;
   letter-spacing: 0.3px;
-  font-size: 13px;
+  font-size: 11px;
   font-family: 'Gaegu', cursive;
   font-weight: 400;
 }
@@ -2335,22 +2335,22 @@ body::before {
   background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
   color: white;
   border: none;
-  border-radius: 24px;
-  padding: 10px 24px;
+  border-radius: 18px;
+  padding: 7px 18px;
   font-family: 'Jua', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(255, 93, 158, 0.35);
+  box-shadow: 0 2px 6px rgba(255, 93, 158, 0.3);
   transition: transform 0.1s;
-  margin-top: 4px;
+  margin-top: 2px;
 }
-.referral-btn:active { transform: translateY(2px); }
+.referral-btn:active { transform: translateY(1px); }
 .referral-copy-msg {
   font-family: 'Gaegu', cursive;
-  font-size: 12px;
+  font-size: 11px;
   color: #2e9a4a;
-  margin-top: 8px;
-  height: 14px;
+  margin-top: 4px;
+  height: 12px;
   opacity: 0;
   transition: opacity 0.2s;
 }
@@ -2909,9 +2909,7 @@ body::before {
             </div>
             <div class="pay-gender-note">
               <p class="pgn-male">💙 <b>남학우</b> — 신청한 옵션 금액 결제</p>
-              <p class="pgn-female">💗 <b>여학우</b> — <b class="pgn-hi">보증금 5,000원</b> 입금
-                <span class="pgn-sub">매칭 후 만남 인증 시 100% 환급</span>
-              </p>
+              <p class="pgn-female">💗 <b>여학우</b> — 신청한 옵션 금액 결제 <span class="pgn-sub">(쪽지팅 무료 / 미팅 3,000원)</span></p>
             </div>
           </div>
           <div class="pay-info-review">
@@ -2933,14 +2931,11 @@ body::before {
       <p class="next-warn">⚠️ 사진 확인 후 매칭 진행됩니다</p>
     </div>
     <div class="referral-box">
-      <div class="referral-box-title">☕ 친구 초대 = 커피쿠폰 증정!</div>
-      <div class="referral-box-desc">
-        에타에 코드 올려서 <b>친구</b>가 신청하면<br>
-        친구는 <strong>-3,000원 할인</strong>, 나는 <strong>커피쿠폰 증정</strong> ♡
-      </div>
-      <div class="referral-code-display empty" id="referralCodeDisplay">↓ 코드 받기 버튼을 눌러줘 ↓</div>
-      <button class="referral-btn" id="referralBtn" onclick="generateReferralCode()">✨ 추천 코드 받기</button>
-      <p class="referral-copy-msg" id="referralCopyMsg">코드 복사됨! ✓</p>
+      <div class="referral-box-title">☕ 친구 초대 = 커피쿠폰</div>
+      <div class="referral-box-desc">친구는 <strong>-3,000원</strong>, 나는 <strong>커피쿠폰</strong> ♡</div>
+      <div class="referral-code-display empty" id="referralCodeDisplay">↓ 코드 받기 버튼 ↓</div>
+      <button class="referral-btn" id="referralBtn" onclick="generateReferralCode()">✨ 코드 받기</button>
+      <p class="referral-copy-msg" id="referralCopyMsg">복사됨 ✓</p>
     </div>
     <div class="share-actions">
       <button class="save-btn" onclick="saveShareCard()">📸 이미지 저장</button>
