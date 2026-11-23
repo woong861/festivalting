@@ -1088,6 +1088,7 @@ body::before {
   line-height: 1.35;
 }
 .ifb-sub strong { color: #ff2492; font-family: 'Jua', sans-serif; }
+.ifb-inputs { display: flex; flex-direction: column; gap: 7px; margin-bottom: 8px; }
 .ifb-input-wrap {
   position: relative;
   background: white;
@@ -1097,12 +1098,38 @@ body::before {
   align-items: center;
   padding: 4px 4px 4px 14px;
   transition: border-color 0.2s, box-shadow 0.2s;
-  margin-bottom: 12px;
 }
-.invite-friend-block.has-value .ifb-input-wrap {
+.ifb-input-wrap.filled {
   border-color: #ff4dd2;
   box-shadow: 0 0 0 3px rgba(255, 77, 210, 0.15);
 }
+.ifb-del-btn {
+  background: transparent;
+  border: none;
+  color: #c76df0;
+  font-size: 18px;
+  padding: 4px 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.ifb-del-btn:hover { color: #ff4dd2; }
+.ifb-add-btn {
+  width: 100%;
+  background: rgba(255,255,255,0.7);
+  border: 1.5px dashed #c76df0;
+  color: #8a2dc8;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-family: 'Jua', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: all 0.15s;
+}
+.ifb-add-btn:hover { background: rgba(255,230,245,0.85); border-color: #ff4dd2; }
+.ifb-add-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.ifb-add-count { font-family: 'Pretendard', sans-serif; font-size: 11px; color: #a76dc8; margin-left: 4px; }
 .ifb-at {
   font-family: 'Jua', sans-serif;
   color: #c76df0;
@@ -3212,33 +3239,36 @@ body::before {
         <div class="ifb-header">
           <span class="ifb-emoji">💌</span>
           <div class="ifb-title-wrap">
-            <div class="ifb-title">쪽지팅 소개해줄 친구 한 명만 알려줘!</div>
-            <div class="ifb-sub">입력만 해도 <strong>내 매칭 카드 +1장</strong> 즉시 지급 💫</div>
+            <div class="ifb-title">쪽지팅 할 친구 추천할래?</div>
+            <div class="ifb-sub">친구가 신청하면 <strong>내 매칭 카드 +1장</strong> (최대 3명)</div>
           </div>
         </div>
-        <div class="ifb-input-wrap">
-          <span class="ifb-at">@</span>
-          <input type="text" name="invite_friend_insta" id="inviteFriendInsta" placeholder="친구 인스타 ID (예: cool_friend)" autocomplete="off">
+        <div class="ifb-inputs" id="ifbInputs">
+          <div class="ifb-input-wrap" data-idx="0">
+            <span class="ifb-at">@</span>
+            <input type="text" class="ifb-friend-insta" name="invite_friend_insta_1" id="inviteFriendInsta" placeholder="친구 인스타 ID (예: cool_friend)" autocomplete="off" maxlength="31">
+          </div>
         </div>
+        <button type="button" class="ifb-add-btn" id="ifbAddBtn">+ 친구 더 적기 <span class="ifb-add-count">(1/3)</span></button>
         <div class="ifb-benefits">
           <div class="ifb-benefit">
             <span class="ifb-check">✔</span>
-            <span><b>친구는 신청 안 해도 OK!</b> 운영진이 "너를 추천한 친구가 있어 ♡" DM만 보낼게</span>
+            <span>친구가 <b>쪽지팅에 신청 완료</b>하면 <b>둘 다 카드 +1장</b></span>
           </div>
           <div class="ifb-benefit">
             <span class="ifb-check">✔</span>
-            <span>내 매칭 카드는 <b>기본 1장 → 3장 중 1명 선택</b>으로 즉시 업그레이드</span>
+            <span>친구 3명 추천 성공 시 <b>최대 6장 중 1명 선택</b>까지 업그레이드</span>
           </div>
           <div class="ifb-benefit">
             <span class="ifb-check">✔</span>
-            <span>개인정보 보호: 네 이름은 DM에 노출 안 됨</span>
+            <span>개인정보 보호: 친구에게 네 이름은 공개 안 됨</span>
           </div>
         </div>
         <div class="ifb-bonus-card" id="inviteFriendBonus">
           <span class="ifb-bonus-icon">🎴</span>
           <div>
-            <div class="ifb-bonus-title">✨ 카드 1장 추가 보너스 획득!</div>
-            <div class="ifb-bonus-sub">매칭 확률 3배 UP · 운영진이 DM 보낼 예정</div>
+            <div class="ifb-bonus-title">✨ 친구 <span id="ifbCount">0</span>명 추천 중</div>
+            <div class="ifb-bonus-sub">친구 1명 신청 완료당 내 카드 +1장</div>
           </div>
         </div>
       </div>
@@ -3511,11 +3541,13 @@ document.getElementById('applyForm').addEventListener('submit', function(e) {
   const _cardOption = (this.querySelector('input[name="card_option"]:checked') || {}).value || '';
   let _originalIntro = _introField ? _introField.value : '';
   const _hasCardExtra = _cardOption && _cardOption !== '기본 (1장)';
-  const _inviteInsta = ((this.querySelector('input[name="invite_friend_insta"]') || {}).value || '').trim().replace(/^@/, '');
-  if (_introField && (_isMeeting || _hasCardExtra || _inviteInsta)) {
+  const _inviteInstas = Array.from(this.querySelectorAll('.ifb-friend-insta'))
+    .map(i => (i.value || '').trim().replace(/^@/, '').replace(/[^A-Za-z0-9._]/g, ''))
+    .filter(v => v.length >= 2);
+  if (_introField && (_isMeeting || _hasCardExtra || _inviteInstas.length)) {
     const extras = [];
     if (_hasCardExtra) extras.push(`[카드옵션] ${_cardOption}`);
-    if (_inviteInsta) extras.push(`[초대 인스타] @${_inviteInsta} (카드+1 보너스)`);
+    if (_inviteInstas.length) extras.push(`[추천 친구 ${_inviteInstas.length}명] ${_inviteInstas.map(v => '@'+v).join(', ')} (각 친구 신청 시 카드+1)`);
     if (_isMeeting) {
       const buildFriend = (idx) => {
         const n = (this.querySelector(`input[name="friend${idx}_name"]`) || {}).value || '';
@@ -3651,18 +3683,62 @@ FORM_EL.addEventListener('input', saveDraft);
 FORM_EL.addEventListener('change', saveDraft);
 loadDraft();
 
-// ===== 초대 인스타 입력 시 보너스 UI 표시 =====
+// ===== 친구 추천 멀티 입력 (최대 3명) =====
 (function() {
-  const inviteInput = document.getElementById('inviteFriendInsta');
-  const inviteField = document.getElementById('inviteFriendField');
-  if (!inviteInput || !inviteField) return;
-  const toggleBonus = () => {
-    const v = inviteInput.value.trim().replace(/^@/, '');
-    if (v.length >= 2) inviteField.classList.add('has-value');
-    else inviteField.classList.remove('has-value');
-  };
-  inviteInput.addEventListener('input', toggleBonus);
-  toggleBonus();
+  const field = document.getElementById('inviteFriendField');
+  const inputsWrap = document.getElementById('ifbInputs');
+  const addBtn = document.getElementById('ifbAddBtn');
+  const countEl = document.getElementById('ifbCount');
+  const addCountEl = addBtn?.querySelector('.ifb-add-count');
+  if (!field || !inputsWrap || !addBtn) return;
+  const MAX_FRIENDS = 3;
+
+  function instaValues() {
+    return Array.from(inputsWrap.querySelectorAll('.ifb-friend-insta'))
+      .map(i => i.value.trim().replace(/^@/, '').replace(/[^A-Za-z0-9._]/g, ''))
+      .filter(v => v.length >= 2);
+  }
+
+  function refresh() {
+    const rows = inputsWrap.querySelectorAll('.ifb-input-wrap');
+    rows.forEach(r => {
+      const inp = r.querySelector('.ifb-friend-insta');
+      const v = (inp.value || '').trim().replace(/^@/, '');
+      r.classList.toggle('filled', v.length >= 2);
+    });
+    const filled = instaValues().length;
+    if (countEl) countEl.textContent = filled;
+    if (filled > 0) field.classList.add('has-value');
+    else field.classList.remove('has-value');
+    if (addCountEl) addCountEl.textContent = `(${rows.length}/${MAX_FRIENDS})`;
+    addBtn.disabled = rows.length >= MAX_FRIENDS;
+  }
+
+  function addRow() {
+    const rows = inputsWrap.querySelectorAll('.ifb-input-wrap');
+    if (rows.length >= MAX_FRIENDS) return;
+    const idx = rows.length;
+    const row = document.createElement('div');
+    row.className = 'ifb-input-wrap';
+    row.dataset.idx = idx;
+    row.innerHTML = `
+      <span class="ifb-at">@</span>
+      <input type="text" class="ifb-friend-insta" name="invite_friend_insta_${idx + 1}" placeholder="친구 ${idx + 1} 인스타 ID" autocomplete="off" maxlength="31">
+      <button type="button" class="ifb-del-btn" aria-label="삭제">×</button>
+    `;
+    inputsWrap.appendChild(row);
+    row.querySelector('.ifb-friend-insta').addEventListener('input', refresh);
+    row.querySelector('.ifb-del-btn').addEventListener('click', () => { row.remove(); refresh(); });
+    refresh();
+    row.querySelector('.ifb-friend-insta').focus();
+  }
+
+  // 첫 입력란의 input 이벤트 등록 (static HTML)
+  inputsWrap.querySelectorAll('.ifb-friend-insta').forEach(inp => {
+    inp.addEventListener('input', refresh);
+  });
+  addBtn.addEventListener('click', addRow);
+  refresh();
 })();
 
 // ====== Progress bar + Char counters ======
