@@ -1213,6 +1213,102 @@ body::before {
   line-height: 1.3;
 }
 
+/* ====== 친구 공유 복붙 카드 ====== */
+.ifb-share-card {
+  display: none;
+  margin-top: 12px;
+  padding: 12px 12px 10px;
+  background: white;
+  border: 2px dashed #ff8fbe;
+  border-radius: 14px;
+  position: relative;
+}
+.invite-friend-block.has-value .ifb-share-card { display: block; animation: ifbBonusPop 0.35s ease-out; }
+.ifb-share-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.ifb-share-head > span:first-child {
+  font-family: 'Jua', sans-serif;
+  font-size: 13px;
+  color: #c43d8a;
+}
+.ifb-share-code-chip {
+  background: linear-gradient(135deg, #fff2fa, #ffe0ee);
+  border: 1.5px dashed #ff4dd2;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-family: 'Gaegu', cursive;
+  font-size: 12px;
+  color: #8a4060;
+  white-space: nowrap;
+}
+.ifb-share-code-chip b {
+  font-family: 'Courier New', monospace;
+  color: #ff2492;
+  letter-spacing: 1px;
+  font-size: 13px;
+  margin-left: 4px;
+}
+.ifb-share-msg {
+  width: 100%;
+  resize: none;
+  border: 1.5px solid #ffd1e4;
+  border-radius: 10px;
+  padding: 10px 11px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 12.5px;
+  color: #3a2030;
+  line-height: 1.55;
+  background: #fffdf5;
+  outline: none;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+.ifb-share-msg:focus { border-color: #ff4dd2; }
+.ifb-share-actions {
+  display: flex;
+  gap: 6px;
+}
+.ifb-share-btn {
+  flex: 1;
+  background: #fff0f7;
+  border: 1.5px solid #ffb3d9;
+  color: #c43d8a;
+  padding: 9px 10px;
+  border-radius: 10px;
+  font-family: 'Jua', sans-serif;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.ifb-share-btn:hover { background: #ffe0ee; }
+.ifb-share-btn.primary {
+  flex: 2;
+  background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
+  color: white;
+  border-color: #ff4dd2;
+  box-shadow: 0 3px 10px rgba(255, 93, 158, 0.3);
+}
+.ifb-share-btn.primary:hover { filter: brightness(1.05); }
+.ifb-share-btn.copied {
+  background: #4caf50 !important;
+  color: white !important;
+  border-color: #4caf50 !important;
+}
+.ifb-share-note {
+  font-family: 'Gaegu', cursive;
+  font-size: 11.5px;
+  color: #8a5868;
+  text-align: center;
+  margin: 8px 0 0;
+}
+
 /* ========== 카드 추가 옵션 (매칭 카드) ========== */
 .card-options-field {
   background: rgba(255, 240, 214, 0.5);
@@ -3259,10 +3355,6 @@ body::before {
             <span class="ifb-check">✔</span>
             <span>친구 3명 추천 성공 시 <b>최대 6장 중 1명 선택</b>까지 업그레이드</span>
           </div>
-          <div class="ifb-benefit">
-            <span class="ifb-check">✔</span>
-            <span>개인정보 보호: 친구에게 네 이름은 공개 안 됨</span>
-          </div>
         </div>
         <div class="ifb-bonus-card" id="inviteFriendBonus">
           <span class="ifb-bonus-icon">🎴</span>
@@ -3270,6 +3362,18 @@ body::before {
             <div class="ifb-bonus-title">✨ 친구 <span id="ifbCount">0</span>명 추천 중</div>
             <div class="ifb-bonus-sub">친구 1명 신청 완료당 내 카드 +1장</div>
           </div>
+        </div>
+        <div class="ifb-share-card" id="ifbShareCard">
+          <div class="ifb-share-head">
+            <span>📋 친구에게 보낼 메시지</span>
+            <span class="ifb-share-code-chip">내 코드 <b id="ifbShareCode">PT-????</b></span>
+          </div>
+          <textarea class="ifb-share-msg" id="ifbShareMsg" readonly rows="6"></textarea>
+          <div class="ifb-share-actions">
+            <button type="button" class="ifb-share-btn primary" id="ifbCopyMsgBtn">📋 메시지 전체 복사</button>
+            <button type="button" class="ifb-share-btn" id="ifbCopyLinkBtn">🔗 링크만</button>
+          </div>
+          <p class="ifb-share-note">인스타 DM에 그대로 붙여넣기만 하면 돼요 ♡</p>
         </div>
       </div>
 
@@ -3683,15 +3787,46 @@ FORM_EL.addEventListener('input', saveDraft);
 FORM_EL.addEventListener('change', saveDraft);
 loadDraft();
 
-// ===== 친구 추천 멀티 입력 (최대 3명) =====
+// ===== 친구 추천 멀티 입력 (최대 3명) + 복붙 메시지 =====
 (function() {
   const field = document.getElementById('inviteFriendField');
   const inputsWrap = document.getElementById('ifbInputs');
   const addBtn = document.getElementById('ifbAddBtn');
   const countEl = document.getElementById('ifbCount');
   const addCountEl = addBtn?.querySelector('.ifb-add-count');
+  const shareCode = document.getElementById('ifbShareCode');
+  const shareMsg = document.getElementById('ifbShareMsg');
+  const copyMsgBtn = document.getElementById('ifbCopyMsgBtn');
+  const copyLinkBtn = document.getElementById('ifbCopyLinkBtn');
   if (!field || !inputsWrap || !addBtn) return;
   const MAX_FRIENDS = 3;
+
+  // 세션 중 하나의 추천 코드 유지
+  let myCode = '';
+  function ensureCode() {
+    if (myCode) return myCode;
+    // Hero 영역에 이미 생성된 코드가 있으면 재사용
+    const heroEl = document.getElementById('heroReferralDisplay');
+    const heroText = (heroEl?.textContent || '').trim();
+    if (/^PT-[A-Z0-9]{4}$/.test(heroText)) { myCode = heroText; return myCode; }
+    const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+    let c = '';
+    for (let i = 0; i < 4; i++) c += chars.charAt(Math.floor(Math.random() * chars.length));
+    myCode = 'PT-' + c;
+    return myCode;
+  }
+
+  function buildMessage() {
+    const code = ensureCode();
+    const link = `https://postitt.cloud?ref=${code}`;
+    return (
+      `안녕! 쪽지팅이라는 대학생 소개팅 서비스인데\n` +
+      `포스트잇에 쪽지 한 장 붙이고 매칭받는 거야 ♡\n\n` +
+      `내 추천코드 쓰면 -3,000원 할인!\n` +
+      `코드: ${code}\n` +
+      `${link}`
+    );
+  }
 
   function instaValues() {
     return Array.from(inputsWrap.querySelectorAll('.ifb-friend-insta'))
@@ -3708,11 +3843,36 @@ loadDraft();
     });
     const filled = instaValues().length;
     if (countEl) countEl.textContent = filled;
-    if (filled > 0) field.classList.add('has-value');
-    else field.classList.remove('has-value');
+    if (filled > 0) {
+      field.classList.add('has-value');
+      // 복붙 카드에 코드 + 메시지 세팅
+      if (shareCode) shareCode.textContent = ensureCode();
+      if (shareMsg) shareMsg.value = buildMessage();
+    } else {
+      field.classList.remove('has-value');
+    }
     if (addCountEl) addCountEl.textContent = `(${rows.length}/${MAX_FRIENDS})`;
     addBtn.disabled = rows.length >= MAX_FRIENDS;
   }
+
+  function copyToClipboard(text, btn, okLabel) {
+    const original = btn.textContent;
+    const done = () => {
+      btn.textContent = okLabel;
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => {
+        try { shareMsg.select(); document.execCommand('copy'); done(); } catch (e) {}
+      });
+    } else {
+      try { shareMsg.select(); document.execCommand('copy'); done(); } catch (e) {}
+    }
+  }
+
+  copyMsgBtn?.addEventListener('click', () => copyToClipboard(buildMessage(), copyMsgBtn, '✓ 복사됨!'));
+  copyLinkBtn?.addEventListener('click', () => copyToClipboard(`https://postitt.cloud?ref=${ensureCode()}`, copyLinkBtn, '✓ 복사'));
 
   function addRow() {
     const rows = inputsWrap.querySelectorAll('.ifb-input-wrap');
