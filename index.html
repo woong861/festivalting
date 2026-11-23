@@ -1021,38 +1021,169 @@ body::before {
   margin-bottom: 16px;
 }
 .referrer-field label { color: #c43d8a !important; }
-.invite-friend-field {
-  background: rgba(240, 230, 255, 0.55);
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px dashed #d8a3f0;
-  margin-bottom: 16px;
+/* ========== Invite Friend Block (신청폼 마지막 유도 블록) ========== */
+.invite-friend-block {
+  margin: 18px 0 20px;
+  padding: 18px 16px 16px;
+  background: linear-gradient(135deg, #fff2fa 0%, #f0e4ff 100%);
+  border: 2px dashed #c76df0;
+  border-radius: 18px;
   position: relative;
-  transition: background 0.2s, border-color 0.2s;
+  box-shadow: 0 6px 18px rgba(199, 109, 240, 0.18);
+  overflow: hidden;
+  animation: ifbAttention 3.6s ease-in-out infinite;
 }
-.invite-friend-field label { color: #8a3dc4 !important; }
-.invite-friend-field.has-value {
-  background: linear-gradient(135deg, rgba(255,230,245,0.75), rgba(240,230,255,0.75));
-  border-color: #c76df0;
-  box-shadow: 0 2px 10px rgba(199, 109, 240, 0.18);
+@keyframes ifbAttention {
+  0%, 100% { box-shadow: 0 6px 18px rgba(199, 109, 240, 0.18); }
+  50% { box-shadow: 0 8px 24px rgba(255, 93, 210, 0.32); }
 }
-.invite-friend-bonus {
-  display: none;
+.invite-friend-block::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 70%);
+  pointer-events: none;
+}
+.ifb-ribbon {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff5d9e, #c76df0);
+  color: white;
   font-family: 'Jua', sans-serif;
-  font-size: 13px;
-  color: #ff4dd2;
-  margin-top: 6px;
-  padding: 6px 10px;
-  background: white;
-  border-radius: 8px;
-  border: 1.5px dashed #ff8fbe;
-  text-align: center;
-  animation: bonusPop 0.3s ease-out;
+  font-size: 12px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(255, 93, 158, 0.35);
+  letter-spacing: 0.3px;
 }
-.invite-friend-field.has-value .invite-friend-bonus { display: block; }
-@keyframes bonusPop {
+.ifb-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.ifb-emoji {
+  font-size: 34px;
+  flex-shrink: 0;
+  animation: ifbEmojiPulse 2s ease-in-out infinite;
+  line-height: 1;
+}
+@keyframes ifbEmojiPulse {
+  0%, 100% { transform: scale(1) rotate(-3deg); }
+  50% { transform: scale(1.1) rotate(3deg); }
+}
+.ifb-title-wrap { flex: 1; min-width: 0; }
+.ifb-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 16px;
+  color: #8a2dc8;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.ifb-sub {
+  font-family: 'Gaegu', cursive;
+  font-size: 14px;
+  color: #6e4858;
+  line-height: 1.35;
+}
+.ifb-sub strong { color: #ff2492; font-family: 'Jua', sans-serif; }
+.ifb-input-wrap {
+  position: relative;
+  background: white;
+  border: 2px solid #ffb3d9;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 4px 4px 4px 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 12px;
+}
+.invite-friend-block.has-value .ifb-input-wrap {
+  border-color: #ff4dd2;
+  box-shadow: 0 0 0 3px rgba(255, 77, 210, 0.15);
+}
+.ifb-at {
+  font-family: 'Jua', sans-serif;
+  color: #c76df0;
+  font-size: 18px;
+  margin-right: 2px;
+}
+.ifb-input-wrap input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 10px 6px;
+  font-family: 'Gaegu', cursive;
+  font-size: 15px;
+  color: #3a2030;
+  min-width: 0;
+}
+.ifb-input-wrap input::placeholder { color: #b8a3c8; }
+.ifb-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.ifb-benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-family: 'Gaegu', cursive;
+  font-size: 13px;
+  color: #5a3845;
+  line-height: 1.35;
+}
+.ifb-benefit b { color: #c43d8a; font-family: 'Jua', sans-serif; font-size: 13px; }
+.ifb-check {
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  background: linear-gradient(135deg, #ff5d9e, #c76df0);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+.ifb-bonus-card {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 11px 13px;
+  background: linear-gradient(135deg, #ffe4f2, #ffd1f0);
+  border: 2px solid #ff4dd2;
+  border-radius: 12px;
+  animation: ifbBonusPop 0.35s ease-out;
+}
+.invite-friend-block.has-value .ifb-bonus-card { display: flex; }
+@keyframes ifbBonusPop {
   0% { transform: scale(0.85); opacity: 0; }
+  60% { transform: scale(1.04); }
   100% { transform: scale(1); opacity: 1; }
+}
+.ifb-bonus-icon {
+  font-size: 26px;
+  flex-shrink: 0;
+  animation: ifbEmojiPulse 1.6s ease-in-out infinite;
+}
+.ifb-bonus-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 14px;
+  color: #c43d8a;
+  line-height: 1.2;
+}
+.ifb-bonus-sub {
+  font-family: 'Gaegu', cursive;
+  font-size: 12.5px;
+  color: #8a4060;
+  margin-top: 2px;
+  line-height: 1.3;
 }
 
 /* ========== 카드 추가 옵션 (매칭 카드) ========== */
@@ -2792,12 +2923,6 @@ body::before {
         <input type="text" name="referrer" placeholder="예: PT-A3K9" style="text-transform:uppercase;">
         <p class="hint hint-bonus">추천인 코드 입력 시 <strong>3,000원 할인</strong> ♡</p>
       </div>
-      <div class="field invite-friend-field" id="inviteFriendField">
-        <label>💌 초대할 친구 인스타 (선택)</label>
-        <input type="text" name="invite_friend_insta" id="inviteFriendInsta" placeholder="@를 빼고 적어줘">
-        <p class="hint hint-bonus">입력하면 <strong>내 카드 1장 추가 보너스</strong> 🎴</p>
-        <p class="invite-friend-bonus" id="inviteFriendBonus">✨ 카드 1장 추가 보너스 획득!</p>
-      </div>
       <div class="field">
         <label>전화번호</label>
         <input type="tel" name="phone" required placeholder="010-0000-0000" inputmode="numeric">
@@ -2914,6 +3039,42 @@ body::before {
       </div>
       <!-- 입금자명 필드는 UI 삭제됨. Google Form required 대응용 dummy 값 -->
       <input type="hidden" name="payment" value="완료 화면 안내 / 카톡방 확인">
+
+      <div class="invite-friend-block" id="inviteFriendField">
+        <div class="ifb-ribbon">🎴 보너스 찬스</div>
+        <div class="ifb-header">
+          <span class="ifb-emoji">💌</span>
+          <div class="ifb-title-wrap">
+            <div class="ifb-title">쪽지팅 소개해줄 친구 한 명만 알려줘!</div>
+            <div class="ifb-sub">입력만 해도 <strong>내 매칭 카드 +1장</strong> 즉시 지급 💫</div>
+          </div>
+        </div>
+        <div class="ifb-input-wrap">
+          <span class="ifb-at">@</span>
+          <input type="text" name="invite_friend_insta" id="inviteFriendInsta" placeholder="친구 인스타 ID (예: cool_friend)" autocomplete="off">
+        </div>
+        <div class="ifb-benefits">
+          <div class="ifb-benefit">
+            <span class="ifb-check">✔</span>
+            <span><b>친구는 신청 안 해도 OK!</b> 운영진이 "너를 추천한 친구가 있어 ♡" DM만 보낼게</span>
+          </div>
+          <div class="ifb-benefit">
+            <span class="ifb-check">✔</span>
+            <span>내 매칭 카드는 <b>기본 1장 → 3장 중 1명 선택</b>으로 즉시 업그레이드</span>
+          </div>
+          <div class="ifb-benefit">
+            <span class="ifb-check">✔</span>
+            <span>개인정보 보호: 네 이름은 DM에 노출 안 됨</span>
+          </div>
+        </div>
+        <div class="ifb-bonus-card" id="inviteFriendBonus">
+          <span class="ifb-bonus-icon">🎴</span>
+          <div>
+            <div class="ifb-bonus-title">✨ 카드 1장 추가 보너스 획득!</div>
+            <div class="ifb-bonus-sub">매칭 확률 3배 UP · 운영진이 DM 보낼 예정</div>
+          </div>
+        </div>
+      </div>
 
       <button type="submit" class="submit-btn">쪽지 보내기 💌</button>
     </form>
