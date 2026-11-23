@@ -162,6 +162,56 @@
   .cd-coin-price b { color: #c43d8a; font-size: 15px; }
   .cd-balance-after { font-size: 11px; color: #8a6678; margin-top: 4px; }
 
+  .cd-anon-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #e8e4ff, #ffe4f2);
+    color: #8a2dc8;
+    font-family: 'Jua', sans-serif;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-top: 6px;
+    letter-spacing: 0.3px;
+    border: 1px solid #d8c4f0;
+  }
+  .cd-section-label {
+    font-family: 'Jua', sans-serif;
+    font-size: 12px;
+    color: #c43d8a;
+    margin: 12px 0 6px;
+    letter-spacing: 0.2px;
+  }
+  .cd-intro-blur {
+    position: relative;
+    color: #aa8092 !important;
+    font-style: italic;
+    filter: blur(1px);
+    opacity: 0.8;
+    text-align: center;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cd-match-notice {
+    background: linear-gradient(135deg, #fff4fa, #ffe4f2);
+    border: 1.5px dashed #ff8fbe;
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    font-family: 'Jua', sans-serif;
+    font-size: 13px;
+    color: #c43d8a;
+    margin: 14px 0;
+    line-height: 1.5;
+  }
+  .cd-match-sub {
+    font-family: 'Gaegu', cursive;
+    font-size: 11.5px;
+    color: #8a5868;
+    font-weight: normal;
+  }
+
   /* ===== Charge Modal ===== */
   .charge-inner { padding: 22px 20px; }
   .charge-title { font-family: 'Jua', sans-serif; font-size: 20px; color: #c43d8a; text-align: center; margin-bottom: 4px; }
@@ -254,16 +304,16 @@
       <div class="optin-desc">
         <b>동의하면 공개되는 정보</b>
         <ul>
-          <li>익명 카드엔 <b>학교 · 학년 · MBTI · 자기소개 · 이상형</b>만 뜸 (실명·연락처는 블러)</li>
-          <li>관심 있는 사람이 <b>1코인 결제해 카드 열람</b> 시 <b>이름 · 인스타 · 카톡</b>이 그 사람에게만 공개돼요</li>
-          <li>상대가 호감 보내고 나도 호감 보내면 (쌍방) <b>운영진이 매칭 진행</b></li>
+          <li>익명 카드엔 <b>학교 · 학년 · MBTI · 자기소개 일부</b>만 뜸</li>
+          <li>관심 있는 사람이 <b>1코인 결제해 열람</b> 시 <b>자기소개·이상형 전문</b>만 공개돼요 (이름·카톡·인스타는 비공개)</li>
+          <li>상대도 호감 보내서 <b>쌍방 성립</b>되면 <b>운영진이 카톡으로 매칭 연결</b></li>
         </ul>
         <br>
         <b>안심하세요</b>
         <ul>
           <li>언제든 메뉴에서 <b>'광장 노출 OFF'</b> 가능</li>
           <li>거절해도 광장에서 <b>다른 쪽지는 볼 수 있어요</b></li>
-          <li>열람 전엔 아무도 네 이름·연락처 못 봐요</li>
+          <li>이름·연락처는 <b>매칭이 성사돼야</b> 상대에게 전달돼요</li>
         </ul>
       </div>
       <div class="optin-btn-row">
@@ -576,7 +626,7 @@ function renderCards() {
     const cls = 'card' + (c.opened ? ' opened' : '') + (c.hogamSent ? ' hogam-sent' : '');
     const badge = c.hogamSent ? '<div class="card-hogam-badge">💌 호감</div>' : '';
     const nameLine = c.opened
-      ? `<div class="card-foot opened">${escapeHtml(c.name || '')} ♡</div>`
+      ? '<div class="card-foot opened">💌 열람 완료 ♡</div>'
       : '<div class="card-foot">🔒 1코인으로 열기</div>';
     return `<div class="${cls}" onclick="openCard('${c.cardId}')">
       <div class="card-tape"></div>
@@ -613,30 +663,18 @@ function renderDetail(card, afterOpen) {
   let html = `
     <div class="cd-header">
       <div class="cd-school">${escapeHtml(card.school || '학교미공개')}</div>
-      <div class="cd-tags">${tags}</div>`;
-  if (isOpened && card.name) {
-    html += `<div class="cd-name">♡ ${escapeHtml(card.name)}</div>`;
-  } else {
-    html += `<div class="cd-name-masked">${escapeHtml(card.nameMasked || '?*')}</div>
-      <div class="cd-blur-notice">열어보면 이름이 공개돼요</div>`;
-  }
-  html += `</div>
-    <div class="cd-intro-box">${escapeHtml(card.intro || '한줄소개가 아직 없어요')}</div>`;
+      <div class="cd-tags">${tags}</div>
+      <div class="cd-anon-badge">익명 쪽지</div>
+    </div>`;
 
   if (isOpened) {
-    if (card.kakao) {
-      html += `<div class="cd-contact-box">
-        <span class="lbl">카카오톡 ID</span>
-        <span class="val">${escapeHtml(card.kakao)}</span>
-      </div>`;
-    } else if (card.instagram) {
-      html += `<div class="cd-contact-box">
-        <span class="lbl">인스타그램</span>
-        <span class="val">@${escapeHtml(card.instagram)}</span>
-      </div>`;
-    } else {
-      html += `<div class="cd-contact-box"><span class="cd-contact-sub">연락처가 아직 공개되지 않았어요</span></div>`;
+    html += `<div class="cd-section-label">💌 자기소개</div>
+      <div class="cd-intro-box">${escapeHtml(card.intro || '자기소개가 아직 없어요')}</div>`;
+    if (card.ideal) {
+      html += `<div class="cd-section-label">💕 이상형</div>
+        <div class="cd-intro-box">${escapeHtml(card.ideal)}</div>`;
     }
+    html += `<div class="cd-match-notice">💘 호감 쌍방 성립 시 운영진이 카톡으로 연결해드려요<br><span class="cd-match-sub">이름·카톡·인스타는 매칭이 성사돼야 공개돼요</span></div>`;
     const hogamDone = card.hogamSent;
     html += `<div class="cd-action-row">
       <button class="btn-ghost" onclick="closeModal('modalDetail')">닫기</button>
@@ -645,8 +683,10 @@ function renderDetail(card, afterOpen) {
       </button>
     </div>`;
   } else {
-    html += `<div class="cd-coin-price">
+    html += `<div class="cd-intro-box cd-intro-blur">${escapeHtml((card.intro || '').slice(0, 24) || '열람 후 자기소개 공개')}${(card.intro || '').length > 24 ? '…' : ''}</div>
+    <div class="cd-coin-price">
       쪽지 열람 <b>${PRICE_OPEN}코인</b>
+      <div class="cd-balance-after">자기소개·이상형 전문 공개 (이름·연락처는 비공개)</div>
       <div class="cd-balance-after">현재 잔액 ${state.balance}코인 → 열람 후 ${state.balance - PRICE_OPEN}코인</div>
     </div>
     <div class="cd-action-row">
@@ -678,9 +718,8 @@ async function doOpen() {
   }
   Object.assign(currentCard, {
     opened: true,
-    name: r.name,
-    kakao: r.kakao,
-    instagram: r.instagram,
+    intro: r.intro || currentCard.intro,
+    ideal: r.ideal || '',
   });
   if (typeof r.balance === 'number') { state.balance = r.balance; updateWalletUi(); }
   renderDetail(currentCard, true);
