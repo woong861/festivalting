@@ -560,15 +560,22 @@ function toast(msg, ms) {
   t._tid = setTimeout(() => t.classList.remove('show'), ms || 2200);
 }
 function normalizePhone(s) { return (s || '').replace(/[^0-9]/g, ''); }
-function formatPhone(p) {
+// Gallery backend 저장 phone은 뒤 10자리만 가짐 → 표시용 11자리로 복원
+function restorePhone(p) {
   const d = normalizePhone(p);
+  if (d.length === 10 && d.charAt(0) === '1' && d.charAt(1) === '0') return '0' + d;
+  return d;
+}
+function formatPhone(p) {
+  const d = restorePhone(p);
   if (d.length === 11) return d.slice(0,3) + '-' + d.slice(3,7) + '-' + d.slice(7);
   if (d.length === 10) return d.slice(0,3) + '-' + d.slice(3,6) + '-' + d.slice(6);
   return p;
 }
 function maskPhone(p) {
-  const d = normalizePhone(p);
-  if (d.length >= 11) return d.slice(0,3) + '-****-' + d.slice(7);
+  const d = restorePhone(p);
+  if (d.length === 11) return d.slice(0,3) + '-****-' + d.slice(7);
+  if (d.length === 10) return d.slice(0,3) + '-***-' + d.slice(6);
   return p;
 }
 function fmtTime(iso) {
@@ -662,9 +669,11 @@ acInput.addEventListener('input', () => {
   if (q.length < 2) { acEl.classList.remove('show'); return; }
   const qLow = q.toLowerCase();
   const qNum = normalizePhone(q);
+  const qTail = qNum.slice(-10);
   const hits = WALLETS.filter(w => {
     const nameMatch = w.name && w.name.toLowerCase().includes(qLow);
-    const phoneMatch = qNum && String(w.phone).includes(qNum);
+    const phoneTail = normalizePhone(w.phone).slice(-10);
+    const phoneMatch = qTail && phoneTail.includes(qTail);
     return nameMatch || phoneMatch;
   }).slice(0, 10);
   if (!hits.length) {
@@ -751,10 +760,11 @@ function renderWallets() {
   const container = document.getElementById('walletList');
   const q = document.getElementById('walletSearch').value.trim().toLowerCase();
   const qn = normalizePhone(q);
+  const qnTail = qn.slice(-10);
   const sort = document.getElementById('walletSort').value;
   const gender = document.getElementById('walletGender').value;
   let items = WALLETS.slice();
-  if (q) items = items.filter(w => (w.name && w.name.toLowerCase().includes(q)) || (qn && String(w.phone).includes(qn)));
+  if (q) items = items.filter(w => (w.name && w.name.toLowerCase().includes(q)) || (qnTail && normalizePhone(w.phone).slice(-10).includes(qnTail)));
   if (gender) items = items.filter(w => w.gender === gender);
   items.sort((a, b) => {
     if (sort === 'balance') return b.balance - a.balance;

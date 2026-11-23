@@ -2075,81 +2075,77 @@ body::before {
   50%      { transform: scale(1.02); box-shadow: 0 6px 20px rgba(255, 143, 190, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6); }
 }
 
-/* ========== Christmas override ========== */
+/* ========== Christmas banner (v2) ========== */
 .early-bird-banner.christmas {
   background:
-    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.75) 0 1.2px, transparent 2px) 0 0 / 22px 22px,
-    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.65) 0 1.2px, transparent 2px) 6px 6px / 28px 28px,
-    linear-gradient(135deg, #c62828 0%, #e53935 20%, #fff8e7 50%, #2e7d32 80%, #1b5e20 100%);
-  border: 2px solid #ffd54f;
-  color: #fff8e7;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.45), 0 0 6px rgba(255,100,100,0.3);
+    radial-gradient(circle at 12% 28%, rgba(255,255,255,0.18) 0 1px, transparent 2px) 0 0 / 28px 28px,
+    radial-gradient(circle at 78% 72%, rgba(255,255,255,0.14) 0 1px, transparent 2px) 10px 8px / 32px 32px,
+    linear-gradient(100deg, #7a0c0c 0%, #b71c1c 45%, #1b5e20 100%);
+  border: 2px solid #ffd54a;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55);
   box-shadow:
-    0 4px 16px rgba(198, 40, 40, 0.4),
-    0 0 20px rgba(255, 213, 79, 0.25),
-    inset 0 1px 0 rgba(255,255,255,0.4);
-  animation: xmas-glow 2.6s ease-in-out infinite;
+    0 6px 18px rgba(122, 12, 12, 0.42),
+    0 0 0 1px rgba(255, 213, 74, 0.35) inset,
+    inset 0 1px 0 rgba(255,255,255,0.18);
+  animation: xmas-glow 2.8s ease-in-out infinite;
   position: relative;
-  padding: 11px 14px;
+  padding: 11px 16px;
   overflow: hidden;
+  font-size: 12.5px;
+  letter-spacing: -0.2px;
 }
 .early-bird-banner.christmas b {
-  color: #fff176;
-  font-size: 13px;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 0 8px rgba(255,241,118,0.5);
+  color: #ffeb3b;
+  font-family: 'Jua', sans-serif;
+  font-size: 13.5px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.75), 0 0 5px rgba(255, 220, 90, 0.35);
+  letter-spacing: 0.3px;
 }
 .early-bird-banner.christmas .eb-emoji {
-  font-size: 18px;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+  font-size: 19px;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
   animation: xmas-tree 2s ease-in-out infinite;
 }
-.early-bird-banner.christmas .xmas-snow {
+.early-bird-banner.christmas .xmas-snow,
+.early-bird-banner.christmas::before,
+.early-bird-banner.christmas::after {
   position: absolute;
   top: -4px;
-  font-size: 10px;
-  color: rgba(255,255,255,0.85);
-  animation: snowfall 3.2s linear infinite;
-  text-shadow: 0 0 4px rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.95);
+  text-shadow: 0 0 5px rgba(255,255,255,0.7);
   pointer-events: none;
+}
+.early-bird-banner.christmas .xmas-snow {
+  right: 38%;
+  font-size: 11px;
+  animation: snowfall 3.4s linear infinite;
 }
 .early-bird-banner.christmas::before {
   content: '❅';
-  position: absolute;
-  top: -4px;
   left: 18%;
-  color: rgba(255,255,255,0.75);
-  font-size: 9px;
-  animation: snowfall 4s linear infinite 0.4s;
-  text-shadow: 0 0 4px rgba(255,255,255,0.5);
-  pointer-events: none;
+  font-size: 10px;
+  animation: snowfall 4.1s linear infinite 0.5s;
 }
 .early-bird-banner.christmas::after {
   content: '❆';
-  position: absolute;
-  top: -4px;
-  right: 22%;
-  color: rgba(255,255,255,0.75);
-  font-size: 11px;
-  animation: snowfall 3.6s linear infinite 1.1s;
-  text-shadow: 0 0 4px rgba(255,255,255,0.5);
-  pointer-events: none;
-}
-.early-bird-banner.christmas .xmas-snow {
-  right: 55%;
+  right: 15%;
+  font-size: 12px;
+  animation: snowfall 3.7s linear infinite 1.2s;
 }
 @keyframes snowfall {
   0%   { transform: translateY(-6px) rotate(0deg); opacity: 0; }
   10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { transform: translateY(44px) rotate(220deg); opacity: 0; }
+  85%  { opacity: 1; }
+  100% { transform: translateY(46px) rotate(260deg); opacity: 0; }
 }
 @keyframes xmas-glow {
-  0%, 100% { box-shadow: 0 4px 16px rgba(198,40,40,0.4), 0 0 20px rgba(255,213,79,0.25), inset 0 1px 0 rgba(255,255,255,0.4); }
-  50%      { box-shadow: 0 6px 22px rgba(198,40,40,0.55), 0 0 28px rgba(255,213,79,0.45), inset 0 1px 0 rgba(255,255,255,0.5); }
+  0%, 100% { box-shadow: 0 6px 18px rgba(122,12,12,0.42), 0 0 0 1px rgba(255,213,74,0.35) inset, inset 0 1px 0 rgba(255,255,255,0.18); }
+  50%      { box-shadow: 0 8px 24px rgba(122,12,12,0.55), 0 0 0 1.5px rgba(255,235,120,0.55) inset, inset 0 1px 0 rgba(255,255,255,0.25); }
 }
 @keyframes xmas-tree {
-  0%, 100% { transform: rotate(-4deg) scale(1); }
-  50%      { transform: rotate(4deg) scale(1.08); }
+  0%, 100% { transform: rotate(-5deg) scale(1); }
+  50%      { transform: rotate(5deg) scale(1.1); }
 }
 
 /* === D. 큰 CTA 버튼 === */
@@ -2912,8 +2908,7 @@ body::before {
     </div>
     <div class="live-counter" id="liveCounter">
       <span class="live-dot"></span>
-      <span>💌 이번주 쪽지 접수 중</span>
-      <div class="live-slots" id="liveSlots"><span class="ls-fire">🔥</span> 이번 회차 남은 자리 <b><span id="slotsRemain">―</span>석</b></div>
+      <span>💌 지금까지 <b class="live-count" id="liveCount">2,000</b>+ 명 쪽지 접수</span>
       <div class="live-hint" id="liveHint"></div>
     </div>
     <div class="hero-referral">
@@ -3335,8 +3330,8 @@ body::before {
         <div class="ifb-header">
           <span class="ifb-emoji">💌</span>
           <div class="ifb-title-wrap">
-            <div class="ifb-title">쪽지팅 할 친구 추천할래?</div>
-            <div class="ifb-sub">친구가 신청하면 <strong>내 매칭 카드 +1장</strong> (최대 3명)</div>
+            <div class="ifb-title">쪽지팅 소개해줄 친구 알려줘!</div>
+            <div class="ifb-sub">친구가 신청하면 <strong>카드 +1장</strong></div>
           </div>
         </div>
         <div class="ifb-inputs" id="ifbInputs">
@@ -3345,7 +3340,7 @@ body::before {
             <input type="text" class="ifb-friend-insta" name="invite_friend_insta_1" id="inviteFriendInsta" placeholder="친구 인스타 ID (예: cool_friend)" autocomplete="off" maxlength="31">
           </div>
         </div>
-        <button type="button" class="ifb-add-btn" id="ifbAddBtn">+ 친구 더 적기 <span class="ifb-add-count">(1/3)</span></button>
+        <button type="button" class="ifb-add-btn" id="ifbAddBtn">+ 친구 더 적기 <span class="ifb-add-count">(1/2)</span></button>
         <div class="ifb-benefits">
           <div class="ifb-benefit">
             <span class="ifb-check">✔</span>
@@ -3353,7 +3348,7 @@ body::before {
           </div>
           <div class="ifb-benefit">
             <span class="ifb-check">✔</span>
-            <span>친구 3명 추천 성공 시 <b>최대 6장 중 1명 선택</b>까지 업그레이드</span>
+            <span>친구 2명 모두 신청 성공 시 <b>최대 5장 중 1명 선택</b>까지 업그레이드</span>
           </div>
         </div>
         <div class="ifb-bonus-card" id="inviteFriendBonus">
@@ -3799,7 +3794,7 @@ loadDraft();
   const copyMsgBtn = document.getElementById('ifbCopyMsgBtn');
   const copyLinkBtn = document.getElementById('ifbCopyLinkBtn');
   if (!field || !inputsWrap || !addBtn) return;
-  const MAX_FRIENDS = 3;
+  const MAX_FRIENDS = 2;
 
   // 세션 중 하나의 추천 코드 유지
   let myCode = '';
@@ -4088,14 +4083,13 @@ function computeRemainingSlots() {
 function updateSlots() {
   const slots = document.getElementById('slotsRemain');
   const wrap = document.getElementById('liveSlots');
-  if (!slots || !wrap) return;
+  if (!slots || !wrap) return; // slots UI 제거됨 → no-op
   const n = computeRemainingSlots();
   slots.textContent = n;
   if (n <= 15) wrap.classList.add('urgent');
   else wrap.classList.remove('urgent');
 }
 updateSlots();
-setInterval(updateSlots, 60000);
 
 async function updateLiveCounter() {
   const el = document.getElementById('liveCount');
@@ -4112,7 +4106,7 @@ async function updateLiveCounter() {
     const males = data.male || 0;
     const females = data.female || 0;
 
-    el.textContent = total;
+    el.textContent = Number(total).toLocaleString('ko-KR');
     _liveCacheCount = total;
     _liveCacheAt = Date.now();
 
@@ -4136,12 +4130,12 @@ async function updateLiveCounter() {
 
   // Fallback: 캐시된 값 or 시뮬
   if (_liveCacheCount != null) {
-    el.textContent = _liveCacheCount;
+    el.textContent = Number(_liveCacheCount).toLocaleString('ko-KR');
     return;
   }
   const elapsedHours = (new Date() - COUNTER_LAUNCH) / 3600000;
   const count = Math.max(COUNTER_BASE, Math.floor(COUNTER_BASE + elapsedHours * COUNTER_PER_HOUR));
-  el.textContent = count;
+  el.textContent = Number(count).toLocaleString('ko-KR');
   if (split) {
     const males = Math.floor(count * 0.55);
     const females = count - males;
@@ -4337,10 +4331,10 @@ setTimeout(function initFloatCta(){
 
   function syncFloatCta() {
     const dday = document.getElementById('ddayCount')?.textContent || '';
-    const slots = document.getElementById('slotsRemain')?.textContent || '';
+    const total = document.getElementById('liveCount')?.textContent || '';
     const el = document.getElementById('floatVal');
     if (!el) return;
-    el.textContent = slots ? `${dday} · 남은자리 ${slots}석` : dday;
+    el.textContent = total ? `${dday} · ${total}+ 명 신청` : dday;
   }
   syncFloatCta();
   setInterval(syncFloatCta, 2000);
