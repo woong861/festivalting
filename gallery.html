@@ -758,6 +758,16 @@ async function doLogout() {
     await loadMeAndEnter();
   } else {
     showScreen('screenLogin');
+    // URL ?phone=xxx 자동 입력 (신청 모달에서 유입)
+    try {
+      const qp = new URLSearchParams(location.search).get('phone') || '';
+      const digits = qp.replace(/[^0-9]/g, '');
+      if (digits.length >= 10) {
+        const pi = document.getElementById('phoneInput');
+        pi.value = digits;
+        pi.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    } catch (e) {}
     document.getElementById('phoneInput').focus();
   }
 })();

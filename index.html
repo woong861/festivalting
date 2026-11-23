@@ -2474,6 +2474,99 @@ body::before {
   line-height: 1.3;
 }
 .referral-box-desc strong { color: #ff4dd2; }
+
+/* ====== 성공 모달 광장 CTA (gallery.html 유입) ====== */
+.gallery-cta {
+  display: block;
+  margin: 14px 0 0;
+  background: linear-gradient(135deg, #fffbe0 0%, #ffe0ee 50%, #e0f0ff 100%);
+  border: 2px dashed #ff8fbe;
+  border-radius: 18px;
+  padding: 16px 14px 14px;
+  text-decoration: none;
+  color: var(--text, #3a2030);
+  position: relative;
+  box-shadow: 0 6px 18px rgba(255, 140, 190, 0.22);
+  transition: transform 0.15s, box-shadow 0.15s;
+  overflow: hidden;
+}
+.gallery-cta::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 60px;
+  height: 18px;
+  background: rgba(255, 220, 230, 0.75);
+  border: 1px dashed #ffb3d9;
+  border-radius: 2px;
+}
+.gallery-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(255, 140, 190, 0.32);
+}
+.gc-ribbon {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff5d9e, #c76df0);
+  color: white;
+  font-family: 'Jua', sans-serif;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 6px rgba(255, 93, 158, 0.3);
+}
+.gc-body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.gc-emoji {
+  font-size: 34px;
+  flex-shrink: 0;
+  animation: gcPulse 2.2s ease-in-out infinite;
+}
+@keyframes gcPulse {
+  0%, 100% { transform: scale(1) rotate(-4deg); }
+  50% { transform: scale(1.12) rotate(4deg); }
+}
+.gc-text { flex: 1; min-width: 0; }
+.gc-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 15px;
+  color: #c43d8a;
+  line-height: 1.25;
+  margin-bottom: 3px;
+}
+.gc-sub {
+  font-family: 'Gaegu', cursive;
+  font-size: 12.5px;
+  color: #6e4858;
+  line-height: 1.35;
+}
+.gc-arrow {
+  font-size: 22px;
+  color: #ff4dd2;
+  font-weight: 700;
+  flex-shrink: 0;
+  animation: gcArrow 1.4s ease-in-out infinite;
+}
+@keyframes gcArrow {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+.gc-foot {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255, 143, 190, 0.5);
+  font-family: 'Gaegu', cursive;
+  font-size: 11.5px;
+  color: #8a5868;
+  text-align: center;
+}
+.gc-foot b { color: #c43d8a; }
 .referral-code-display {
   display: block;
   background: white;
@@ -3137,6 +3230,18 @@ body::before {
       <button class="referral-btn" id="referralBtn" onclick="generateReferralCode()">✨ 코드 받기</button>
       <p class="referral-copy-msg" id="referralCopyMsg">복사됨 ✓</p>
     </div>
+    <a href="/gallery.html" class="gallery-cta" id="galleryCta">
+      <div class="gc-ribbon">✨ NEW · 쪽지팅 광장 OPEN</div>
+      <div class="gc-body">
+        <div class="gc-emoji">🎴</div>
+        <div class="gc-text">
+          <div class="gc-title">매칭 기다리면서 광장 구경할래?</div>
+          <div class="gc-sub">다른 신청자들 쪽지 익명으로 들춰보기 · 마음에 들면 호감 보내기 ♡</div>
+        </div>
+        <div class="gc-arrow">→</div>
+      </div>
+      <div class="gc-foot">매칭은 그대로 진행돼요 · 지금 들어가면 <b>웰컴 보너스</b></div>
+    </a>
     <div class="share-actions">
       <button class="save-btn" onclick="saveShareCard()">📸 이미지 저장</button>
       <button class="close-share-btn" onclick="closeSuccess()">닫기</button>
@@ -3412,6 +3517,13 @@ document.getElementById('applyForm').addEventListener('submit', function(e) {
       }
     } catch (err) { console.warn('SMS webhook error:', err); }
   }
+
+  // 광장 CTA에 phone 파라미터 전달 (gallery.html에서 자동 입력)
+  try {
+    const _galleryCta = document.getElementById('galleryCta');
+    const _p = (this.querySelector('input[name="phone"]').value || '').replace(/[^0-9]/g, '');
+    if (_galleryCta && _p.length >= 10) _galleryCta.href = '/gallery.html?phone=' + _p;
+  } catch (e) {}
 
   setTimeout(() => {
     closeForm();

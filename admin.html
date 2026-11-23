@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>쪽지팅 광장 · 운영자</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fff5fa;
+    --card: #ffffff;
+    --border: #f2d5e5;
+    --accent: #ff4dd2;
+    --accent-dark: #c43d8a;
+    --text: #3a2030;
+    --text-sub: #7a5868;
+    --muted: #b8a3b0;
+    --ok: #2e9a4a;
+    --warn: #e67e22;
+    --danger: #e74c3c;
+    --male: #4a90e2;
+    --female: #ff6fa8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Pretendard', -apple-system, system-ui, sans-serif;
+    background: linear-gradient(180deg, #fff5fa 0%, #ffe9f3 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 16px; }
+  h1, h2, h3 { font-family: 'Jua', sans-serif; color: var(--accent-dark); margin: 0; }
+
+  /* Login */
+  .login-screen {
+    max-width: 380px;
+    margin: 80px auto;
+    padding: 30px 24px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(255, 150, 200, 0.2);
+    text-align: center;
+  }
+  .login-screen .logo { font-size: 48px; }
+  .login-screen h1 { font-size: 22px; margin: 10px 0 6px; }
+  .login-screen p { color: var(--text-sub); font-size: 14px; margin: 0 0 24px; }
+  .login-screen input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: 'Pretendard', monospace;
+    outline: none;
+    margin-bottom: 14px;
+  }
+  .login-screen input:focus { border-color: var(--accent); }
+  .login-screen button {
+    width: 100%;
+    background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-family: 'Jua', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 93, 158, 0.3);
+  }
+  .login-screen .err {
+    color: var(--danger);
+    font-size: 13px;
+    margin: 8px 0 0;
+    min-height: 16px;
+  }
+
+  /* Top bar */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .topbar .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Jua', sans-serif;
+    color: var(--accent-dark);
+    font-size: 16px;
+  }
+  .logout-btn {
+    background: #f5e5ee;
+    color: var(--accent-dark);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 52px;
+    z-index: 19;
+    overflow-x: auto;
+  }
+  .tab {
+    flex: 1;
+    min-width: 80px;
+    padding: 12px 10px;
+    text-align: center;
+    background: none;
+    border: none;
+    border-bottom: 2.5px solid transparent;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 13px;
+    color: var(--text-sub);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .tab-badge {
+    background: var(--accent);
+    color: white;
+    border-radius: 10px;
+    padding: 1px 6px;
+    font-size: 10px;
+    margin-left: 4px;
+  }
+
+  .pane { display: none; padding: 16px 0; }
+  .pane.active { display: block; }
+
+  /* Summary cards */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .sum-card {
+    background: white;
+    border-radius: 14px;
+    padding: 12px;
+    box-shadow: 0 2px 8px rgba(255, 150, 200, 0.12);
+    text-align: center;
+  }
+  .sum-label { font-size: 11px; color: var(--text-sub); margin-bottom: 4px; }
+  .sum-value {
+    font-family: 'Jua', sans-serif;
+    color: var(--accent-dark);
+    font-size: 19px;
+  }
+  .sum-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  /* Charge form */
+  .charge-card {
+    background: white;
+    border-radius: 16px;
+    padding: 18px 16px;
+    box-shadow: 0 2px 10px rgba(255, 150, 200, 0.15);
+    margin-bottom: 16px;
+  }
+  .charge-card h2 { font-size: 15px; margin-bottom: 14px; }
+  .form-row { margin-bottom: 12px; }
+  .form-row label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-sub);
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  .form-row input, .form-row select, .form-row textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Pretendard', sans-serif;
+    outline: none;
+  }
+  .form-row input:focus, .form-row textarea:focus { border-color: var(--accent); }
+  .pack-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pack-btn {
+    flex: 1;
+    min-width: 70px;
+    padding: 9px 4px;
+    background: #fff0f7;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Jua', sans-serif;
+    font-size: 13px;
+    color: var(--accent-dark);
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+  .pack-btn:hover { background: #ffe0ee; }
+  .pack-btn.sel {
+    background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
+    color: white;
+    border-color: var(--accent);
+  }
+  .pack-btn .p-coin { display: block; font-size: 15px; }
+  .pack-btn .p-won { display: block; font-size: 10px; opacity: 0.85; margin-top: 2px; }
+  .submit-charge {
+    width: 100%;
+    background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-family: 'Jua', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .submit-charge:disabled { opacity: 0.5; cursor: wait; }
+  .charge-result {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: none;
+  }
+  .charge-result.ok { background: #e9f8ee; color: var(--ok); display: block; }
+  .charge-result.err { background: #fde7e4; color: var(--danger); display: block; }
+
+  /* Wallet list */
+  .list-ctrl {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .list-ctrl input {
+    flex: 1;
+    min-width: 140px;
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    outline: none;
+  }
+  .list-ctrl select {
+    padding: 9px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    background: white;
+  }
+
+  .wallet-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 12px;
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 4px rgba(255, 150, 200, 0.1);
+  }
+  .w-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+  }
+  .w-avatar.male { background: var(--male); }
+  .w-avatar.female { background: var(--female); }
+  .w-info { min-width: 0; }
+  .w-name { font-weight: 600; font-size: 14px; }
+  .w-sub { font-size: 11px; color: var(--text-sub); }
+  .w-balance {
+    font-family: 'Jua', sans-serif;
+    color: var(--accent-dark);
+    font-size: 15px;
+    text-align: right;
+  }
+  .w-balance small {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: 'Pretendard', sans-serif;
+  }
+  .w-quick {
+    background: #fff0f7;
+    border: 1px solid var(--border);
+    color: var(--accent-dark);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    margin-left: 6px;
+  }
+
+  /* Queue (호감) */
+  .queue-item {
+    background: white;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 4px rgba(255, 150, 200, 0.1);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+  }
+  .q-main {
+    font-size: 13px;
+    color: var(--text);
+  }
+  .q-arrow { color: var(--muted); margin: 0 6px; }
+  .q-mutual {
+    display: inline-block;
+    background: #ffe0ee;
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    margin-left: 6px;
+    font-weight: 700;
+  }
+  .q-time { font-size: 10px; color: var(--muted); margin-top: 4px; }
+  .q-actions { display: flex; gap: 4px; }
+  .q-btn {
+    background: #f5e5ee;
+    color: var(--accent-dark);
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .q-btn.resolve { background: var(--ok); color: white; }
+  .q-btn.ignore { background: #eee; color: var(--text-sub); }
+
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 40px 20px;
+    font-size: 13px;
+  }
+  .loading { text-align: center; padding: 30px; color: var(--muted); font-size: 13px; }
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(50, 20, 40, 0.92);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    max-width: 90%;
+    text-align: center;
+  }
+  .toast.show { opacity: 1; }
+
+  .inline-note {
+    font-size: 11px;
+    color: var(--text-sub);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .inline-note.warn { color: var(--warn); }
+
+  /* Autocomplete */
+  .ac-wrap { position: relative; }
+  .ac-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    max-height: 240px;
+    overflow-y: auto;
+    z-index: 30;
+    margin-top: 4px;
+    display: none;
+  }
+  .ac-list.show { display: block; }
+  .ac-item {
+    padding: 9px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    border-bottom: 1px solid #f5e5ee;
+  }
+  .ac-item:last-child { border-bottom: none; }
+  .ac-item:hover, .ac-item.focus { background: #fff0f7; }
+  .ac-item .ac-name { font-weight: 600; }
+  .ac-item .ac-meta { font-size: 11px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- 로그인 화면 -->
+<div id="loginScreen" class="login-screen">
+  <div class="logo">🔐</div>
+  <h1>운영자 로그인</h1>
+  <p>쪽지팅 광장 관리 콘솔</p>
+  <input type="password" id="keyInput" placeholder="운영자 키 입력" autocomplete="off">
+  <button onclick="doLogin()">로그인</button>
+  <p class="err" id="loginErr"></p>
+</div>
+
+<!-- 메인 화면 -->
+<div id="mainScreen" style="display:none">
+  <div class="topbar">
+    <div class="brand">🎴 쪽지팅 광장 콘솔</div>
+    <button class="logout-btn" onclick="doLogout()">로그아웃</button>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-pane="charge">💰 충전</button>
+    <button class="tab" data-pane="wallet">👛 지갑 <span id="walletCount" class="tab-badge" style="display:none">0</span></button>
+    <button class="tab" data-pane="queue">💘 호감 <span id="queueCount" class="tab-badge" style="display:none">0</span></button>
+    <button class="tab" data-pane="stat">📊 통계</button>
+  </div>
+
+  <div class="wrap">
+    <!-- 충전 -->
+    <div class="pane active" id="pane-charge">
+      <div class="charge-card">
+        <h2>수동 코인 충전</h2>
+        <div class="form-row ac-wrap">
+          <label>전화번호 또는 이름 검색</label>
+          <input type="text" id="chargePhone" placeholder="010-xxxx-xxxx 또는 이름" autocomplete="off">
+          <div class="ac-list" id="chargeAc"></div>
+          <p class="inline-note" id="chargeTarget"></p>
+        </div>
+        <div class="form-row">
+          <label>충전 코인 (팩 선택 또는 직접 입력)</label>
+          <div class="pack-row" id="packRow">
+            <button type="button" class="pack-btn" data-coins="5" data-won="5000"><span class="p-coin">5코인</span><span class="p-won">5,000원</span></button>
+            <button type="button" class="pack-btn" data-coins="11" data-won="10000"><span class="p-coin">11코인</span><span class="p-won">10,000원</span></button>
+            <button type="button" class="pack-btn" data-coins="25" data-won="20000"><span class="p-coin">25코인 ✨</span><span class="p-won">20,000원</span></button>
+            <button type="button" class="pack-btn" data-coins="70" data-won="50000"><span class="p-coin">70코인</span><span class="p-won">50,000원</span></button>
+          </div>
+        </div>
+        <div class="form-row" style="display:flex;gap:10px">
+          <div style="flex:1">
+            <label>코인 수</label>
+            <input type="number" id="chargeCoins" min="1" placeholder="0">
+          </div>
+          <div style="flex:1">
+            <label>입금액 (원)</label>
+            <input type="number" id="chargeWon" min="0" placeholder="0">
+          </div>
+        </div>
+        <div class="form-row">
+          <label>메모 (선택)</label>
+          <input type="text" id="chargeMemo" placeholder="예: 11/23 농협 입금">
+        </div>
+        <button class="submit-charge" onclick="submitCharge()" id="chargeBtn">💌 충전하기 (+ 안내 SMS 자동 발송)</button>
+        <div class="charge-result" id="chargeResult"></div>
+      </div>
+      <p class="inline-note warn" style="padding: 0 4px">⚠️ 충전 즉시 해당 사용자에게 Solapi 안내 SMS가 자동 발송돼요.</p>
+    </div>
+
+    <!-- 지갑 -->
+    <div class="pane" id="pane-wallet">
+      <div class="list-ctrl">
+        <input type="text" id="walletSearch" placeholder="이름/전화 검색">
+        <select id="walletSort">
+          <option value="balance">잔액 많은 순</option>
+          <option value="recent">최근 충전순</option>
+          <option value="totalWon">누적 입금 많은순</option>
+          <option value="name">이름순</option>
+        </select>
+        <select id="walletGender">
+          <option value="">전체</option>
+          <option value="남자">남자</option>
+          <option value="여자">여자</option>
+        </select>
+      </div>
+      <div id="walletList"><div class="loading">불러오는 중...</div></div>
+    </div>
+
+    <!-- 호감 큐 -->
+    <div class="pane" id="pane-queue">
+      <div class="list-ctrl">
+        <select id="queueFilter">
+          <option value="pending">⏳ 대기 (pending)</option>
+          <option value="mutual">💘 쌍방 (mutual)</option>
+          <option value="all">전체</option>
+        </select>
+      </div>
+      <div id="queueList"><div class="loading">불러오는 중...</div></div>
+    </div>
+
+    <!-- 통계 -->
+    <div class="pane" id="pane-stat">
+      <div class="summary" id="statSummary">
+        <div class="sum-card"><div class="sum-label">총 지갑</div><div class="sum-value" id="statWallets">-</div></div>
+        <div class="sum-card"><div class="sum-label">총 보유 코인</div><div class="sum-value" id="statBalance">-</div></div>
+        <div class="sum-card"><div class="sum-label">누적 수익</div><div class="sum-value" id="statRevenue">-</div><div class="sum-sub">원</div></div>
+        <div class="sum-card"><div class="sum-label">남자 지갑</div><div class="sum-value" id="statMale">-</div></div>
+        <div class="sum-card"><div class="sum-label">여자 지갑</div><div class="sum-value" id="statFemale">-</div></div>
+        <div class="sum-card"><div class="sum-label">호감 대기</div><div class="sum-value" id="statPending">-</div></div>
+      </div>
+      <div class="charge-card">
+        <h2>Top 10 잔액</h2>
+        <div id="statTop"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzM8IYXCT9NeD9K-L0Dval98J46dcnbkR2ElzgPN7fRvvchcuMfEfzC_HX89o8U4GXI/exec';
+const LS_KEY = 'postitt_admin_key';
+let ADMIN_KEY = '';
+let WALLETS = [];
+let QUEUE = [];
+
+// ========= utils =========
+function toast(msg, ms) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), ms || 2200);
+}
+function normalizePhone(s) { return (s || '').replace(/[^0-9]/g, ''); }
+function formatPhone(p) {
+  const d = normalizePhone(p);
+  if (d.length === 11) return d.slice(0,3) + '-' + d.slice(3,7) + '-' + d.slice(7);
+  if (d.length === 10) return d.slice(0,3) + '-' + d.slice(3,6) + '-' + d.slice(6);
+  return p;
+}
+function maskPhone(p) {
+  const d = normalizePhone(p);
+  if (d.length >= 11) return d.slice(0,3) + '-****-' + d.slice(7);
+  return p;
+}
+function fmtTime(iso) {
+  if (!iso) return '-';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '-';
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const dd = String(d.getDate()).padStart(2,'0');
+  const hh = String(d.getHours()).padStart(2,'0');
+  const mi = String(d.getMinutes()).padStart(2,'0');
+  return `${mm}/${dd} ${hh}:${mi}`;
+}
+function fmtNumber(n) { return (Number(n) || 0).toLocaleString('ko-KR'); }
+
+async function apiGet(action, params) {
+  const qs = new URLSearchParams({ action, key: ADMIN_KEY, ...(params || {}) });
+  const r = await fetch(APPS_SCRIPT + '?' + qs.toString(), { method: 'GET' });
+  return r.json();
+}
+async function apiPost(type, data) {
+  const body = JSON.stringify({ type, key: ADMIN_KEY, ...(data || {}) });
+  const r = await fetch(APPS_SCRIPT, { method: 'POST', body, headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
+  return r.json();
+}
+
+// ========= Login =========
+async function doLogin() {
+  const k = document.getElementById('keyInput').value.trim();
+  if (!k) { document.getElementById('loginErr').textContent = '키를 입력해줘'; return; }
+  document.getElementById('loginErr').textContent = '확인 중...';
+  ADMIN_KEY = k;
+  const r = await apiGet('glyAdminWallet');
+  if (r.error === 'key' || r.error === 'auth') {
+    ADMIN_KEY = '';
+    document.getElementById('loginErr').textContent = '키가 틀렸어요';
+    return;
+  }
+  if (r.error) {
+    document.getElementById('loginErr').textContent = '서버 오류: ' + r.error;
+    return;
+  }
+  localStorage.setItem(LS_KEY, k);
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainScreen').style.display = 'block';
+  WALLETS = r.wallets || [];
+  renderWallets();
+  loadQueue();
+  updateCountBadges();
+  updateStat();
+}
+function doLogout() {
+  localStorage.removeItem(LS_KEY);
+  ADMIN_KEY = '';
+  location.reload();
+}
+
+// ========= Tabs =========
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.pane').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('pane-' + t.dataset.pane).classList.add('active');
+    if (t.dataset.pane === 'wallet') refreshWallets();
+    if (t.dataset.pane === 'queue') loadQueue();
+    if (t.dataset.pane === 'stat') updateStat();
+  });
+});
+
+// ========= Charge =========
+document.querySelectorAll('.pack-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.pack-btn').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel');
+    document.getElementById('chargeCoins').value = b.dataset.coins;
+    document.getElementById('chargeWon').value = b.dataset.won;
+  });
+});
+
+// Autocomplete: 전화번호 입력창
+const acEl = document.getElementById('chargeAc');
+const acInput = document.getElementById('chargePhone');
+const targetEl = document.getElementById('chargeTarget');
+let selectedWallet = null;
+let acFocusIdx = -1;
+
+acInput.addEventListener('input', () => {
+  const q = acInput.value.trim();
+  selectedWallet = null;
+  targetEl.textContent = '';
+  if (q.length < 2) { acEl.classList.remove('show'); return; }
+  const qLow = q.toLowerCase();
+  const qNum = normalizePhone(q);
+  const hits = WALLETS.filter(w => {
+    const nameMatch = w.name && w.name.toLowerCase().includes(qLow);
+    const phoneMatch = qNum && String(w.phone).includes(qNum);
+    return nameMatch || phoneMatch;
+  }).slice(0, 10);
+  if (!hits.length) {
+    acEl.innerHTML = '<div class="ac-item" style="color:#b8a3b0;">일치 없음 (신청자 명단에 없는 번호일 수 있음)</div>';
+    acEl.classList.add('show');
+    return;
+  }
+  acEl.innerHTML = hits.map((w, i) => `
+    <div class="ac-item" data-phone="${w.phone}" data-idx="${i}">
+      <div class="ac-name">${w.name || '(이름없음)'} <span style="color:${w.gender==='남자'?'#4a90e2':'#ff6fa8'};font-size:11px">${w.gender||''}</span></div>
+      <div class="ac-meta">${formatPhone(w.phone)} · 잔액 ${w.balance}코인</div>
+    </div>`).join('');
+  acEl.classList.add('show');
+  acFocusIdx = -1;
+  acEl.querySelectorAll('.ac-item').forEach(el => {
+    el.addEventListener('click', () => selectWallet(el.dataset.phone));
+  });
+});
+acInput.addEventListener('keydown', (e) => {
+  if (!acEl.classList.contains('show')) return;
+  const items = acEl.querySelectorAll('.ac-item[data-phone]');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); acFocusIdx = Math.min(acFocusIdx + 1, items.length - 1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); acFocusIdx = Math.max(acFocusIdx - 1, 0); }
+  else if (e.key === 'Enter' && acFocusIdx >= 0) { e.preventDefault(); selectWallet(items[acFocusIdx].dataset.phone); return; }
+  else return;
+  items.forEach((el, i) => el.classList.toggle('focus', i === acFocusIdx));
+});
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.ac-wrap')) acEl.classList.remove('show');
+});
+
+function selectWallet(phone) {
+  const w = WALLETS.find(x => String(x.phone) === String(phone));
+  if (!w) return;
+  selectedWallet = w;
+  acInput.value = formatPhone(w.phone);
+  targetEl.innerHTML = `✓ <b>${w.name}</b> (${w.gender}) · 잔액 <b>${w.balance}코인</b> · 누적 입금 ${fmtNumber(w.totalChargedWon)}원`;
+  acEl.classList.remove('show');
+}
+
+async function submitCharge() {
+  const phoneInput = acInput.value.trim();
+  const phone = selectedWallet ? selectedWallet.phone : normalizePhone(phoneInput);
+  const coins = Number(document.getElementById('chargeCoins').value);
+  const won = Number(document.getElementById('chargeWon').value) || 0;
+  const memo = document.getElementById('chargeMemo').value.trim();
+  const res = document.getElementById('chargeResult');
+  const btn = document.getElementById('chargeBtn');
+  res.className = 'charge-result';
+  res.textContent = '';
+  if (!phone || phone.length < 10) { res.className = 'charge-result err'; res.textContent = '전화번호를 선택해줘'; return; }
+  if (!(coins > 0)) { res.className = 'charge-result err'; res.textContent = '코인 수를 입력해줘'; return; }
+  if (!confirm(`${selectedWallet ? selectedWallet.name : phone}에게 ${coins}코인 (${fmtNumber(won)}원) 충전할게. 진행?`)) return;
+  btn.disabled = true;
+  btn.textContent = '충전 중...';
+  try {
+    const r = await apiPost('glyAdminCharge', { phone, coins, won, memo });
+    if (r.error) { res.className = 'charge-result err'; res.textContent = '실패: ' + r.error; }
+    else {
+      res.className = 'charge-result ok';
+      res.textContent = `✓ 충전 완료! 새 잔액 ${r.balance}코인 · 안내 SMS 발송됨`;
+      document.getElementById('chargeCoins').value = '';
+      document.getElementById('chargeWon').value = '';
+      document.getElementById('chargeMemo').value = '';
+      document.querySelectorAll('.pack-btn').forEach(x => x.classList.remove('sel'));
+      // 지갑 리스트 리프레시
+      refreshWallets(true);
+    }
+  } catch (e) {
+    res.className = 'charge-result err'; res.textContent = '네트워크 오류: ' + e.message;
+  }
+  btn.disabled = false;
+  btn.textContent = '💌 충전하기 (+ 안내 SMS 자동 발송)';
+}
+
+// ========= Wallets =========
+async function refreshWallets(silent) {
+  if (!silent) document.getElementById('walletList').innerHTML = '<div class="loading">불러오는 중...</div>';
+  const r = await apiGet('glyAdminWallet');
+  if (r.ok) { WALLETS = r.wallets || []; renderWallets(); updateCountBadges(); }
+}
+function renderWallets() {
+  const container = document.getElementById('walletList');
+  const q = document.getElementById('walletSearch').value.trim().toLowerCase();
+  const qn = normalizePhone(q);
+  const sort = document.getElementById('walletSort').value;
+  const gender = document.getElementById('walletGender').value;
+  let items = WALLETS.slice();
+  if (q) items = items.filter(w => (w.name && w.name.toLowerCase().includes(q)) || (qn && String(w.phone).includes(qn)));
+  if (gender) items = items.filter(w => w.gender === gender);
+  items.sort((a, b) => {
+    if (sort === 'balance') return b.balance - a.balance;
+    if (sort === 'recent') return (b.lastCharged || '').localeCompare(a.lastCharged || '');
+    if (sort === 'totalWon') return b.totalChargedWon - a.totalChargedWon;
+    if (sort === 'name') return (a.name || '').localeCompare(b.name || '');
+    return 0;
+  });
+  if (!items.length) { container.innerHTML = '<div class="empty">지갑이 없어요</div>'; return; }
+  container.innerHTML = items.map(w => `
+    <div class="wallet-item">
+      <div class="w-avatar ${w.gender==='남자'?'male':'female'}">${(w.name||'?').charAt(0)}</div>
+      <div class="w-info">
+        <div class="w-name">${w.name || '(이름없음)'} <span style="font-size:11px;color:${w.gender==='남자'?'#4a90e2':'#ff6fa8'}">${w.gender||''}</span></div>
+        <div class="w-sub">${maskPhone(w.phone)} · 누적 ${fmtNumber(w.totalChargedWon)}원 · ${fmtTime(w.lastCharged)}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="w-balance">${w.balance}코인</div>
+        <button class="w-quick" onclick="quickCharge('${w.phone}','${(w.name||'').replace(/'/g,'')}')">+ 충전</button>
+      </div>
+    </div>
+  `).join('');
+}
+function quickCharge(phone, name) {
+  const w = WALLETS.find(x => String(x.phone) === String(phone));
+  if (!w) return;
+  selectWallet(phone);
+  document.querySelector('.tab[data-pane="charge"]').click();
+  document.getElementById('chargePhone').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+document.getElementById('walletSearch').addEventListener('input', renderWallets);
+document.getElementById('walletSort').addEventListener('change', renderWallets);
+document.getElementById('walletGender').addEventListener('change', renderWallets);
+
+// ========= Queue =========
+async function loadQueue() {
+  const container = document.getElementById('queueList');
+  container.innerHTML = '<div class="loading">불러오는 중...</div>';
+  const r = await apiGet('glyAdminQueue');
+  if (r.ok) { QUEUE = r.queue || []; renderQueue(); updateCountBadges(); }
+}
+function renderQueue() {
+  const filter = document.getElementById('queueFilter').value;
+  let items = QUEUE.slice();
+  if (filter === 'pending') items = items.filter(q => (q.status || 'pending') === 'pending');
+  else if (filter === 'mutual') items = items.filter(q => q.mutual);
+  items.sort((a, b) => (b.ts || '').localeCompare(a.ts || ''));
+  const container = document.getElementById('queueList');
+  if (!items.length) { container.innerHTML = '<div class="empty">호감 기록이 없어요</div>'; return; }
+  container.innerHTML = items.map(q => `
+    <div class="queue-item">
+      <div>
+        <div class="q-main">
+          <b>${q.senderName}</b> <span style="color:${q.senderGender==='남자'?'#4a90e2':'#ff6fa8'};font-size:11px">${q.senderGender}</span>
+          <span class="q-arrow">→</span>
+          <b>${q.targetName}</b>
+          ${q.mutual ? '<span class="q-mutual">💘 쌍방</span>' : ''}
+          ${q.status && q.status !== 'pending' ? `<span style="color:#999;font-size:11px"> · ${q.status}</span>` : ''}
+        </div>
+        <div class="q-time">${fmtTime(q.ts)} · ${maskPhone(q.senderPhone)} → ${maskPhone(q.targetPhone)}</div>
+      </div>
+      <div class="q-actions">
+        <button class="q-btn resolve" onclick="resolveQueue(${q.row}, 'resolved')">✓</button>
+        <button class="q-btn ignore" onclick="resolveQueue(${q.row}, 'ignored')">—</button>
+      </div>
+    </div>
+  `).join('');
+}
+async function resolveQueue(row, status) {
+  const r = await apiPost('glyAdminResolveQueue', { row, status });
+  if (r.ok) { toast(status === 'resolved' ? '처리 완료' : '무시 처리됨'); loadQueue(); }
+  else toast('실패: ' + (r.error || ''));
+}
+document.getElementById('queueFilter').addEventListener('change', renderQueue);
+
+// ========= Count badges =========
+function updateCountBadges() {
+  const wb = document.getElementById('walletCount');
+  wb.textContent = WALLETS.length;
+  wb.style.display = WALLETS.length ? 'inline-block' : 'none';
+  const pending = QUEUE.filter(q => (q.status || 'pending') === 'pending').length;
+  const qb = document.getElementById('queueCount');
+  qb.textContent = pending;
+  qb.style.display = pending ? 'inline-block' : 'none';
+}
+
+// ========= Stats =========
+function updateStat() {
+  const totalBalance = WALLETS.reduce((s, w) => s + (w.balance || 0), 0);
+  const totalRevenue = WALLETS.reduce((s, w) => s + (w.totalChargedWon || 0), 0);
+  const male = WALLETS.filter(w => w.gender === '남자').length;
+  const female = WALLETS.filter(w => w.gender === '여자').length;
+  const pending = QUEUE.filter(q => (q.status || 'pending') === 'pending').length;
+  document.getElementById('statWallets').textContent = fmtNumber(WALLETS.length);
+  document.getElementById('statBalance').textContent = fmtNumber(totalBalance);
+  document.getElementById('statRevenue').textContent = fmtNumber(totalRevenue);
+  document.getElementById('statMale').textContent = fmtNumber(male);
+  document.getElementById('statFemale').textContent = fmtNumber(female);
+  document.getElementById('statPending').textContent = fmtNumber(pending);
+
+  const top = WALLETS.slice().sort((a,b) => b.balance - a.balance).slice(0, 10);
+  const container = document.getElementById('statTop');
+  if (!top.length) { container.innerHTML = '<p class="empty">아직 지갑이 없어요</p>'; return; }
+  container.innerHTML = top.map((w, i) => `
+    <div class="wallet-item" style="margin-bottom:6px;padding:9px 12px">
+      <div class="w-avatar ${w.gender==='남자'?'male':'female'}" style="width:28px;height:28px;font-size:12px">${i+1}</div>
+      <div class="w-info">
+        <div class="w-name" style="font-size:13px">${w.name||'?'} <span style="font-size:10px;color:${w.gender==='남자'?'#4a90e2':'#ff6fa8'}">${w.gender||''}</span></div>
+        <div class="w-sub">${fmtNumber(w.totalChargedWon)}원 누적</div>
+      </div>
+      <div class="w-balance" style="font-size:13px">${w.balance}코인</div>
+    </div>
+  `).join('');
+}
+
+// ========= Login prefill =========
+(function init(){
+  const saved = localStorage.getItem(LS_KEY);
+  if (saved) { document.getElementById('keyInput').value = saved; doLogin(); }
+  document.getElementById('keyInput').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+})();
+</script>
+</body>
+</html>
