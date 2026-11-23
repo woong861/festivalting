@@ -538,6 +538,19 @@
         <h2>Top 10 잔액</h2>
         <div id="statTop"></div>
       </div>
+      <div class="charge-card" style="border:2px dashed #e67e22">
+        <h2 style="color:#e67e22">🧪 테스트 시드 (운영자 전용)</h2>
+        <p class="inline-note warn" style="margin-bottom:12px">신청자 명단 중 남/여 N명씩 광장 opt-in Y로 자동 등록해요. 테스트 끝나면 "시드 해제"로 전부 OFF.</p>
+        <div class="form-row" style="display:flex;gap:10px">
+          <div style="flex:1"><label>남자 N</label><input type="number" id="seedMale" min="0" max="50" value="10"></div>
+          <div style="flex:1"><label>여자 N</label><input type="number" id="seedFemale" min="0" max="50" value="10"></div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="submit-charge" id="seedBtn" style="flex:2" onclick="runSeed()">🌱 시드 투입</button>
+          <button class="submit-charge" id="clearSeedBtn" style="flex:1;background:#eee;color:#666;box-shadow:none" onclick="clearSeed()">전체 OFF</button>
+        </div>
+        <div class="charge-result" id="seedResult"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -878,6 +891,53 @@ function updateStat() {
       <div class="w-balance" style="font-size:13px">${w.balance}코인</div>
     </div>
   `).join('');
+}
+
+// ========= Seed =========
+async function runSeed() {
+  const male = Number(document.getElementById('seedMale').value) || 0;
+  const female = Number(document.getElementById('seedFemale').value) || 0;
+  const res = document.getElementById('seedResult');
+  const btn = document.getElementById('seedBtn');
+  res.className = 'charge-result';
+  res.textContent = '';
+  if (male <= 0 && female <= 0) { res.className = 'charge-result err'; res.textContent = '최소 1명 이상'; return; }
+  if (!confirm(`신청자 명단에서 남 ${male}명, 여 ${female}명을 광장 opt-in Y로 등록할게. 실제 회원 데이터가 광장에 노출돼요. 진행?`)) return;
+  btn.disabled = true;
+  btn.textContent = '시드 중...';
+  try {
+    const r = await apiPost('glyAdminSeedGallery', { male, female });
+    if (r.ok) {
+      res.className = 'charge-result ok';
+      res.textContent = `✓ 완료 — 남 ${r.maleCount}명 / 여 ${r.femaleCount}명 처리 (신규 ${r.added}, 업데이트 ${r.updated})`;
+      refreshWallets(true);
+    } else {
+      res.className = 'charge-result err';
+      res.textContent = '실패: ' + (r.error || '');
+    }
+  } catch (e) { res.className = 'charge-result err'; res.textContent = '네트워크 오류: ' + e.message; }
+  btn.disabled = false;
+  btn.textContent = '🌱 시드 투입';
+}
+
+async function clearSeed() {
+  if (!confirm('⚠️ 광장 opt-in한 모든 사용자를 OFF 처리합니다. (실제 사용자가 Y로 바꾼 것까지 전부) 진행?')) return;
+  const res = document.getElementById('seedResult');
+  const btn = document.getElementById('clearSeedBtn');
+  btn.disabled = true;
+  btn.textContent = '처리 중...';
+  try {
+    const r = await apiPost('glyAdminClearSeed');
+    if (r.ok) {
+      res.className = 'charge-result ok';
+      res.textContent = `✓ ${r.cleared}명 OFF 처리됨`;
+    } else {
+      res.className = 'charge-result err';
+      res.textContent = '실패: ' + (r.error || '');
+    }
+  } catch (e) { res.className = 'charge-result err'; res.textContent = '네트워크 오류: ' + e.message; }
+  btn.disabled = false;
+  btn.textContent = '전체 OFF';
 }
 
 // ========= Login prefill =========
