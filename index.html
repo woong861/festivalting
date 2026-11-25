@@ -2644,6 +2644,33 @@ body::before {
   text-align: center;
   margin-top: 10px;
 }
+.female-notice {
+  margin-top: 12px;
+  padding: 11px 14px;
+  background: linear-gradient(135deg, #fff2fa 0%, #ffdfed 100%);
+  border: 2px dashed #ff6fa8;
+  border-radius: 12px;
+  text-align: center;
+  font-family: 'Jua', sans-serif;
+  font-size: 13.5px;
+  color: #d13078;
+  line-height: 1.45;
+  box-shadow: 0 2px 8px rgba(255, 111, 168, 0.2);
+  animation: fn-pulse 2.4s ease-in-out infinite;
+}
+.female-notice b { color: #c43d8a; }
+.female-notice .fn-sub {
+  display: inline-block;
+  margin-top: 3px;
+  font-family: 'Gaegu', cursive;
+  font-size: 12px;
+  color: #a85078;
+  font-weight: normal;
+}
+@keyframes fn-pulse {
+  0%, 100% { box-shadow: 0 2px 8px rgba(255, 111, 168, 0.2); }
+  50%      { box-shadow: 0 4px 14px rgba(255, 111, 168, 0.4); }
+}
 
 /* 추천 코드 박스 (성공 모달) */
 .referral-box {
@@ -3413,14 +3440,18 @@ body::before {
             <p class="review-note">신청 내용을 확인한 뒤 <b>입금 계좌를 개별 안내</b>드려요. 최대 24시간 이내 응대돼요.</p>
           </div>
         </li>
-        <li>아래 <b>오픈카톡방</b> 입장 (<b>기본프로필</b>로 입장)</li>
+        <li>아래 <b>오픈카톡방</b> 입장 (<b>기본프로필</b>로 입장) — <b>여학우 포함 전원 필수</b></li>
         <li>방에 사진 보내기
           <ul>
-            <li>입금내역 사진 (입금자명 기재)</li>
-            <li>본인 사진 1장 (필수)</li>
+            <li><b>본인 사진 1장</b> (남녀 모두 필수)</li>
+            <li>입금내역 사진 (입금자명 기재) — <b>남학우·미팅 여학우</b></li>
           </ul>
         </li>
       </ol>
+      <div class="female-notice">
+        💗 <b>여학우도 꼭 입장 + 사진 보내기 필수!</b><br>
+        <span class="fn-sub">쪽지팅 무료여도 사진 미인증 시 매칭 안 돼요 ♡</span>
+      </div>
       <a href="https://open.kakao.com/o/sCQOUiNi" target="_blank" rel="noopener" class="kakao-cta">
         💬 오픈카톡방 입장하기
       </a>
@@ -3782,6 +3813,27 @@ FORM_EL.addEventListener('input', saveDraft);
 FORM_EL.addEventListener('change', saveDraft);
 loadDraft();
 
+// ===== URL ?ref=PT-XXXX 자동 입력 (친구 추천 링크로 유입 시) =====
+(function autoFillRef() {
+  try {
+    const refParam = (new URLSearchParams(location.search).get('ref') || '').trim().toUpperCase();
+    if (!/^PT-[A-Z0-9]{4}$/.test(refParam)) return;
+    const refInput = FORM_EL.querySelector('input[name="referrer"]');
+    if (!refInput) return;
+    if (!refInput.value || refInput.value.trim() === '') {
+      refInput.value = refParam;
+      // 추천인 필드 강조 (빠르게 반짝)
+      const field = refInput.closest('.referrer-field');
+      if (field) {
+        field.style.transition = 'background 0.4s';
+        const orig = field.style.background;
+        field.style.background = 'rgba(255, 200, 230, 0.75)';
+        setTimeout(() => { field.style.background = orig; }, 1400);
+      }
+    }
+  } catch (e) {}
+})();
+
 // ===== 친구 추천 멀티 입력 (최대 3명) + 복붙 메시지 =====
 (function() {
   const field = document.getElementById('inviteFriendField');
@@ -3813,12 +3865,10 @@ loadDraft();
 
   function buildMessage() {
     const code = ensureCode();
-    const link = `https://postitt.cloud?ref=${code}`;
+    const link = `https://postitt.cloud/?ref=${code}`;
     return (
-      `안녕! 쪽지팅이라는 대학생 소개팅 서비스인데\n` +
-      `포스트잇에 쪽지 한 장 붙이고 매칭받는 거야 ♡\n\n` +
-      `내 추천코드 쓰면 -3,000원 할인!\n` +
-      `코드: ${code}\n` +
+      `너 괜찮은데 솔로인 거 아까워서 추천함ㅋㅋ\n` +
+      `나 쪽지팅 신청했는데 이 링크로 하면 우리 둘 다 카드 1장씩 더 준대\n` +
       `${link}`
     );
   }
@@ -3867,7 +3917,7 @@ loadDraft();
   }
 
   copyMsgBtn?.addEventListener('click', () => copyToClipboard(buildMessage(), copyMsgBtn, '✓ 복사됨!'));
-  copyLinkBtn?.addEventListener('click', () => copyToClipboard(`https://postitt.cloud?ref=${ensureCode()}`, copyLinkBtn, '✓ 복사'));
+  copyLinkBtn?.addEventListener('click', () => copyToClipboard(`https://postitt.cloud/?ref=${ensureCode()}`, copyLinkBtn, '✓ 복사'));
 
   function addRow() {
     const rows = inputsWrap.querySelectorAll('.ifb-input-wrap');
