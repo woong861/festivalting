@@ -2835,6 +2835,72 @@ body::before {
 }
 .referral-copy-msg.show { opacity: 1; }
 
+/* ===== 성공 모달 복붙 공유 카드 (코드 생성 후 등장) ===== */
+.success-share {
+  margin-top: 12px;
+  padding: 12px;
+  background: white;
+  border: 2px dashed #ff8fbe;
+  border-radius: 12px;
+  animation: ssFadeIn 0.3s ease-out;
+}
+@keyframes ssFadeIn {
+  0% { opacity: 0; transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.success-share-label {
+  font-family: 'Jua', sans-serif;
+  font-size: 13px;
+  color: #c43d8a;
+  margin-bottom: 8px;
+  text-align: left;
+}
+.success-share-msg {
+  width: 100%;
+  box-sizing: border-box;
+  resize: none;
+  border: 1.5px solid #ffd1e4;
+  border-radius: 10px;
+  padding: 10px 11px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 12.5px;
+  color: #3a2030;
+  line-height: 1.55;
+  background: #fffdf5;
+  outline: none;
+  margin-bottom: 8px;
+}
+.success-share-actions { display: flex; gap: 6px; }
+.success-share-btn {
+  flex: 1;
+  background: #fff0f7;
+  border: 1.5px solid #ffb3d9;
+  color: #c43d8a;
+  padding: 9px 10px;
+  border-radius: 10px;
+  font-family: 'Jua', sans-serif;
+  font-size: 12.5px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.success-share-btn:hover { background: #ffe0ee; }
+.success-share-btn.primary {
+  flex: 2;
+  background: linear-gradient(135deg, #ff5d9e, #ff4dd2);
+  color: white;
+  border-color: #ff4dd2;
+  box-shadow: 0 3px 10px rgba(255, 93, 158, 0.3);
+}
+.success-share-btn.copied { background: #4caf50 !important; color: white !important; border-color: #4caf50 !important; }
+.success-share-note {
+  font-family: 'Gaegu', cursive;
+  font-size: 11.5px;
+  color: #8a5868;
+  text-align: center;
+  margin: 8px 0 0;
+}
+
 .free-offer {
   margin-top: 14px;
   background: linear-gradient(135deg, #fff5cc 0%, #ffd1e8 100%);
@@ -3463,6 +3529,16 @@ body::before {
       <div class="referral-code-display empty" id="referralCodeDisplay">↓ 코드 받기 버튼 ↓</div>
       <button class="referral-btn" id="referralBtn" onclick="generateReferralCode()">✨ 코드 받기</button>
       <p class="referral-copy-msg" id="referralCopyMsg">복사됨 ✓</p>
+
+      <div class="success-share" id="successShare" style="display:none">
+        <div class="success-share-label">📋 친구에게 바로 보내기</div>
+        <textarea class="success-share-msg" id="successShareMsg" readonly rows="5"></textarea>
+        <div class="success-share-actions">
+          <button type="button" class="success-share-btn primary" id="successCopyMsgBtn">📋 메시지 전체 복사</button>
+          <button type="button" class="success-share-btn" id="successCopyLinkBtn">🔗 링크만</button>
+        </div>
+        <p class="success-share-note">인스타 DM에 그대로 붙여넣기만 하면 돼요 ♡</p>
+      </div>
     </div>
     <a href="/gallery.html" class="gallery-cta" id="galleryCta">
       <div class="gc-ribbon">✨ NEW · 쪽지팅 광장 OPEN</div>
@@ -3555,6 +3631,15 @@ function closeSuccess() {
 }
 
 // ====== 추천인 코드 생성기 ======
+function buildSuccessShareMessage(code) {
+  const link = `https://postitt.cloud/?ref=${code}`;
+  return (
+    `너 괜찮은데 솔로인 거 아까워서 추천함ㅋㅋ\n` +
+    `나 쪽지팅 신청했는데 이 링크로 하면 우리 둘 다 카드 1장씩 더 준대\n` +
+    `${link}`
+  );
+}
+
 function generateReferralCode() {
   // 헷갈리는 문자 제외 (I/L/O/0/1)
   const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
@@ -3569,7 +3654,49 @@ function generateReferralCode() {
   const btn = document.getElementById('referralBtn');
   btn.textContent = '📋 코드 복사하기';
   btn.onclick = function() { copyReferralCode(full); };
+  // 복붙 카드 노출 + 메시지 세팅
+  const share = document.getElementById('successShare');
+  const msg = document.getElementById('successShareMsg');
+  if (share && msg) {
+    msg.value = buildSuccessShareMessage(full);
+    share.style.display = 'block';
+    share.dataset.code = full;
+  }
 }
+
+function successShareCopy(text, btnEl, okLabel) {
+  const original = btnEl.textContent;
+  const done = () => {
+    btnEl.textContent = okLabel;
+    btnEl.classList.add('copied');
+    setTimeout(() => { btnEl.textContent = original; btnEl.classList.remove('copied'); }, 1600);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => {
+      const ta = document.getElementById('successShareMsg');
+      try { ta.select(); document.execCommand('copy'); done(); } catch (e) {}
+    });
+  } else {
+    const ta = document.getElementById('successShareMsg');
+    try { ta.select(); document.execCommand('copy'); done(); } catch (e) {}
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const copyMsgBtn = document.getElementById('successCopyMsgBtn');
+  const copyLinkBtn = document.getElementById('successCopyLinkBtn');
+  copyMsgBtn?.addEventListener('click', () => {
+    const share = document.getElementById('successShare');
+    const code = share?.dataset?.code || '';
+    if (!code) return;
+    successShareCopy(buildSuccessShareMessage(code), copyMsgBtn, '✓ 복사됨!');
+  });
+  copyLinkBtn?.addEventListener('click', () => {
+    const share = document.getElementById('successShare');
+    const code = share?.dataset?.code || '';
+    if (!code) return;
+    successShareCopy(`https://postitt.cloud/?ref=${code}`, copyLinkBtn, '✓ 복사');
+  });
+});
 
 function copyReferralCode(code) {
   const showMsg = () => {
@@ -3607,6 +3734,8 @@ function resetReferralCode() {
   btn.onclick = generateReferralCode;
   const msg = document.getElementById('referralCopyMsg');
   if (msg) msg.classList.remove('show');
+  const share = document.getElementById('successShare');
+  if (share) { share.style.display = 'none'; delete share.dataset.code; }
 }
 
 // Hero 영역 추천 코드 생성기 (모달과 별개)
