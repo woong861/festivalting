@@ -3773,15 +3773,33 @@ function isValidApplication(form) {
   const g = n => (form.querySelector('[name="' + n + '"]')?.value || '').trim();
   const name = g('name');
   const phone = g('phone');
+  const phoneDigits = phone.replace(/[^\d]/g, '');
 
   // 이름: 한글 2자 이상
   if (!/^[가-힣]{2,10}$/.test(name)) return { valid: false, reason: 'name' };
 
   // 전화번호: 010 + 7~8자리
-  if (!/^010\d{7,8}$/.test(phone.replace(/[^\d]/g, ''))) return { valid: false, reason: 'phone' };
+  if (!/^010\d{7,8}$/.test(phoneDigits)) return { valid: false, reason: 'phone' };
 
   // 같은 글자 3번 이상 반복(ㅁㅁㅁ 식 트롤)만 이름에서 거름
   if (/^(.)\1{2,}$/.test(name)) return { valid: false, reason: 'name_sus' };
+
+  // 명백한 가짜 이름 블랙리스트
+  const FAKE_NAMES = ['테스트','시험','예시','가나다','홍길동','김철수','이영희','아무개','누구나','아이유'];
+  if (FAKE_NAMES.includes(name)) return { valid: false, reason: 'name_fake' };
+
+  // 전번 몸통 (010 뒤 7~8자리)
+  const body = phoneDigits.slice(3);
+
+  // 1) 전체가 같은 숫자 반복 (01011111111)
+  if (/^(\d)\1+$/.test(body)) return { valid: false, reason: 'phone_repeat' };
+
+  // 2) 순차 증가/감소 (01012345678, 01087654321)
+  const seqUp = '0123456789', seqDown = '9876543210';
+  if (seqUp.includes(body) || seqDown.includes(body)) return { valid: false, reason: 'phone_seq' };
+
+  // 3) 2자리 반복 (01012121212, 01010101010)
+  if (/^(\d{2})\1+$/.test(body)) return { valid: false, reason: 'phone_pair' };
 
   return { valid: true };
 }
